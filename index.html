@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js"></script>
     <script>
+      // Cấu hình Firebase
       const firebaseConfig = {
         apiKey: "AIzaSyCT0fjjg5kmbnNka1nvLUgwv0hDgCQ1g40",
         authDomain: "cho-va-nhan-278c4.firebaseapp.com",
@@ -19,8 +20,60 @@
         appId: "1:841295917185:web:808d1d23f5af41b1c8dd80",
         measurementId: "G-GRSHJXG5YP"
       };
+
+      // Khởi tạo Firebase
       const app = firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
+
+      // Hàm tải danh sách tin từ Firebase
+      function loadPosts() {
+          const postsContainer = document.getElementById('postsContainer');
+          postsContainer.innerHTML = ''; // Xóa nội dung cũ
+          const postsRef = db.ref('posts');
+
+          postsRef.on('value', (snapshot) => {
+              snapshot.forEach((childSnapshot) => {
+                  const post = childSnapshot.val();
+                  const postElement = document.createElement('div');
+                  postElement.classList.add('card');
+                  postElement.innerHTML = `
+                      <h3>${post.name}</h3>
+                      <p>${post.content}</p>
+                      <small>${new Date(post.timestamp).toLocaleString()}</small>
+                  `;
+                  postsContainer.appendChild(postElement);
+              });
+          });
+      }
+
+      // Hàm xử lý đăng tin
+      function handlePostSubmit(event) {
+          event.preventDefault(); // Ngăn chặn reload trang
+          const name = document.getElementById('name').value.trim();
+          const content = document.getElementById('content').value.trim();
+
+          if (name && content) {
+              const post = {
+                  name: name,
+                  content: content,
+                  timestamp: Date.now()
+              };
+              db.ref('posts').push(post, (error) => {
+                  if (error) {
+                      alert('Lỗi khi lưu tin! Thử lại.');
+                  } else {
+                      alert('Đăng tin thành công!');
+                      document.getElementById('postForm').reset(); // Reset form
+                  }
+              });
+          }
+      }
+
+      // Gắn sự kiện khi tải trang
+      window.onload = function() {
+          loadPosts(); // Tải danh sách tin
+          document.getElementById('postForm').addEventListener('submit', handlePostSubmit);
+      };
     </script>
 
     <style>
@@ -91,5 +144,6 @@
     </footer>
 </body>
 </html>
+
 
 
