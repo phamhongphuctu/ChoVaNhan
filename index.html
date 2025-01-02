@@ -136,6 +136,68 @@
         `;
     }
 }
+// Hiển thị form đăng nhập
+function showLogin() {
+    const main = document.querySelector('main');
+    main.innerHTML = `
+        <div class="form-container">
+            <h2>Đăng nhập</h2>
+            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+            <button onclick="login()">Đăng nhập</button>
+        </div>
+    `;
+}
+
+// Hiển thị form đăng ký
+function showRegister() {
+    const main = document.querySelector('main');
+    main.innerHTML = `
+        <div class="form-container">
+            <h2>Đăng ký</h2>
+            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+            <button onclick="register()">Đăng ký</button>
+        </div>
+    `;
+}
+
+// Đăng ký người dùng
+function register() {
+    const username = document.getElementById('registerUsername').value;
+    const password = document.getElementById('registerPassword').value;
+
+    if (!username || !password) {
+        alert('Vui lòng điền đầy đủ thông tin!');
+        return;
+    }
+
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    if (users[username]) {
+        alert('Tên người dùng đã tồn tại!');
+        return;
+    }
+
+    users[username] = password;
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Đăng ký thành công!');
+    showLogin();
+}
+
+// Đăng nhập người dùng
+function login() {
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    if (users[username] === password) {
+        localStorage.setItem('currentUser', username);
+        alert('Đăng nhập thành công!');
+        location.reload(); // Tải lại trang sau khi đăng nhập
+    } else {
+        alert('Tên người dùng hoặc mật khẩu không đúng!');
+    }
+}
 
         // Đăng xuất
         function logout() {
