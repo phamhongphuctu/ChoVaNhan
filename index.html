@@ -24,56 +24,6 @@
       // Khởi tạo Firebase
       const app = firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
-
-      // Hàm tải danh sách tin từ Firebase
-      function loadPosts() {
-          const postsContainer = document.getElementById('postsContainer');
-          postsContainer.innerHTML = ''; // Xóa nội dung cũ
-          const postsRef = db.ref('posts');
-
-          postsRef.on('value', (snapshot) => {
-              snapshot.forEach((childSnapshot) => {
-                  const post = childSnapshot.val();
-                  const postElement = document.createElement('div');
-                  postElement.classList.add('card');
-                  postElement.innerHTML = `
-                      <h3>${post.name}</h3>
-                      <p>${post.content}</p>
-                      <small>${new Date(post.timestamp).toLocaleString()}</small>
-                  `;
-                  postsContainer.appendChild(postElement);
-              });
-          });
-      }
-
-      // Hàm xử lý đăng tin
-      function handlePostSubmit(event) {
-          event.preventDefault(); // Ngăn chặn reload trang
-          const name = document.getElementById('name').value.trim();
-          const content = document.getElementById('content').value.trim();
-
-          if (name && content) {
-              const post = {
-                  name: name,
-                  content: content,
-                  timestamp: Date.now()
-              };
-              db.ref('posts').push(post, (error) => {
-                  if (error) {
-                      alert('Lỗi khi lưu tin! Thử lại.');
-                  } else {
-                      alert('Đăng tin thành công!');
-                      document.getElementById('postForm').reset(); // Reset form
-                  }
-              });
-          }
-      }
-
-      // Gắn sự kiện khi tải trang
-      window.onload = function() {
-          loadPosts(); // Tải danh sách tin
-          document.getElementById('postForm').addEventListener('submit', handlePostSubmit);
-      };
     </script>
 
     <style>
@@ -142,8 +92,56 @@
     <footer>
         <p>&copy; 2025 Cho và Nhận Miễn Phí</p>
     </footer>
+
+    <script>
+        // Lắng nghe sự kiện submit của form
+        const postForm = document.getElementById('postForm');
+        const postsContainer = document.getElementById('postsContainer');
+
+        postForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const content = document.getElementById('content').value;
+
+            if (name && content) {
+                // Ghi dữ liệu vào Firebase
+                const newPostKey = db.ref().child('posts').push().key;
+                db.ref('posts/' + newPostKey).set({
+                    name: name,
+                    content: content,
+                })
+                .then(() => {
+                    alert('Tin đã được đăng thành công!');
+                    postForm.reset();
+                    loadPosts(); // Cập nhật danh sách sau khi đăng tin
+                })
+                .catch((error) => {
+                    console.error('Lỗi khi ghi dữ liệu:', error);
+                });
+            }
+        });
+
+        // Hàm tải danh sách tin từ Firebase
+        function loadPosts() {
+            db.ref('posts').once('value', (snapshot) => {
+                postsContainer.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const post = childSnapshot.val();
+                    const div = document.createElement('div');
+                    div.className = 'card';
+                    div.innerHTML = `<strong>${post.name}</strong><p>${post.content}</p>`;
+                    postsContainer.appendChild(div);
+                });
+            });
+        }
+
+        // Tải danh sách tin ngay khi trang được tải
+        window.onload = loadPosts;
+    </script>
 </body>
 </html>
+
 
 
 
