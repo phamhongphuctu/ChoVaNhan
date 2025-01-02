@@ -128,30 +128,38 @@
         }
 
         // Hiển thị form đăng nhập
-        function showLogin() {
-            const main = document.querySelector('main');
-            main.innerHTML = `
-                <div class="form-container">
-                    <h2>Đăng nhập</h2>
-                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-                    <button onclick="login()">Đăng nhập</button>
-                </div>
-            `;
-        }
+function showLogin() {
+    const main = document.querySelector('main');
+    main.innerHTML = `
+        <div class="form-container">
+            <h2>Đăng nhập</h2>
+            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+            <button onclick="login()">Đăng nhập</button>
+            <button onclick="returnToHome()">Quay lại trang chủ</button>
+        </div>
+    `;
+}
 
-        // Hiển thị form đăng ký
-        function showRegister() {
-            const main = document.querySelector('main');
-            main.innerHTML = `
-                <div class="form-container">
-                    <h2>Đăng ký</h2>
-                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
-                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-                    <button onclick="register()">Đăng ký</button>
-                </div>
-            `;
-        }
+// Hiển thị form đăng ký
+function showRegister() {
+    const main = document.querySelector('main');
+    main.innerHTML = `
+        <div class="form-container">
+            <h2>Đăng ký</h2>
+            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+            <button onclick="register()">Đăng ký</button>
+            <button onclick="returnToHome()">Quay lại trang chủ</button>
+        </div>
+    `;
+}
+
+// Quay lại trang chủ
+function returnToHome() {
+    checkLogin(); // Gọi lại hàm kiểm tra đăng nhập để quay về giao diện chính
+}
+
 
         // Đăng ký người dùng
         function register() {
