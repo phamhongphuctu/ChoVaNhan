@@ -28,10 +28,6 @@
             margin: 10px 0;
             border-radius: 5px;
         }
-        .card h3 {
-            margin: 0;
-            color: #007bff;
-        }
         button {
             padding: 10px 20px;
             background-color: #007bff;
@@ -43,64 +39,135 @@
         button:hover {
             background-color: #0056b3;
         }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        input {
             width: 100%;
-        }
-        .search-bar {
-            margin-bottom: 20px;
-        }
-        input[type="text"], select {
             padding: 10px;
-            width: 100%;
             margin-bottom: 10px;
-        }
-        textarea {
-            width: 100%;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Cho và Nhận Miễn Phí</h1>
+        <div id="authLinks">
+            <button onclick="showLogin()">Đăng nhập</button>
+            <button onclick="showRegister()">Đăng ký</button>
+        </div>
+        <div id="userGreeting" style="display: none;">
+            <p>Chào, <span id="username"></span>!</p>
+            <button onclick="logout()">Đăng xuất</button>
+        </div>
     </header>
     <main>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Tìm kiếm bài đăng...">
-            <button onclick="searchPosts()">Tìm kiếm</button>
+        <div id="loginForm" class="form-container" style="display: none;">
+            <h2>Đăng nhập</h2>
+            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+            <button onclick="login()">Đăng nhập</button>
         </div>
-
-        <h2>Danh sách bài đăng</h2>
-        <div id="postsContainer"></div>
-        
-        <h2>Đăng bài mới</h2>
-        <form id="postForm">
-            <label for="name">Tên:</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="type">Loại bài đăng:</label>
-            <select id="type" name="type">
-                <option value="Cho">Cho</option>
-                <option value="Nhận">Nhận</option>
-            </select>
-
-            <label for="content">Nội dung:</label>
-            <textarea id="content" name="content" rows="4" required></textarea>
-
-            <button type="submit">Đăng bài</button>
-        </form>
+        <div id="registerForm" class="form-container" style="display: none;">
+            <h2>Đăng ký</h2>
+            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+            <button onclick="register()">Đăng ký</button>
+        </div>
+        <div id="appContent" style="display: none;">
+            <h2>Danh sách bài đăng</h2>
+            <div id="postsContainer"></div>
+            
+            <h2>Đăng bài mới</h2>
+            <form id="postForm">
+                <input type="text" id="name" placeholder="Tên" required>
+                <select id="type">
+                    <option value="Cho">Cho</option>
+                    <option value="Nhận">Nhận</option>
+                </select>
+                <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
+                <button type="submit">Đăng bài</button>
+            </form>
+        </div>
     </main>
-    <footer>
-        <p>&copy; 2025 Cho và Nhận Miễn Phí</p>
-    </footer>
 
     <script>
-        // Load bài đăng từ LocalStorage
+        // Kiểm tra trạng thái đăng nhập
+        function checkLogin() {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                document.getElementById('authLinks').style.display = 'none';
+                document.getElementById('userGreeting').style.display = 'block';
+                document.getElementById('appContent').style.display = 'block';
+                document.getElementById('username').textContent = currentUser;
+            } else {
+                document.getElementById('authLinks').style.display = 'block';
+                document.getElementById('userGreeting').style.display = 'none';
+                document.getElementById('appContent').style.display = 'none';
+            }
+        }
+
+        // Hiển thị form đăng nhập
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+        }
+
+        // Hiển thị form đăng ký
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        // Đăng ký người dùng
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (!username || !password) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            showLogin();
+        }
+
+        // Đăng nhập người dùng
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] === password) {
+                localStorage.setItem('currentUser', username);
+                alert('Đăng nhập thành công!');
+                checkLogin();
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
+
+        // Đăng xuất
+        function logout() {
+            localStorage.removeItem('currentUser');
+            checkLogin();
+        }
+
+        // Quản lý bài đăng
         function loadPosts() {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             const postsContainer = document.getElementById('postsContainer');
@@ -109,42 +176,13 @@
             posts.forEach(post => {
                 const div = document.createElement('div');
                 div.className = 'card';
-                div.innerHTML = `
-                    <h3>${post.type}: ${post.name}</h3>
-                    <p>${post.content}</p>
-                `;
+                div.innerHTML = `<strong>${post.type}: ${post.name}</strong><p>${post.content}</p>`;
                 postsContainer.appendChild(div);
             });
         }
 
-        // Tìm kiếm bài đăng
-        function searchPosts() {
-            const searchValue = document.getElementById('searchInput').value.toLowerCase();
-            const posts = JSON.parse(localStorage.getItem('posts')) || [];
-            const filteredPosts = posts.filter(post => 
-                post.name.toLowerCase().includes(searchValue) || 
-                post.content.toLowerCase().includes(searchValue) || 
-                post.type.toLowerCase().includes(searchValue)
-            );
-
-            const postsContainer = document.getElementById('postsContainer');
-            postsContainer.innerHTML = '';
-
-            filteredPosts.forEach(post => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `
-                    <h3>${post.type}: ${post.name}</h3>
-                    <p>${post.content}</p>
-                `;
-                postsContainer.appendChild(div);
-            });
-        }
-
-        // Xử lý đăng bài
         document.getElementById('postForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
             const name = document.getElementById('name').value;
             const type = document.getElementById('type').value;
             const content = document.getElementById('content').value;
@@ -154,15 +192,15 @@
             localStorage.setItem('posts', JSON.stringify(posts));
 
             alert('Bài đăng đã được lưu!');
-            document.getElementById('postForm').reset();
             loadPosts();
         });
 
-        // Load bài đăng khi tải trang
-        window.onload = loadPosts;
+        window.onload = function() {
+            checkLogin();
+            loadPosts();
+        };
     </script>
 </body>
 </html>
-
 
 
