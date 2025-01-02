@@ -9,7 +9,16 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+
+
+
+
+
+
+
+
+
+            
             color: #333;
         }
         header {
@@ -107,13 +116,25 @@
     <script>
         // Kiểm tra trạng thái đăng nhập
         function checkLogin() {
-            const currentUser = localStorage.getItem('currentUser');
-            if (currentUser) {
-                document.getElementById('userGreeting').style.display = 'block';
-                document.getElementById('appContent').style.display = 'block';
-                document.getElementById('username').textContent = currentUser;
-            }
-        }
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+        document.getElementById('userGreeting').style.display = 'block';
+        document.getElementById('appContent').style.display = 'block';
+        document.getElementById('username').textContent = currentUser;
+    } else {
+        document.getElementById('userGreeting').style.display = 'none';
+        document.getElementById('appContent').style.display = 'none';
+
+        // Thêm thông báo khi chưa đăng nhập
+        const main = document.querySelector('main');
+        main.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+            </div>
+        `;
+    }
+}
 
         // Đăng xuất
         function logout() {
