@@ -228,20 +228,21 @@ function returnToHome() {
         div.className = 'card';
         div.style.opacity = post.completed ? '0.5' : '1';
         div.innerHTML = `
-            <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
-            <div class="card-content">
-                <h3>${post.type}: ${post.name}</h3>
-                <p>${post.content}</p>
-                ${
-                    (post.name === currentUser || currentUser === 'admin') && !post.completed
-                        ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
-                           <button onclick="deletePost(${index})">Xóa</button>`
-                        : post.completed
-                        ? '<p><strong>Đã giao dịch</strong></p>'
-                        : ''
-                }
-            </div>
-        `;
+    <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
+    <div class="card-content">
+        <h3>${post.type}: ${post.name}</h3>
+        <p>${post.content}</p>
+        ${
+            (post.name === currentUser || currentUser === 'admin') && !post.completed
+                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                   <button onclick="deletePost(${index})">Xóa</button>`
+                : post.completed
+                ? '<p><strong>Đã giao dịch</strong></p>'
+                : ''
+        }
+    </div>
+`;
+
         postsContainer.appendChild(div);
     });
 }
