@@ -117,6 +117,8 @@
         // Kiểm tra trạng thái đăng nhập
         function checkLogin() {
     const currentUser = localStorage.getItem('currentUser');
+    const main = document.querySelector('main');
+
     if (currentUser) {
         document.getElementById('userGreeting').style.display = 'block';
         document.getElementById('appContent').style.display = 'block';
@@ -125,8 +127,7 @@
         document.getElementById('userGreeting').style.display = 'none';
         document.getElementById('appContent').style.display = 'none';
 
-        // Thêm thông báo khi chưa đăng nhập
-        const main = document.querySelector('main');
+        // Thêm giao diện khi chưa đăng nhập
         main.innerHTML = `
             <div style="text-align: center; padding: 20px;">
                 <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
