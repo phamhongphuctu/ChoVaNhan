@@ -9,16 +9,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-
-
-
-
-
-
-
-
-
-            
             color: #333;
         }
         header {
@@ -116,88 +106,89 @@
     <script>
         // Kiểm tra trạng thái đăng nhập
         function checkLogin() {
-    const currentUser = localStorage.getItem('currentUser');
-    const main = document.querySelector('main');
+            const currentUser = localStorage.getItem('currentUser');
+            const main = document.querySelector('main');
 
-    if (currentUser) {
-        document.getElementById('userGreeting').style.display = 'block';
-        document.getElementById('appContent').style.display = 'block';
-        document.getElementById('username').textContent = currentUser;
-    } else {
-        document.getElementById('userGreeting').style.display = 'none';
-        document.getElementById('appContent').style.display = 'none';
+            if (currentUser) {
+                document.getElementById('userGreeting').style.display = 'block';
+                document.getElementById('appContent').style.display = 'block';
+                document.getElementById('username').textContent = currentUser;
+            } else {
+                document.getElementById('userGreeting').style.display = 'none';
+                document.getElementById('appContent').style.display = 'none';
 
-        // Thêm giao diện khi chưa đăng nhập
-        main.innerHTML = `
-            <div style="text-align: center; padding: 20px;">
-                <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-                <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
-            </div>
-        `;
-    }
-}
-// Hiển thị form đăng nhập
-function showLogin() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="form-container">
-            <h2>Đăng nhập</h2>
-            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-            <button onclick="login()">Đăng nhập</button>
-        </div>
-    `;
-}
+                // Thêm giao diện khi chưa đăng nhập
+                main.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                    </div>
+                `;
+            }
+        }
 
-// Hiển thị form đăng ký
-function showRegister() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="form-container">
-            <h2>Đăng ký</h2>
-            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-            <button onclick="register()">Đăng ký</button>
-        </div>
-    `;
-}
+        // Hiển thị form đăng nhập
+        function showLogin() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                </div>
+            `;
+        }
 
-// Đăng ký người dùng
-function register() {
-    const username = document.getElementById('registerUsername').value;
-    const password = document.getElementById('registerPassword').value;
+        // Hiển thị form đăng ký
+        function showRegister() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng ký</h2>
+                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button onclick="register()">Đăng ký</button>
+                </div>
+            `;
+        }
 
-    if (!username || !password) {
-        alert('Vui lòng điền đầy đủ thông tin!');
-        return;
-    }
+        // Đăng ký người dùng
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
 
-    const users = JSON.parse(localStorage.getItem('users')) || {};
-    if (users[username]) {
-        alert('Tên người dùng đã tồn tại!');
-        return;
-    }
+            if (!username || !password) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
 
-    users[username] = password;
-    localStorage.setItem('users', JSON.stringify(users));
-    alert('Đăng ký thành công!');
-    showLogin();
-}
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
 
-// Đăng nhập người dùng
-function login() {
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            showLogin();
+        }
 
-    const users = JSON.parse(localStorage.getItem('users')) || {};
-    if (users[username] === password) {
-        localStorage.setItem('currentUser', username);
-        alert('Đăng nhập thành công!');
-        location.reload(); // Tải lại trang sau khi đăng nhập
-    } else {
-        alert('Tên người dùng hoặc mật khẩu không đúng!');
-    }
-}
+        // Đăng nhập người dùng
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] === password) {
+                localStorage.setItem('currentUser', username);
+                alert('Đăng nhập thành công!');
+                location.reload(); // Tải lại trang sau khi đăng nhập
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
 
         // Đăng xuất
         function logout() {
@@ -206,15 +197,24 @@ function login() {
         }
 
         // Hiển thị bài đăng
-        if (imageFile) {
-    reader.readAsDataURL(imageFile);
-} else {
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    posts.push({ name, type, content, image: 'https://via.placeholder.com/100' });
-    localStorage.setItem('posts', JSON.stringify(posts));
-    alert('Bài đăng đã được lưu!');
-    loadPosts();
-}
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            const postsContainer = document.getElementById('postsContainer');
+            postsContainer.innerHTML = '';
+
+            posts.forEach(post => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `
+                    <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
+                    <div class="card-content">
+                        <h3>${post.type}: ${post.name}</h3>
+                        <p>${post.content}</p>
+                    </div>
+                `;
+                postsContainer.appendChild(div);
+            });
+        }
 
         // Đăng bài
         document.getElementById('postForm').addEventListener('submit', function(e) {
@@ -241,7 +241,7 @@ function login() {
                 reader.readAsDataURL(imageFile);
             } else {
                 const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content });
+                posts.push({ name, type, content, image: 'https://via.placeholder.com/100' });
                 localStorage.setItem('posts', JSON.stringify(posts));
                 alert('Bài đăng đã được lưu!');
                 loadPosts();
