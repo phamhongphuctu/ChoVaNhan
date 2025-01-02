@@ -9,7 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js"></script>
     <script>
-      // Firebase Configuration
       const firebaseConfig = {
         apiKey: "AIzaSyCT0fjjg5kmbnNka1nvLUgwv0hDgCQ1g40",
         authDomain: "cho-va-nhan-278c4.firebaseapp.com",
@@ -20,8 +19,6 @@
         appId: "1:841295917185:web:808d1d23f5af41b1c8dd80",
         measurementId: "G-GRSHJXG5YP"
       };
-
-      // Initialize Firebase
       const app = firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
     </script>
@@ -78,22 +75,14 @@
     </header>
     <main>
         <h2>Danh sách tin cho và nhận</h2>
-        <div class="card">
-            <h3>Người dùng 1</h3>
-            <p>Nội dung: Cần nhận 5 kg gạo.</p>
-            <button>Liên hệ</button>
-        </div>
-        <div class="card">
-            <h3>Người dùng 2</h3>
-            <p>Nội dung: Muốn cho 10 quyển sách.</p>
-            <button>Liên hệ</button>
-        </div>
+        <div id="postsContainer"></div>
+        
         <h2>Đăng tin của bạn</h2>
-        <form>
+        <form id="postForm">
             <label for="name">Tên:</label><br>
-            <input type="text" id="name" name="name"><br><br>
+            <input type="text" id="name" name="name" required><br><br>
             <label for="content">Nội dung:</label><br>
-            <textarea id="content" name="content" rows="4" cols="50"></textarea><br><br>
+            <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
             <button type="submit">Đăng tin</button>
         </form>
     </main>
