@@ -157,8 +157,15 @@ function showRegister() {
 
 // Quay lại trang chủ
 function returnToHome() {
-    checkLogin(); // Gọi lại hàm kiểm tra đăng nhập để quay về giao diện chính
+    const main = document.querySelector('main');
+    main.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+            <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+            <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+        </div>
+    `;
 }
+
 
 
         // Đăng ký người dùng
