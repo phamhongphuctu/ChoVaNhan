@@ -144,24 +144,15 @@
         }
 
         // Hiển thị bài đăng
-        function loadPosts() {
-            const posts = JSON.parse(localStorage.getItem('posts')) || [];
-            const postsContainer = document.getElementById('postsContainer');
-            postsContainer.innerHTML = '';
-
-            posts.forEach(post => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.innerHTML = `
-                    <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
-                    <div class="card-content">
-                        <h3>${post.type}: ${post.name}</h3>
-                        <p>${post.content}</p>
-                    </div>
-                `;
-                postsContainer.appendChild(div);
-            });
-        }
+        if (imageFile) {
+    reader.readAsDataURL(imageFile);
+} else {
+    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    posts.push({ name, type, content, image: 'https://via.placeholder.com/100' });
+    localStorage.setItem('posts', JSON.stringify(posts));
+    alert('Bài đăng đã được lưu!');
+    loadPosts();
+}
 
         // Đăng bài
         document.getElementById('postForm').addEventListener('submit', function(e) {
