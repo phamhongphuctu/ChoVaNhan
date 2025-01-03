@@ -109,6 +109,57 @@
     </main>
 
     <script>
+    // Các hàm khác như checkLogin, showLogin, loadPosts...
+
+    // Đánh dấu bài đăng đã giao dịch
+    function markAsCompleted(index) {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts[index].completed = true; // Đặt trạng thái "đã giao dịch"
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
+        loadPosts(); // Tải lại danh sách bài đăng
+    }
+
+    // Xóa bài đăng
+    function deletePost(index) {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.splice(index, 1); // Xóa bài đăng tại vị trí `index`
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Bài đăng đã bị xóa!');
+        loadPosts(); // Tải lại danh sách bài đăng
+    }
+
+    // Hàm loadPosts
+    function loadPosts() {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        const currentUser = localStorage.getItem('currentUser');
+        const postsContainer = document.getElementById('postsContainer');
+        postsContainer.innerHTML = '';
+
+        posts.forEach((post, index) => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.style.opacity = post.completed ? '0.5' : '1'; // Làm mờ bài đăng đã giao dịch
+            div.innerHTML = `
+                <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
+                <div class="card-content">
+                    <h3>${post.type}: ${post.name}</h3>
+                    <p>${post.content}</p>
+                    ${
+                        !post.completed
+                            ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                               <button onclick="deletePost(${index})">Xóa</button>`
+                            : '<p><strong>Đã giao dịch</strong></p>'
+                    }
+                </div>
+            `;
+            postsContainer.appendChild(div);
+        });
+    }
+
+    // Đoạn mã khác như đăng bài, kiểm tra đăng nhập...
+</script>
+
         // Kiểm tra trạng thái đăng nhập
         function checkLogin() {
             const currentUser = localStorage.getItem('currentUser');
