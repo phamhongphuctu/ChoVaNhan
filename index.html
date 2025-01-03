@@ -144,13 +144,9 @@
                         <h3>${post.type}: ${post.name}</h3>
                         <p>${post.content}</p>
                         ${
-                            !post.completed && (post.name === currentUser || currentUser === 'admin')
-                                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>`
-                                : ''
-                        }
-                        ${
                             (post.name === currentUser || currentUser === 'admin')
-                                ? `<button onclick="deletePost(${index})">Xóa</button>`
+                                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                                   <button onclick="deletePost(${index})">Xóa</button>`
                                 : ''
                         }
                     </div>
@@ -159,7 +155,30 @@
             });
         }
 
-        // Other functions like markAsCompleted, deletePost, etc.
+        function markAsCompleted(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            if (posts[index]) {
+                posts[index].completed = true;
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
+                loadPosts();
+            } else {
+                alert('Không thể đánh dấu giao dịch cho bài đăng này!');
+            }
+        }
+
+        function deletePost(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            const currentUser = localStorage.getItem('currentUser');
+            if (posts[index] && (posts[index].name === currentUser || currentUser === 'admin')) {
+                posts.splice(index, 1);
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã bị xóa!');
+                loadPosts();
+            } else {
+                alert('Bạn không có quyền xóa bài đăng này!');
+            }
+        }
 
         window.onload = function() {
             checkLogin();
