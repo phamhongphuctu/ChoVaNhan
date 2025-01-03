@@ -110,7 +110,21 @@
 
     <script>
         // Kiểm tra trạng thái đăng nhập
-        function checkLogin() {
+        function checkLogin() { function initializeAdminAccount() {
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    if (!users['admin']) {
+        users['admin'] = { password: '1', role: 'admin' }; // Thêm admin mặc định với mật khẩu '1'
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+}
+
+initializeAdminAccount(); // Khởi tạo admin mặc định
+
+window.onload = function() {
+    checkLogin();
+    loadPosts();
+};
+
     const currentUser = localStorage.getItem('currentUser');
     const currentRole = localStorage.getItem('currentRole'); // Lấy vai trò từ localStorage
     const main = document.querySelector('main');
