@@ -234,19 +234,8 @@ function returnToHome() {
                 <p>${post.content}</p>
                 ${
                     !post.completed
-                        ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button> function markAsCompleted(index) {
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    if (posts[index]) {
-        posts[index].completed = true; // Đặt trạng thái "đã giao dịch"
-        localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật lại danh sách bài đăng
-        alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
-        loadPosts(); // Tải lại danh sách bài đăng
-    } else {
-        alert('Không thể đánh dấu giao dịch cho bài đăng này!');
-    }
-}
-
-                           <button onclick="deletePost(${index})">Xóa</button>`
+                        ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+ <button onclick="deletePost(${index})">Xóa</button>`
                         : '<p><strong>Đã giao dịch</strong></p>'
                 }
             </div>
