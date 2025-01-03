@@ -112,18 +112,15 @@
         // Kiểm tra trạng thái đăng nhập
         function checkLogin() {
     const currentUser = localStorage.getItem('currentUser');
-    const currentRole = localStorage.getItem('currentRole');
+    const currentRole = localStorage.getItem('currentRole'); // Lấy vai trò từ localStorage
     const main = document.querySelector('main');
 
     if (currentUser) {
         document.getElementById('userGreeting').style.display = 'block';
         document.getElementById('appContent').style.display = 'block';
-        document.getElementById('username').textContent = `${currentUser} (${currentRole})`;
 
-        if (currentRole === 'admin') {
-            console.log('Admin đã đăng nhập!');
-            // Thêm logic hiển thị nội dung đặc biệt cho admin ở đây
-        }
+        // Hiển thị tên người dùng và vai trò
+        document.getElementById('username').textContent = `${currentUser} (${currentRole || 'user'})`;
     } else {
         document.getElementById('userGreeting').style.display = 'none';
         document.getElementById('appContent').style.display = 'none';
