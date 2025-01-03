@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -89,6 +90,12 @@
         input[type="file"] {
             padding: 5px;
         }
+
+        #map {
+            height: 400px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -115,9 +122,13 @@
                 <input type="file" id="image" accept="image/*">
                 <button type="submit">Đăng bài</button>
             </form>
+
+            <h2>Bản đồ OpenStreetMap</h2>
+            <div id="map"></div>
         </div>
     </main>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
@@ -226,7 +237,6 @@
 
         function loadPosts() {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
-            const currentUser = localStorage.getItem('currentUser');
             const postsContainer = document.getElementById('postsContainer');
             postsContainer.innerHTML = '';
 
@@ -301,10 +311,19 @@
             document.getElementById('postForm').reset();
         });
 
+        function initMap() {
+            const map = L.map('map').setView([10.7769, 106.7009], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+
         window.onload = function() {
-            initializeAdminAccount(); // Tạo tài khoản admin mặc định
+            initializeAdminAccount();
             checkLogin();
             loadPosts();
+            initMap();
         };
     </script>
 </body>
