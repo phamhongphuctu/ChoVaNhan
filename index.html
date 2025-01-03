@@ -89,45 +89,21 @@
         input[type="file"] {
             padding: 5px;
         }
-
-        .button-group {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .button-group button {
-            margin: 0 10px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .button-group button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
     <header>
         <h1>Cho và Nhận Miễn Phí</h1>
+        <div id="userGreeting" style="display: none;">
+            <p>Chào, <span id="username"></span>!</p>
+            <button onclick="logout()">Đăng xuất</button>
+        </div>
     </header>
     <main>
-        <div id="welcomeMessage">
-            <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-            <div class="button-group">
-                <button onclick="showLogin()">Đăng nhập</button>
-                <button onclick="showRegister()">Đăng ký</button>
-                <button onclick="showAdminLogin()">Admin</button>
-            </div>
-        </div>
         <div id="appContent" style="display: none;">
             <h2>Danh sách bài đăng</h2>
             <div id="postsContainer"></div>
-
+            
             <h2>Đăng bài mới</h2>
             <form id="postForm">
                 <input type="text" id="name" placeholder="Tên" required>
@@ -146,76 +122,101 @@
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
             if (!users['admin']) {
-                users['admin'] = '1';
+                users['admin'] = '1'; // Tài khoản admin với mật khẩu mặc định là '1'
                 localStorage.setItem('users', JSON.stringify(users));
             }
         }
 
+        function checkLogin() {
+            const currentUser = localStorage.getItem('currentUser');
+            const main = document.querySelector('main');
+
+            if (currentUser) {
+                document.getElementById('userGreeting').style.display = 'block';
+                document.getElementById('appContent').style.display = 'block';
+                document.getElementById('username').textContent = currentUser;
+            } else {
+                document.getElementById('userGreeting').style.display = 'none';
+                document.getElementById('appContent').style.display = 'none';
+
+                main.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                    </div>
+                `;
+            }
+        }
+
         function showLogin() {
-            document.querySelector('main').innerHTML = `
+            const main = document.querySelector('main');
+            main.innerHTML = `
                 <div class="form-container">
                     <h2>Đăng nhập</h2>
                     <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
                     <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
                     <button onclick="login()">Đăng nhập</button>
-                    <button onclick="returnToHome()">Quay lại</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
                 </div>
             `;
         }
 
         function showRegister() {
-            document.querySelector('main').innerHTML = `
+            const main = document.querySelector('main');
+            main.innerHTML = `
                 <div class="form-container">
                     <h2>Đăng ký</h2>
                     <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
                     <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
                     <button onclick="register()">Đăng ký</button>
-                    <button onclick="returnToHome()">Quay lại</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
                 </div>
             `;
         }
 
-        function showAdminLogin() {
-            document.querySelector('main').innerHTML = `
-                <div class="form-container">
-                    <h2>Đăng nhập Admin</h2>
-                    <input type="text" id="adminUsername" placeholder="Tên người dùng" required>
-                    <input type="password" id="adminPassword" placeholder="Mật khẩu" required>
-                    <button onclick="loginAdmin()">Đăng nhập</button>
-                    <button onclick="returnToHome()">Quay lại</button>
+        function returnToHome() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                    <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
                 </div>
             `;
+        }
+
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (!username || !password) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            showLogin();
         }
 
         function login() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
-            const users = JSON.parse(localStorage.getItem('users')) || {};
 
+            const users = JSON.parse(localStorage.getItem('users')) || {};
             if (users[username] === password) {
                 localStorage.setItem('currentUser', username);
-                alert(`Đăng nhập thành công! Xin chào, ${username}`);
+                alert('Đăng nhập thành công!');
                 location.reload();
             } else {
                 alert('Tên người dùng hoặc mật khẩu không đúng!');
             }
-        }
-
-        function loginAdmin() {
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
-
-            if (username === 'admin' && password === '1') {
-                localStorage.setItem('currentUser', 'admin');
-                alert('Đăng nhập Admin thành công!');
-                location.reload();
-            } else {
-                alert('Sai thông tin Admin!');
-            }
-        }
-
-        function returnToHome() {
-            location.reload();
         }
 
         function logout() {
@@ -226,7 +227,6 @@
         function loadPosts() {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             const currentUser = localStorage.getItem('currentUser');
-            const isAdmin = currentUser === 'admin';
             const postsContainer = document.getElementById('postsContainer');
             postsContainer.innerHTML = '';
 
@@ -239,8 +239,12 @@
                     <div class="card-content">
                         <h3>${post.type}: ${post.name}</h3>
                         <p>${post.content}</p>
-                        ${!post.completed && isAdmin ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>` : ''}
-                        ${isAdmin ? `<button onclick="deletePost(${index})">Xóa</button>` : ''}
+                        ${
+                            !post.completed
+                                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                                   <button onclick="deletePost(${index})">Xóa</button>`
+                                : '<p><strong>Đã giao dịch</strong></p>'
+                        }
                     </div>
                 `;
                 postsContainer.appendChild(div);
@@ -277,7 +281,7 @@
                 const imageBase64 = reader.result;
 
                 const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content, image: imageBase64, completed: false });
+                posts.push({ name, type, content, image: imageBase64 });
                 localStorage.setItem('posts', JSON.stringify(posts));
 
                 alert('Bài đăng đã được lưu!');
@@ -288,7 +292,7 @@
                 reader.readAsDataURL(imageFile);
             } else {
                 const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content, image: 'https://via.placeholder.com/100', completed: false });
+                posts.push({ name, type, content, image: 'https://via.placeholder.com/100' });
                 localStorage.setItem('posts', JSON.stringify(posts));
                 alert('Bài đăng đã được lưu!');
                 loadPosts();
@@ -298,13 +302,9 @@
         });
 
         window.onload = function() {
-            initializeAdminAccount();
-            const currentUser = localStorage.getItem('currentUser');
-            if (currentUser) {
-                document.getElementById('welcomeMessage').style.display = 'none';
-                document.getElementById('appContent').style.display = 'block';
-                loadPosts();
-            }
+            initializeAdminAccount(); // Tạo tài khoản admin mặc định
+            checkLogin();
+            loadPosts();
         };
     </script>
 </body>
