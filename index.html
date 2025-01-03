@@ -235,10 +235,10 @@ function deletePost(index) {
     const currentUser = localStorage.getItem('currentUser');
 
     if (posts[index]) {
-        // Kiểm tra quyền xóa (người đăng bài hoặc admin)
+        // Kiểm tra quyền xóa: chỉ người đăng hoặc admin mới được phép xóa
         if (posts[index].name === currentUser || currentUser === 'admin') {
             posts.splice(index, 1); // Xóa bài đăng tại vị trí index
-            localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật localStorage
+            localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật lại localStorage
             alert('Bài đăng đã bị xóa!');
             loadPosts(); // Tải lại danh sách bài đăng
         } else {
