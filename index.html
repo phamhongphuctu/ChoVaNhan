@@ -254,12 +254,13 @@ function loadPosts() {
     const posts = JSON.parse(localStorage.getItem('posts')) || [];
     const currentUser = localStorage.getItem('currentUser');
     const postsContainer = document.getElementById('postsContainer');
-    postsContainer.innerHTML = '';
+    postsContainer.innerHTML = ''; // Làm sạch nội dung trước khi tải lại
 
     posts.forEach((post, index) => {
         const div = document.createElement('div');
         div.className = 'card';
         div.style.opacity = post.completed ? '0.5' : '1'; // Làm mờ bài đăng đã giao dịch
+
         div.innerHTML = `
             <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
             <div class="card-content">
@@ -277,9 +278,11 @@ function loadPosts() {
                 }
             </div>
         `;
+
         postsContainer.appendChild(div);
     });
 }
+
 // Đăng bài
         document.getElementById('postForm').addEventListener('submit', function(e) {
             e.preventDefault();
