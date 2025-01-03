@@ -89,12 +89,6 @@
         input[type="file"] {
             padding: 5px;
         }
-
-        #map {
-            height: 400px;
-            width: 100%;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
@@ -121,9 +115,6 @@
                 <input type="file" id="image" accept="image/*">
                 <button type="submit">Đăng bài</button>
             </form>
-
-            <h2>Bản đồ Google Maps</h2>
-            <div id="map"></div>
         </div>
     </main>
 
@@ -144,15 +135,98 @@
                 document.getElementById('userGreeting').style.display = 'block';
                 document.getElementById('appContent').style.display = 'block';
                 document.getElementById('username').textContent = currentUser;
-                loadPosts();
             } else {
                 document.getElementById('userGreeting').style.display = 'none';
                 document.getElementById('appContent').style.display = 'none';
+
+                main.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                    </div>
+                `;
             }
+        }
+
+        function showLogin() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
+
+        function showRegister() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng ký</h2>
+                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button onclick="register()">Đăng ký</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
+
+        function returnToHome() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                    <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                </div>
+            `;
+        }
+
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (!username || !password) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            showLogin();
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] === password) {
+                localStorage.setItem('currentUser', username);
+                alert('Đăng nhập thành công!');
+                location.reload();
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            location.reload();
         }
 
         function loadPosts() {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            const currentUser = localStorage.getItem('currentUser');
             const postsContainer = document.getElementById('postsContainer');
             postsContainer.innerHTML = '';
 
@@ -165,8 +239,12 @@
                     <div class="card-content">
                         <h3>${post.type}: ${post.name}</h3>
                         <p>${post.content}</p>
-                        ${!post.completed ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
-                        <button onclick="deletePost(${index})">Xóa</button>` : '<p><strong>Đã giao dịch</strong></p>'}
+                        ${
+                            !post.completed
+                                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                                   <button onclick="deletePost(${index})">Xóa</button>`
+                                : '<p><strong>Đã giao dịch</strong></p>'
+                        }
                     </div>
                 `;
                 postsContainer.appendChild(div);
@@ -203,7 +281,7 @@
                 const imageBase64 = reader.result;
 
                 const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content, image: imageBase64, completed: false });
+                posts.push({ name, type, content, image: imageBase64 });
                 localStorage.setItem('posts', JSON.stringify(posts));
 
                 alert('Bài đăng đã được lưu!');
@@ -214,7 +292,7 @@
                 reader.readAsDataURL(imageFile);
             } else {
                 const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content, image: 'https://via.placeholder.com/100', completed: false });
+                posts.push({ name, type, content, image: 'https://via.placeholder.com/100' });
                 localStorage.setItem('posts', JSON.stringify(posts));
                 alert('Bài đăng đã được lưu!');
                 loadPosts();
@@ -223,18 +301,11 @@
             document.getElementById('postForm').reset();
         });
 
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 10.7769, lng: 106.7009 },
-                zoom: 12
-            });
-        }
-
         window.onload = function() {
-            initializeAdminAccount();
+            initializeAdminAccount(); // Tạo tài khoản admin mặc định
             checkLogin();
+            loadPosts();
         };
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
 </body>
 </html>
