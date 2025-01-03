@@ -148,6 +148,19 @@
             }
         }
 
+        function showLogin() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
+
         function loadPosts() {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             const currentUser = localStorage.getItem('currentUser');
