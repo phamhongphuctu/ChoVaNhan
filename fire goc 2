@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cho và Nhận Miễn Phí</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: #fff;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .button-group {
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .button-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #d8b9e8, #c694e6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #333;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cho và Nhận Miễn Phí</h1>
+    </header>
+    <main>
+        <div id="welcomeMessage">
+            <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+            <div class="button-group">
+                <button onclick="showLogin()">Đăng nhập</button>
+                <button onclick="showRegister()">Đăng ký</button>
+                <button onclick="showAdminLogin()">Admin</button>
+            </div>
+        </div>
+        <div id="appContent" style="display: none;">
+            <!-- Nội dung chính sau khi đăng nhập -->
+        </div>
+    </main>
+
+    <script>
+        function showLogin() {
+            document.querySelector('main').innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                    <button onclick="returnToHome()">Quay lại</button>
+                </div>
+            `;
+        }
+
+        function showRegister() {
+            document.querySelector('main').innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng ký</h2>
+                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button onclick="register()">Đăng ký</button>
+                    <button onclick="returnToHome()">Quay lại</button>
+                </div>
+            `;
+        }
+
+        function showAdminLogin() {
+            document.querySelector('main').innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập Admin</h2>
+                    <input type="text" id="adminUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="adminPassword" placeholder="Mật khẩu" required>
+                    <button onclick="loginAdmin()">Đăng nhập</button>
+                    <button onclick="returnToHome()">Quay lại</button>
+                </div>
+            `;
+        }
+
+        function returnToHome() {
+            location.reload();
+        }
+
+        function login() {
+            // Xử lý đăng nhập người dùng
+        }
+
+        function loginAdmin() {
+            // Xử lý đăng nhập admin
+        }
+    </script>
+</body>
+</html>
