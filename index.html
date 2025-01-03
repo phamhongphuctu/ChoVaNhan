@@ -216,8 +216,41 @@ function returnToHome() {
             location.reload();
         }
 
-        // Hiển thị bài đăng
-        function loadPosts() {
+        // Hàm đánh dấu bài đăng đã giao dịch
+function markAsCompleted(index) {
+    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    if (posts[index]) {
+        posts[index].completed = true; // Đánh dấu trạng thái đã giao dịch
+        localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật localStorage
+        alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
+        loadPosts(); // Tải lại danh sách bài đăng
+    } else {
+        alert('Không thể đánh dấu giao dịch cho bài đăng này!');
+    }
+}
+
+// Hàm xóa bài đăng
+function deletePost(index) {
+    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    const currentUser = localStorage.getItem('currentUser');
+
+    if (posts[index]) {
+        // Kiểm tra quyền xóa (người đăng bài hoặc admin)
+        if (posts[index].name === currentUser || currentUser === 'admin') {
+            posts.splice(index, 1); // Xóa bài đăng tại vị trí index
+            localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật localStorage
+            alert('Bài đăng đã bị xóa!');
+            loadPosts(); // Tải lại danh sách bài đăng
+        } else {
+            alert('Bạn không có quyền xóa bài đăng này!');
+        }
+    } else {
+        alert('Không thể xóa bài đăng này!');
+    }
+}
+
+// Hàm hiển thị danh sách bài đăng
+function loadPosts() {
     const posts = JSON.parse(localStorage.getItem('posts')) || [];
     const currentUser = localStorage.getItem('currentUser');
     const postsContainer = document.getElementById('postsContainer');
@@ -234,9 +267,13 @@ function returnToHome() {
                 <p>${post.content}</p>
                 ${
                     !post.completed
-                        ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
- <button onclick="deletePost(${index})">Xóa</button>`
+                        ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>`
                         : '<p><strong>Đã giao dịch</strong></p>'
+                }
+                ${
+                    (post.name === currentUser || currentUser === 'admin')
+                        ? `<button onclick="deletePost(${index})">Xóa</button>`
+                        : ''
                 }
             </div>
         `;
