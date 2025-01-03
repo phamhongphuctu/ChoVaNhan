@@ -6,12 +6,12 @@
     <title>Cho và Nhận Miễn Phí</title>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #8e44ad, #9b59b6); /* Hiệu ứng gradient màu tím */
-    color: #fff;
-}
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: #fff;
+        }
 
         header {
             background-color: #333;
@@ -19,9 +19,11 @@
             padding: 20px 0;
             text-align: center;
         }
+
         main {
             padding: 20px;
         }
+
         .card {
             border: 1px solid #ddd;
             background: white;
@@ -32,23 +34,28 @@
             align-items: flex-start;
             gap: 15px;
         }
+
         .card img {
             width: 100px;
             height: 100px;
             object-fit: cover;
             border-radius: 5px;
         }
+
         .card-content {
             flex-grow: 1;
         }
+
         .card-content h3 {
             margin: 0;
             font-size: 1.2em;
             color: #007bff;
         }
+
         .card-content p {
-    color: #333; /* Đổi màu chữ thành tối */
-}
+            color: #333;
+        }
+
         button {
             padding: 10px 20px;
             background-color: #007bff;
@@ -57,25 +64,28 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         .form-container {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: linear-gradient(145deg, #d8b9e8, #c694e6); /* Hiệu ứng gradient tím */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: #333;
-}
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #d8b9e8, #c694e6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
 
         input, textarea, select {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
         }
+
         input[type="file"] {
             padding: 5px;
         }
@@ -109,7 +119,14 @@
     </main>
 
     <script>
-        // Kiểm tra trạng thái đăng nhập
+        function initializeAdminAccount() {
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (!users['admin']) {
+                users['admin'] = '1'; // Tài khoản admin với mật khẩu mặc định là '1'
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
         function checkLogin() {
             const currentUser = localStorage.getItem('currentUser');
             const main = document.querySelector('main');
@@ -122,7 +139,6 @@
                 document.getElementById('userGreeting').style.display = 'none';
                 document.getElementById('appContent').style.display = 'none';
 
-                // Thêm giao diện khi chưa đăng nhập
                 main.innerHTML = `
                     <div style="text-align: center; padding: 20px;">
                         <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
@@ -132,48 +148,42 @@
             }
         }
 
-        // Hiển thị form đăng nhập
-function showLogin() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="form-container">
-            <h2>Đăng nhập</h2>
-            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-            <button onclick="login()">Đăng nhập</button>
-            <button onclick="returnToHome()">Quay lại trang chủ</button>
-        </div>
-    `;
-}
+        function showLogin() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
 
-// Hiển thị form đăng ký
-function showRegister() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="form-container">
-            <h2>Đăng ký</h2>
-            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-            <button onclick="register()">Đăng ký</button>
-            <button onclick="returnToHome()">Quay lại trang chủ</button>
-        </div>
-    `;
-}
+        function showRegister() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng ký</h2>
+                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button onclick="register()">Đăng ký</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
 
-// Quay lại trang chủ
-function returnToHome() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-            <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-            <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
-        </div>
-    `;
-}
+        function returnToHome() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                    <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                </div>
+            `;
+        }
 
-
-
-        // Đăng ký người dùng
         function register() {
             const username = document.getElementById('registerUsername').value;
             const password = document.getElementById('registerPassword').value;
@@ -195,7 +205,6 @@ function returnToHome() {
             showLogin();
         }
 
-        // Đăng nhập người dùng
         function login() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
@@ -204,47 +213,61 @@ function returnToHome() {
             if (users[username] === password) {
                 localStorage.setItem('currentUser', username);
                 alert('Đăng nhập thành công!');
-                location.reload(); // Tải lại trang sau khi đăng nhập
+                location.reload();
             } else {
                 alert('Tên người dùng hoặc mật khẩu không đúng!');
             }
         }
 
-        // Đăng xuất
         function logout() {
             localStorage.removeItem('currentUser');
             location.reload();
         }
 
-        // Hiển thị bài đăng
         function loadPosts() {
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    const currentUser = localStorage.getItem('currentUser');
-    const postsContainer = document.getElementById('postsContainer');
-    postsContainer.innerHTML = '';
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            const currentUser = localStorage.getItem('currentUser');
+            const postsContainer = document.getElementById('postsContainer');
+            postsContainer.innerHTML = '';
 
-    posts.forEach((post, index) => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.style.opacity = post.completed ? '0.5' : '1'; // Làm mờ bài đăng đã giao dịch
-        div.innerHTML = `
-            <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
-            <div class="card-content">
-                <h3>${post.type}: ${post.name}</h3>
-                <p>${post.content}</p>
-                ${
-                    !post.completed
-                        ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
-                           <button onclick="deletePost(${index})">Xóa</button>`
-                        : '<p><strong>Đã giao dịch</strong></p>'
-                }
-            </div>
-        `;
-        postsContainer.appendChild(div);
-    });
-}
+            posts.forEach((post, index) => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.style.opacity = post.completed ? '0.5' : '1';
+                div.innerHTML = `
+                    <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
+                    <div class="card-content">
+                        <h3>${post.type}: ${post.name}</h3>
+                        <p>${post.content}</p>
+                        ${
+                            !post.completed
+                                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                                   <button onclick="deletePost(${index})">Xóa</button>`
+                                : '<p><strong>Đã giao dịch</strong></p>'
+                        }
+                    </div>
+                `;
+                postsContainer.appendChild(div);
+            });
+        }
 
-        // Đăng bài
+        function markAsCompleted(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            if (posts[index]) {
+                posts[index].completed = true;
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
+                loadPosts();
+            }
+        }
+
+        function deletePost(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            posts.splice(index, 1);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            loadPosts();
+        }
+
         document.getElementById('postForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -278,8 +301,8 @@ function returnToHome() {
             document.getElementById('postForm').reset();
         });
 
-        // Tải bài đăng khi mở trang
         window.onload = function() {
+            initializeAdminAccount(); // Tạo tài khoản admin mặc định
             checkLogin();
             loadPosts();
         };
