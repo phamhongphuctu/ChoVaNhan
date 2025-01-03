@@ -207,20 +207,20 @@ function returnToHome() {
 
         // Đăng nhập người dùng
         function login() {
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
 
-            const users = JSON.parse(localStorage.getItem('users')) || {};
-            if (users[username] === password) {
-                localStorage.setItem('currentUser', username);
-                alert('Đăng nhập thành công!');
-                location.reload(); // Tải lại trang sau khi đăng nhập
-            } else {
-                alert('Tên người dùng hoặc mật khẩu không đúng!');
-            }
-        }
-
-        // Đăng xuất
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    if (users[username] && users[username].password === password) {
+        localStorage.setItem('currentUser', username);
+        localStorage.setItem('currentRole', users[username].role); // Lưu vai trò của người dùng
+        alert('Đăng nhập thành công!');
+        location.reload(); // Tải lại trang sau khi đăng nhập
+    } else {
+        alert('Tên người dùng hoặc mật khẩu không đúng!');
+    }
+}
+ // Đăng xuất
         function logout() {
             localStorage.removeItem('currentUser');
             location.reload();
