@@ -261,6 +261,9 @@ function loadPosts() {
         div.className = 'card';
         div.style.opacity = post.completed ? '0.5' : '1'; // Làm mờ bài đăng đã giao dịch
 
+        // Ghi log để kiểm tra
+        console.log(`Post index: ${index}, Post owner: ${post.name}, Current user: ${currentUser}`);
+
         div.innerHTML = `
             <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
             <div class="card-content">
