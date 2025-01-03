@@ -235,7 +235,7 @@ function deletePost(index) {
     const currentUser = localStorage.getItem('currentUser');
 
     if (posts[index]) {
-        // Kiểm tra quyền xóa: chỉ người đăng hoặc admin mới được phép xóa
+        // Chỉ người đăng bài hoặc admin mới được phép xóa
         if (posts[index].name === currentUser || currentUser === 'admin') {
             posts.splice(index, 1); // Xóa bài đăng tại vị trí index
             localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật lại localStorage
