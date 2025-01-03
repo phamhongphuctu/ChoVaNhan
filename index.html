@@ -22,50 +22,25 @@
 
         main {
             padding: 20px;
+            text-align: center;
         }
 
-        .card {
-            border: 1px solid #ddd;
-            background: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
+        .button-group {
+            margin-top: 20px;
         }
 
-        .card img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .card-content {
-            flex-grow: 1;
-        }
-
-        .card-content h3 {
-            margin: 0;
-            font-size: 1.2em;
-            color: #007bff;
-        }
-
-        .card-content p {
-            color: #333;
-        }
-
-        button {
+        .button-group button {
+            margin: 0 10px;
             padding: 10px 20px;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
 
-        button:hover {
+        .button-group button:hover {
             background-color: #0056b3;
         }
 
@@ -78,79 +53,31 @@
             background: linear-gradient(145deg, #d8b9e8, #c694e6);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             color: #333;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        input[type="file"] {
-            padding: 5px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Cho và Nhận Miễn Phí</h1>
-        <div id="userGreeting" style="display: none;">
-            <p>Chào, <span id="username"></span>!</p>
-            <button onclick="logout()">Đăng xuất</button>
-        </div>
     </header>
     <main>
+        <div id="welcomeMessage">
+            <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+            <div class="button-group">
+                <button onclick="showLogin()">Đăng nhập</button>
+                <button onclick="showRegister()">Đăng ký</button>
+                <button onclick="showAdminLogin()">Admin</button>
+            </div>
+        </div>
         <div id="appContent" style="display: none;">
-            <h2>Danh sách bài đăng</h2>
-            <div id="postsContainer"></div>
-            
-            <h2>Đăng bài mới</h2>
-            <form id="postForm">
-                <input type="text" id="name" placeholder="Tên" required>
-                <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
-                <select id="type">
-                    <option value="Cho">Cho</option>
-                    <option value="Nhận">Nhận</option>
-                </select>
-                <input type="file" id="image" accept="image/*">
-                <button type="submit">Đăng bài</button>
-            </form>
+            <!-- Nội dung chính sau khi đăng nhập -->
         </div>
     </main>
 
     <script>
-        function initializeAdminAccount() {
-            const users = JSON.parse(localStorage.getItem('users')) || {};
-            if (!users['admin']) {
-                users['admin'] = '2'; // Admin password set as '2'
-                localStorage.setItem('users', JSON.stringify(users));
-            }
-        }
-
-        function checkLogin() {
-            const currentUser = localStorage.getItem('currentUser');
-            const main = document.querySelector('main');
-
-            if (currentUser) {
-                document.getElementById('userGreeting').style.display = 'block';
-                document.getElementById('appContent').style.display = 'block';
-                document.getElementById('username').textContent = currentUser;
-            } else {
-                document.getElementById('userGreeting').style.display = 'none';
-                document.getElementById('appContent').style.display = 'none';
-
-                main.innerHTML = `
-                    <div style="text-align: center; padding: 20px;">
-                        <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showAdminLogin()">Admin</button> để sử dụng.</p>
-                    </div>
-                `;
-            }
-        }
-
         function showLogin() {
-            const main = document.querySelector('main');
-            main.innerHTML = `
+            document.querySelector('main').innerHTML = `
                 <div class="form-container">
                     <h2>Đăng nhập</h2>
                     <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
@@ -161,9 +88,20 @@
             `;
         }
 
+        function showRegister() {
+            document.querySelector('main').innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng ký</h2>
+                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button onclick="register()">Đăng ký</button>
+                    <button onclick="returnToHome()">Quay lại</button>
+                </div>
+            `;
+        }
+
         function showAdminLogin() {
-            const main = document.querySelector('main');
-            main.innerHTML = `
+            document.querySelector('main').innerHTML = `
                 <div class="form-container">
                     <h2>Đăng nhập Admin</h2>
                     <input type="text" id="adminUsername" placeholder="Tên người dùng" required>
@@ -175,45 +113,16 @@
         }
 
         function returnToHome() {
-            checkLogin();
-        }
-
-        function login() {
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-
-            const users = JSON.parse(localStorage.getItem('users')) || {};
-            if (users[username] === password) {
-                localStorage.setItem('currentUser', username);
-                alert('Đăng nhập thành công!');
-                location.reload();
-            } else {
-                alert('Tên người dùng hoặc mật khẩu không đúng!');
-            }
-        }
-
-        function loginAdmin() {
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
-
-            if (username === 'admin' && password === '2') {
-                localStorage.setItem('currentUser', 'admin');
-                alert('Admin đăng nhập thành công!');
-                location.reload();
-            } else {
-                alert('Tên người dùng hoặc mật khẩu không đúng!');
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
             location.reload();
         }
 
-        window.onload = function() {
-            initializeAdminAccount();
-            checkLogin();
-        };
+        function login() {
+            // Xử lý đăng nhập người dùng
+        }
+
+        function loginAdmin() {
+            // Xử lý đăng nhập admin
+        }
     </script>
 </body>
 </html>
