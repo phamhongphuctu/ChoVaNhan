@@ -22,26 +22,6 @@
 
         main {
             padding: 20px;
-            text-align: center;
-        }
-
-        .button-group {
-            margin-top: 20px;
-        }
-
-        .button-group button {
-            margin: 0 10px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .button-group button:hover {
-            background-color: #0056b3;
         }
 
         .form-container {
@@ -53,7 +33,24 @@
             background: linear-gradient(145deg, #d8b9e8, #c694e6);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             color: #333;
-            text-align: left;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -61,67 +58,99 @@
     <header>
         <h1>Cho và Nhận Miễn Phí</h1>
     </header>
-    <main>
-        <div id="welcomeMessage">
+    <main id="mainContent">
+        <div style="text-align: center;">
             <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-            <div class="button-group">
-                <button onclick="showLogin()">Đăng nhập</button>
-                <button onclick="showRegister()">Đăng ký</button>
-                <button onclick="showAdminLogin()">Admin</button>
-            </div>
-        </div>
-        <div id="appContent" style="display: none;">
-            <!-- Nội dung chính sau khi đăng nhập -->
+            <p>
+                <button onclick="showLoginForm()">Đăng nhập</button>
+                <button onclick="showRegisterForm()">Đăng ký</button>
+                <button onclick="showAdminLoginForm()">Admin</button>
+            </p>
         </div>
     </main>
 
     <script>
-        function showLogin() {
-            document.querySelector('main').innerHTML = `
+        function showLoginForm() {
+            const main = document.getElementById("mainContent");
+            main.innerHTML = `
                 <div class="form-container">
                     <h2>Đăng nhập</h2>
                     <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
                     <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-                    <button onclick="login()">Đăng nhập</button>
-                    <button onclick="returnToHome()">Quay lại</button>
+                    <button onclick="loginUser()">Đăng nhập</button>
+                    <button onclick="reloadHome()">Quay lại</button>
                 </div>
             `;
         }
 
-        function showRegister() {
-            document.querySelector('main').innerHTML = `
+        function showRegisterForm() {
+            const main = document.getElementById("mainContent");
+            main.innerHTML = `
                 <div class="form-container">
                     <h2>Đăng ký</h2>
                     <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
                     <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-                    <button onclick="register()">Đăng ký</button>
-                    <button onclick="returnToHome()">Quay lại</button>
+                    <button onclick="registerUser()">Đăng ký</button>
+                    <button onclick="reloadHome()">Quay lại</button>
                 </div>
             `;
         }
 
-        function showAdminLogin() {
-            document.querySelector('main').innerHTML = `
+        function showAdminLoginForm() {
+            const main = document.getElementById("mainContent");
+            main.innerHTML = `
                 <div class="form-container">
-                    <h2>Đăng nhập Admin</h2>
-                    <input type="text" id="adminUsername" placeholder="Tên người dùng" required>
-                    <input type="password" id="adminPassword" placeholder="Mật khẩu" required>
+                    <h2>Admin Đăng nhập</h2>
+                    <input type="text" id="adminUsername" placeholder="Admin Username" required>
+                    <input type="password" id="adminPassword" placeholder="Admin Password" required>
                     <button onclick="loginAdmin()">Đăng nhập</button>
-                    <button onclick="returnToHome()">Quay lại</button>
+                    <button onclick="reloadHome()">Quay lại</button>
                 </div>
             `;
         }
 
-        function returnToHome() {
-            location.reload();
-        }
+        function loginUser() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const users = JSON.parse(localStorage.getItem('users')) || {};
 
-        function login() {
-            // Xử lý đăng nhập người dùng
+            if (users[username] && users[username] === password) {
+                alert(`Đăng nhập thành công! Xin chào, ${username}`);
+                reloadHome();
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
         }
 
         function loginAdmin() {
-            // Xử lý đăng nhập admin
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (username === 'admin' && password === 'admin123') {
+                alert('Đăng nhập Admin thành công!');
+                // Add admin-specific logic here
+            } else {
+                alert('Tên đăng nhập hoặc mật khẩu admin không đúng!');
+            }
+        }
+
+        function registerUser() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+
+            if (users[username]) {
+                alert('Người dùng đã tồn tại!');
+            } else {
+                users[username] = password;
+                localStorage.setItem('users', JSON.stringify(users));
+                alert('Đăng ký thành công!');
+                reloadHome();
+            }
+        }
+
+        function reloadHome() {
+            location.reload();
         }
     </script>
 </body>
