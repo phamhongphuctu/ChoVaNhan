@@ -180,25 +180,30 @@ function returnToHome() {
 
         // Đăng ký người dùng
         function register() {
-            const username = document.getElementById('registerUsername').value;
-            const password = document.getElementById('registerPassword').value;
+    const username = document.getElementById('registerUsername').value;
+    const password = document.getElementById('registerPassword').value;
 
-            if (!username || !password) {
-                alert('Vui lòng điền đầy đủ thông tin!');
-                return;
-            }
+    if (!username || !password) {
+        alert('Vui lòng điền đầy đủ thông tin!');
+        return;
+    }
 
-            const users = JSON.parse(localStorage.getItem('users')) || {};
-            if (users[username]) {
-                alert('Tên người dùng đã tồn tại!');
-                return;
-            }
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    if (users[username]) {
+        alert('Tên người dùng đã tồn tại!');
+        return;
+    }
 
-            users[username] = password;
-            localStorage.setItem('users', JSON.stringify(users));
-            alert('Đăng ký thành công!');
-            showLogin();
-        }
+    // Lưu thông tin tài khoản và vai trò
+    users[username] = {
+        password: password,
+        role: username === 'admin' ? 'admin' : 'user' // Gán quyền admin nếu tên là admin
+    };
+
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Đăng ký thành công!');
+    showLogin();
+}
 
         // Đăng nhập người dùng
         function login() {
