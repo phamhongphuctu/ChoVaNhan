@@ -233,7 +233,7 @@ function returnToHome() {
         <h3>${post.type}: ${post.name}</h3>
         <p>${post.content}</p>
         ${
-            (post.name === currentUser || currentUser === 'admin') && !post.completed
+            (post.name === currentUser || currentUser === 'admin')
                 ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
                    <button onclick="deletePost(${index})">Xóa</button>`
                 : post.completed
