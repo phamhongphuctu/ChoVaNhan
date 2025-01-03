@@ -159,44 +159,6 @@
 
     // Đoạn mã khác như đăng bài, kiểm tra đăng nhập...
 </script>
-
-        // Kiểm tra trạng thái đăng nhập
-        function checkLogin() {
-            const currentUser = localStorage.getItem('currentUser');
-            const main = document.querySelector('main');
-
-            if (currentUser) {
-                document.getElementById('userGreeting').style.display = 'block';
-                document.getElementById('appContent').style.display = 'block';
-                document.getElementById('username').textContent = currentUser;
-            } else {
-                document.getElementById('userGreeting').style.display = 'none';
-                document.getElementById('appContent').style.display = 'none';
-
-                // Thêm giao diện khi chưa đăng nhập
-                main.innerHTML = `
-                    <div style="text-align: center; padding: 20px;">
-                        <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
-                    </div>
-                `;
-            }
-        }
-
-        // Hiển thị form đăng nhập
-function showLogin() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="form-container">
-            <h2>Đăng nhập</h2>
-            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-            <button onclick="login()">Đăng nhập</button>
-            <button onclick="returnToHome()">Quay lại trang chủ</button>
-        </div>
-    `;
-}
-
 // Hiển thị form đăng ký
 function showRegister() {
     const main = document.querySelector('main');
