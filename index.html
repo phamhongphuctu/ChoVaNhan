@@ -1,109 +1,252 @@
-function loadAppContent() {
-    const currentUser = localStorage.getItem('currentUser');
-    document.querySelector('main').innerHTML = `
-        <div id="appContent">
-            <h2>Danh sách bài đăng</h2>
-            <div id="postsContainer"></div>
-            
-            <h2>Đăng bài mới</h2>
-            <form id="postForm">
-                <input type="text" id="name" placeholder="Tên" required>
-                <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
-                <select id="type">
-                    <option value="Cho">Cho</option>
-                    <option value="Nhận">Nhận</option>
-                </select>
-                <input type="file" id="image" accept="image/*">
-                <button type="submit">Đăng bài</button>
-            </form>
-            <button onclick="logout()" style="margin-top: 20px; background-color: #ff4d4d;">Thoát</button>
-        </div>
-    `;
-    loadPosts();
-    document.getElementById('postForm').addEventListener('submit', handlePostFormSubmit);
-}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cho và Nhận Miễn Phí</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: #fff;
+        }
 
-function loadPosts() {
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    const currentUser = localStorage.getItem('currentUser');
-    const postsContainer = document.getElementById('postsContainer');
-    postsContainer.innerHTML = '';
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
 
-    posts.forEach((post, index) => {
-        const isAdmin = currentUser === 'admin';
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.style.opacity = post.completed ? '0.5' : '1';
-        div.innerHTML = `
-            <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
-            <div class="card-content">
-                <h3>${post.type}: ${post.name}</h3>
-                <p>${post.content}</p>
-                ${
-                    !post.completed && isAdmin
-                        ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
-                           <button onclick="deletePost(${index})">Xóa</button>`
-                        : post.completed
-                        ? '<p><strong>Đã giao dịch</strong></p>'
-                        : ''
-                }
-            </div>
-        `;
-        postsContainer.appendChild(div);
-    });
-}
+        main {
+            padding: 20px;
+        }
 
-function markAsCompleted(index) {
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    if (posts[index]) {
-        posts[index].completed = true;
-        localStorage.setItem('posts', JSON.stringify(posts));
-        alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
-        loadPosts();
-    }
-}
+        .card {
+            border: 1px solid #ddd;
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
 
-function deletePost(index) {
-    const posts = JSON.parse(localStorage.getItem('posts')) || [];
-    posts.splice(index, 1);
-    localStorage.setItem('posts', JSON.stringify(posts));
-    loadPosts();
-}
+        .card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
 
-function handlePostFormSubmit(e) {
-    e.preventDefault();
+        .card-content {
+            flex-grow: 1;
+        }
 
-    const name = document.getElementById('name').value;
-    const type = document.getElementById('type').value;
-    const content = document.getElementById('content').value;
-    const imageFile = document.getElementById('image').files[0];
+        .card-content h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #007bff;
+        }
 
-    const reader = new FileReader();
-    reader.onload = function () {
-        const imageBase64 = reader.result;
+        .card-content p {
+            color: #333;
+        }
 
-        const posts = JSON.parse(localStorage.getItem('posts')) || [];
-        posts.push({ name, type, content, image: imageBase64, completed: false });
-        localStorage.setItem('posts', JSON.stringify(posts));
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-        alert('Bài đăng đã được lưu!');
-        loadPosts();
-    };
+        button:hover {
+            background-color: #0056b3;
+        }
 
-    if (imageFile) {
-        reader.readAsDataURL(imageFile);
-    } else {
-        const posts = JSON.parse(localStorage.getItem('posts')) || [];
-        posts.push({ name, type, content, image: 'https://via.placeholder.com/100', completed: false });
-        localStorage.setItem('posts', JSON.stringify(posts));
-        alert('Bài đăng đã được lưu!');
-        loadPosts();
-    }
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #d8b9e8, #c694e6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
 
-    document.getElementById('postForm').reset();
-}
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
 
-function logout() {
-    localStorage.removeItem('currentUser');
-    location.reload();
-}
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        #logoutButton {
+            background-color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cho và Nhận Miễn Phí</h1>
+    </header>
+    <main>
+        <div id="content"></div>
+    </main>
+
+    <script>
+        function initializeAdminAccount() {
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (!users['admin']) {
+                users['admin'] = '2'; // Tài khoản admin với mật khẩu mặc định là '2'
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
+        function loadLoginForm() {
+            document.getElementById('content').innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                </div>
+            `;
+        }
+
+        function loadAppContent() {
+            const currentUser = localStorage.getItem('currentUser');
+            document.getElementById('content').innerHTML = `
+                <button id="logoutButton" onclick="logout()">Thoát</button>
+                <h2>Danh sách bài đăng</h2>
+                <div id="postsContainer"></div>
+                <h2>Đăng bài mới</h2>
+                <form id="postForm">
+                    <input type="text" id="name" placeholder="Tên" required>
+                    <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
+                    <select id="type">
+                        <option value="Cho">Cho</option>
+                        <option value="Nhận">Nhận</option>
+                    </select>
+                    <input type="file" id="image" accept="image/*">
+                    <button type="submit">Đăng bài</button>
+                </form>
+            `;
+            loadPosts();
+            document.getElementById('postForm').addEventListener('submit', handlePostFormSubmit);
+        }
+
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            const currentUser = localStorage.getItem('currentUser');
+            const isAdmin = currentUser === 'admin';
+            const postsContainer = document.getElementById('postsContainer');
+            postsContainer.innerHTML = '';
+
+            posts.forEach((post, index) => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.style.opacity = post.completed ? '0.5' : '1';
+                div.innerHTML = `
+                    <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
+                    <div class="card-content">
+                        <h3>${post.type}: ${post.name}</h3>
+                        <p>${post.content}</p>
+                        ${!post.completed && isAdmin ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>` : ''}
+                        ${isAdmin ? `<button onclick="deletePost(${index})">Xóa</button>` : ''}
+                        ${post.completed ? '<p><strong>Đã giao dịch</strong></p>' : ''}
+                    </div>
+                `;
+                postsContainer.appendChild(div);
+            });
+        }
+
+        function markAsCompleted(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            if (posts[index]) {
+                posts[index].completed = true;
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
+                loadPosts();
+            }
+        }
+
+        function deletePost(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            posts.splice(index, 1);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            loadPosts();
+        }
+
+        function handlePostFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const type = document.getElementById('type').value;
+            const content = document.getElementById('content').value;
+            const imageFile = document.getElementById('image').files[0];
+
+            const reader = new FileReader();
+            reader.onload = function() {
+                const imageBase64 = reader.result;
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push({ name, type, content, image: imageBase64, completed: false });
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được lưu!');
+                loadPosts();
+            };
+
+            if (imageFile) {
+                reader.readAsDataURL(imageFile);
+            } else {
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push({ name, type, content, image: 'https://via.placeholder.com/100', completed: false });
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được lưu!');
+                loadPosts();
+            }
+
+            document.getElementById('postForm').reset();
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+
+            if (users[username] === password) {
+                localStorage.setItem('currentUser', username);
+                alert(`Đăng nhập thành công! Xin chào, ${username}`);
+                loadAppContent();
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            alert('Bạn đã đăng xuất thành công!');
+            location.reload();
+        }
+
+        window.onload = function() {
+            initializeAdminAccount();
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                loadAppContent();
+            } else {
+                loadLoginForm();
+            }
+        };
+    </script>
+</body>
+</html>
