@@ -119,6 +119,7 @@
     </main>
 
     <script>
+        // Tạo tài khoản admin mặc định
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
             if (!users['admin']) {
@@ -127,6 +128,7 @@
             }
         }
 
+        // Kiểm tra trạng thái đăng nhập
         function checkLogin() {
             const currentUser = localStorage.getItem('currentUser');
             const main = document.querySelector('main');
@@ -148,6 +150,7 @@
             }
         }
 
+        // Hiển thị form đăng nhập
         function showLogin() {
             const main = document.querySelector('main');
             main.innerHTML = `
@@ -161,6 +164,28 @@
             `;
         }
 
+        // Đăng nhập người dùng
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] === password) {
+                localStorage.setItem('currentUser', username);
+                alert('Đăng nhập thành công!');
+                location.reload();
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
+
+        // Đăng xuất
+        function logout() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+
+        // Hiển thị danh sách bài đăng
         function loadPosts() {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             const currentUser = localStorage.getItem('currentUser');
@@ -193,6 +218,7 @@
             });
         }
 
+        // Đánh dấu bài đăng đã giao dịch
         function markAsCompleted(index) {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             if (posts[index]) {
@@ -203,6 +229,7 @@
             }
         }
 
+        // Xóa bài đăng
         function deletePost(index) {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             const currentUser = localStorage.getItem('currentUser');
@@ -216,6 +243,7 @@
             }
         }
 
+        // Thêm bài đăng mới
         document.getElementById('postForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -249,6 +277,7 @@
             document.getElementById('postForm').reset();
         });
 
+        // Khởi chạy ứng dụng
         window.onload = function() {
             initializeAdminAccount();
             checkLogin();
@@ -257,3 +286,4 @@
     </script>
 </body>
 </html>
+
