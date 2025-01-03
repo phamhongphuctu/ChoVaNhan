@@ -111,26 +111,31 @@
     <script>
         // Kiểm tra trạng thái đăng nhập
         function checkLogin() {
-            const currentUser = localStorage.getItem('currentUser');
-            const main = document.querySelector('main');
+    const currentUser = localStorage.getItem('currentUser');
+    const currentRole = localStorage.getItem('currentRole');
+    const main = document.querySelector('main');
 
-            if (currentUser) {
-                document.getElementById('userGreeting').style.display = 'block';
-                document.getElementById('appContent').style.display = 'block';
-                document.getElementById('username').textContent = currentUser;
-            } else {
-                document.getElementById('userGreeting').style.display = 'none';
-                document.getElementById('appContent').style.display = 'none';
+    if (currentUser) {
+        document.getElementById('userGreeting').style.display = 'block';
+        document.getElementById('appContent').style.display = 'block';
+        document.getElementById('username').textContent = `${currentUser} (${currentRole})`;
 
-                // Thêm giao diện khi chưa đăng nhập
-                main.innerHTML = `
-                    <div style="text-align: center; padding: 20px;">
-                        <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
-                    </div>
-                `;
-            }
+        if (currentRole === 'admin') {
+            console.log('Admin đã đăng nhập!');
+            // Thêm logic hiển thị nội dung đặc biệt cho admin ở đây
         }
+    } else {
+        document.getElementById('userGreeting').style.display = 'none';
+        document.getElementById('appContent').style.display = 'none';
+
+        main.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+            </div>
+        `;
+    }
+}
 
         // Hiển thị form đăng nhập
 function showLogin() {
