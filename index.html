@@ -103,7 +103,7 @@
         <div id="appContent" style="display: none;">
             <h2>Danh sách bài đăng</h2>
             <div id="postsContainer"></div>
-
+            
             <h2>Đăng bài mới</h2>
             <form id="postForm">
                 <input type="text" id="name" placeholder="Tên" required>
@@ -122,7 +122,7 @@
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
             if (!users['admin']) {
-                users['admin'] = '2'; // Tài khoản admin với mật khẩu "2"
+                users['admin'] = '1'; // Tài khoản admin với mật khẩu mặc định là '1'
                 localStorage.setItem('users', JSON.stringify(users));
             }
         }
@@ -142,7 +142,7 @@
                 main.innerHTML = `
                     <div style="text-align: center; padding: 20px;">
                         <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button>.</p>
+                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
                     </div>
                 `;
             }
@@ -175,7 +175,13 @@
         }
 
         function returnToHome() {
-            location.reload();
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                    <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                </div>
+            `;
         }
 
         function register() {
@@ -234,10 +240,10 @@
                         <h3>${post.type}: ${post.name}</h3>
                         <p>${post.content}</p>
                         ${
-                            (!post.completed && (currentUser === post.name || currentUser === 'admin'))
+                            !post.completed
                                 ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
                                    <button onclick="deletePost(${index})">Xóa</button>`
-                                : post.completed ? '<p><strong>Đã giao dịch</strong></p>' : ''
+                                : '<p><strong>Đã giao dịch</strong></p>'
                         }
                     </div>
                 `;
@@ -296,11 +302,10 @@
         });
 
         window.onload = function() {
-            initializeAdminAccount();
+            initializeAdminAccount(); // Tạo tài khoản admin mặc định
             checkLogin();
             loadPosts();
         };
     </script>
 </body>
 </html>
-
