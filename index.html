@@ -186,28 +186,18 @@
         function showLogin() {
             const main = document.querySelector('main');
             main.innerHTML = `
-                <div class="form-container">
-                    <h2>Đăng nhập</h2>
-                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-                    <button onclick="login()">Đăng nhập</button>
-                    <button onclick="returnToHome()">Quay lại trang chủ</button>
-                </div>
-            `;
-        }
+            <body> 
+            <div id="authContainer">
+    <h2>Đăng nhập</h2>
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+    <button id="loginButton">Đăng nhập</button>
 
-        function showRegister() {
-            const main = document.querySelector('main');
-            main.innerHTML = `
-                <div class="form-container">
-                    <h2>Đăng ký</h2>
-                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
-                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-                    <button onclick="register()">Đăng ký</button>
-                    <button onclick="returnToHome()">Quay lại trang chủ</button>
-                </div>
-            `;
-        }
+    <h2>Đăng ký</h2>
+    <input type="email" id="registerEmail" placeholder="Email" required>
+    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+    <button id="registerButton">Đăng ký</button>
+</div>
 
         function returnToHome() {
             const main = document.querySelector('main');
@@ -218,7 +208,7 @@
                 </div>
             `;
         }
-
+<body>
         function register() {
             const username = document.getElementById('registerUsername').value;
             const password = document.getElementById('registerPassword').value;
