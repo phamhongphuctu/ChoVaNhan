@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,7 +15,7 @@
         header {
             background-color: #333;
             color: white;
-            padding: 20px 0;
+            padding: 20px;
             text-align: center;
         }
         main {
@@ -26,16 +25,13 @@
             max-width: 400px;
             margin: 20px auto;
             padding: 20px;
-            border: 1px solid #ddd;
+            background: #fff;
             border-radius: 10px;
-            background: linear-gradient(145deg, #d8b9e8, #c694e6);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             color: #333;
         }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -44,33 +40,34 @@
         <h1>Cho và Nhận Miễn Phí</h1>
     </header>
     <main>
-        <!-- Form Đăng ký -->
-        <div class="form-container">
-            <h2>Đăng ký</h2>
-            <form id="registerForm">
-                <input type="email" id="registerEmail" placeholder="Email" required>
-                <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-                <button type="submit">Đăng ký</button>
-            </form>
+        <div id="authForms">
+            <div class="form-container">
+                <h2>Đăng ký</h2>
+                <form id="registerForm">
+                    <input type="email" id="registerEmail" placeholder="Email" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button type="submit">Đăng ký</button>
+                </form>
+            </div>
+            <div class="form-container">
+                <h2>Đăng nhập</h2>
+                <form id="loginForm">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button type="submit">Đăng nhập</button>
+                </form>
+            </div>
         </div>
-
-        <!-- Form Đăng nhập -->
-        <div class="form-container">
-            <h2>Đăng nhập</h2>
-            <form id="loginForm">
-                <input type="email" id="loginEmail" placeholder="Email" required>
-                <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-                <button type="submit">Đăng nhập</button>
-            </form>
+        <div id="mainContent" class="hidden">
+            <p>Chào mừng, <span id="userEmail"></span>!</p>
+            <button onclick="logout()">Đăng xuất</button>
         </div>
     </main>
 
     <script type="module">
-        // Import Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
-        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyB6ykNm-E83uTF8BvK1nvn7uMXJvnBGjh0",
             authDomain: "cho-di-va-nhan-lai-1.firebaseapp.com",
@@ -78,56 +75,59 @@
             storageBucket: "cho-di-va-nhan-lai-1.firebasestorage.app",
             messagingSenderId: "45632064818",
             appId: "1:45632064818:web:9221f3769c1adfc28e5b2b",
-            measurementId: "G-VKC7C44PK9"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
 
-        // Đăng ký người dùng
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('registerEmail').value;
             const password = document.getElementById('registerPassword').value;
-
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await createUserWithEmailAndPassword(auth, email, password);
                 alert('Đăng ký thành công!');
-                console.log('User:', userCredential.user);
             } catch (error) {
-                console.error('Error:', error.message);
                 alert(`Lỗi: ${error.message}`);
             }
         });
 
-        // Đăng nhập người dùng
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-
             try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                await signInWithEmailAndPassword(auth, email, password);
                 alert('Đăng nhập thành công!');
-                console.log('User:', userCredential.user);
             } catch (error) {
-                console.error('Error:', error.message);
                 alert(`Lỗi: ${error.message}`);
             }
         });
 
-        // Theo dõi trạng thái đăng nhập
+        function logout() {
+            signOut(auth).then(() => {
+                alert('Đăng xuất thành công!');
+            }).catch((error) => {
+                alert(`Lỗi: ${error.message}`);
+            });
+        }
+
         onAuthStateChanged(auth, (user) => {
+            const authForms = document.getElementById('authForms');
+            const mainContent = document.getElementById('mainContent');
             if (user) {
-                console.log('Người dùng đăng nhập:', user.email);
+                document.getElementById('userEmail').textContent = user.email;
+                authForms.classList.add('hidden');
+                mainContent.classList.remove('hidden');
             } else {
-                console.log('Người dùng đã đăng xuất.');
+                authForms.classList.remove('hidden');
+                mainContent.classList.add('hidden');
             }
         });
     </script>
 </body>
 </html>
+
 </script>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
