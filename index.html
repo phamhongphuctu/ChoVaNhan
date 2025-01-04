@@ -1,143 +1,65 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cho và Nhận Miễn Phí</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #8e44ad, #9b59b6);
-            color: #fff;
-        }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        main {
-            padding: 20px;
-        }
-        .form-container {
-            max-width: 400px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            color: #333;
-        }
-        .hidden {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Cho và Nhận Miễn Phí</h1>
-    </header>
-    <main>
-        <!-- Form Đăng ký và Đăng nhập -->
-        <div id="authForms">
-            <div class="form-container">
-                <h2>Đăng ký</h2>
-                <form id="registerForm">
-                    <input type="email" id="registerEmail" placeholder="Email" required>
-                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-                    <button type="submit">Đăng ký</button>
-                </form>
-            </div>
-            <div class="form-container">
-                <h2>Đăng nhập</h2>
-                <form id="loginForm">
-                    <input type="email" id="loginEmail" placeholder="Email" required>
-                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-                    <button type="submit">Đăng nhập</button>
-                </form>
-            </div>
-        </div>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-        <!-- Nội dung chính sau khi đăng nhập -->
-        <div id="mainContent" class="hidden">
-            <p>Chào mừng, <span id="userEmail"></span>!</p>
-            <button onclick="logout()">Đăng xuất</button>
-            <h2>Danh sách bài đăng</h2>
-            <div id="postsContainer">
-                <!-- Nội dung bài đăng sẽ hiển thị ở đây -->
-            </div>
-        </div>
-    </main>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyB6ykNm-E83uTF8BvK1nvn7uMXJvnBGjh0",
+    authDomain: "cho-di-va-nhan-lai-1.firebaseapp.com",
+    projectId: "cho-di-va-nhan-lai-1",
+    storageBucket: "cho-di-va-nhan-lai-1.firebasestorage.app",
+    messagingSenderId: "45632064818",
+    appId: "1:45632064818:web:9221f3769c1adfc28e5b2b",
+    measurementId: "G-VKC7C44PK9"
+  };
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);// Import Firebase Authentication
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB6ykNm-E83uTF8BvK1nvn7uMXJvnBGjh0",
-            authDomain: "cho-di-va-nhan-lai-1.firebaseapp.com",
-            projectId: "cho-di-va-nhan-lai-1",
-            storageBucket: "cho-di-va-nhan-lai-1.firebasestorage.app",
-            messagingSenderId: "45632064818",
-            appId: "1:45632064818:web:9221f3769c1adfc28e5b2b",
-        };
+// Khởi tạo Firebase Auth
+const auth = getAuth();
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth();
+// Hàm đăng ký
+async function register(email, password) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log('Đăng ký thành công:', userCredential.user);
+        alert('Đăng ký thành công!');
+    } catch (error) {
+        console.error('Lỗi đăng ký:', error.message);
+        alert(Lỗi: ${error.message});
+    }
+}
 
-        // Xử lý đăng ký
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            try {
-                await createUserWithEmailAndPassword(auth, email, password);
-                alert('Đăng ký thành công!');
-            } catch (error) {
-                alert(`Lỗi: ${error.message}`);
-            }
-        });
+// Hàm đăng nhập
+async function login(email, password) {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log('Đăng nhập thành công:', userCredential.user);
+        alert('Đăng nhập thành công!');
+    } catch (error) {
+        console.error('Lỗi đăng nhập:', error.message);
+        alert(Lỗi: ${error.message});
+    }
+}
 
-        // Xử lý đăng nhập
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                alert('Đăng nhập thành công!');
-            } catch (error) {
-                alert(`Lỗi: ${error.message}`);
-            }
-        });
-
-        // Xử lý đăng xuất
-        function logout() {
-            signOut(auth).then(() => {
-                alert('Đăng xuất thành công!');
-            }).catch((error) => {
-                alert(`Lỗi: ${error.message}`);
-            });
-        }
-
-        // Hiển thị đúng nội dung khi trạng thái người dùng thay đổi
-        onAuthStateChanged(auth, (user) => {
-            const authForms = document.getElementById('authForms');
-            const mainContent = document.getElementById('mainContent');
-            if (user) {
-                document.getElementById('userEmail').textContent = user.email;
-                authForms.classList.add('hidden');
-                mainContent.classList.remove('hidden');
-            } else {
-                authForms.classList.remove('hidden');
-                mainContent.classList.add('hidden');
-            }
-        });
-    </script>
-</body>
-</html>
+// Theo dõi trạng thái đăng nhập
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log(Người dùng đang đăng nhập: ${user.email});
+    } else {
+        console.log('Người dùng đã đăng xuất.');
+    }
+});
 
 </script>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -288,18 +210,18 @@
                 document.getElementById('userGreeting').style.display = 'none';
                 document.getElementById('appContent').style.display = 'none';
 
-                main.innerHTML = `
+                main.innerHTML = 
                     <div style="text-align: center; padding: 20px;">
                         <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
                         <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
                     </div>
-                `;
+                ;
             }
         }
 
         function showLogin() {
             const main = document.querySelector('main');
-            main.innerHTML = `
+            main.innerHTML = 
                 <div class="form-container">
                     <h2>Đăng nhập</h2>
                     <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
@@ -307,12 +229,12 @@
                     <button onclick="login()">Đăng nhập</button>
                     <button onclick="returnToHome()">Quay lại trang chủ</button>
                 </div>
-            `;
+            ;
         }
 
         function showRegister() {
             const main = document.querySelector('main');
-            main.innerHTML = `
+            main.innerHTML = 
                 <div class="form-container">
                     <h2>Đăng ký</h2>
                     <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
@@ -320,17 +242,17 @@
                     <button onclick="register()">Đăng ký</button>
                     <button onclick="returnToHome()">Quay lại trang chủ</button>
                 </div>
-            `;
+            ;
         }
 
         function returnToHome() {
             const main = document.querySelector('main');
-            main.innerHTML = `
+            main.innerHTML = 
                 <div style="text-align: center; padding: 20px;">
                     <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
                     <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
                 </div>
-            `;
+            ;
         }
 
         function register() {
@@ -382,19 +304,19 @@
                 const div = document.createElement('div');
                 div.className = 'card';
                 div.style.opacity = post.completed ? '0.5' : '1';
-                div.innerHTML = `
+                div.innerHTML = 
                     <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
                     <div class="card-content">
                         <h3>${post.type}: ${post.name}</h3>
                         <p>${post.content}</p>
                         ${
                             !post.completed
-                                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
-                                   <button onclick="deletePost(${index})">Xóa</button>`
+                                ? <button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                                   <button onclick="deletePost(${index})">Xóa</button>
                                 : '<p><strong>Đã giao dịch</strong></p>'
                         }
                     </div>
-                `;
+                ;
                 postsContainer.appendChild(div);
             });
         }
@@ -465,4 +387,3 @@
         };
     </script>
 </body>
-</html>
