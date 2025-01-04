@@ -133,7 +133,7 @@
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
             if (!users['admin']) {
-                users['admin'] = '1'; 
+                users['admin'] = '1'; // Tài khoản admin với mật khẩu mặc định là '1'
                 localStorage.setItem('users', JSON.stringify(users));
             }
         }
@@ -236,10 +236,9 @@
         }
 
         function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
             const postsContainer = document.getElementById('postsContainer');
             if (!postsContainer) return;
-
-            const posts = JSON.parse(localStorage.getItem('posts')) || [];
             postsContainer.innerHTML = '';
 
             posts.forEach((post, index) => {
@@ -333,4 +332,3 @@
     </script>
 </body>
 </html>
-
