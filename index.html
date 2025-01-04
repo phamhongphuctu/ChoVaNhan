@@ -64,6 +64,10 @@
         <div id="mainContent" class="hidden">
             <p>Chào mừng, <span id="userEmail"></span>!</p>
             <button onclick="logout()">Đăng xuất</button>
+            <h2>Danh sách bài đăng</h2>
+            <div id="postsContainer">
+                <!-- Nội dung bài đăng sẽ hiển thị ở đây -->
+            </div>
         </div>
     </main>
 
@@ -118,7 +122,7 @@
             });
         }
 
-        // Theo dõi trạng thái người dùng
+        // Hiển thị đúng nội dung khi trạng thái người dùng thay đổi
         onAuthStateChanged(auth, (user) => {
             const authForms = document.getElementById('authForms');
             const mainContent = document.getElementById('mainContent');
