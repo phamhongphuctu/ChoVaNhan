@@ -130,17 +130,10 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeAdminAccount();
-            checkLogin();
-            loadPosts();
-            initMap();
-        });
-
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
             if (!users['admin']) {
-                users['admin'] = '1'; // Tài khoản admin với mật khẩu mặc định là '1'
+                users['admin'] = '1';
                 localStorage.setItem('users', JSON.stringify(users));
             }
         }
@@ -243,13 +236,8 @@
         }
 
         function loadPosts() {
-            const postsContainer = document.getElementById('postsContainer');
-            if (!postsContainer) {
-                console.error('Element #postsContainer not found');
-                return;
-            }
-
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            const postsContainer = document.getElementById('postsContainer');
             postsContainer.innerHTML = '';
 
             posts.forEach((post, index) => {
@@ -330,6 +318,14 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
         }
+
+        window.onload = function() {
+            initializeAdminAccount();
+            checkLogin();
+            loadPosts();
+            initMap();
+        };
     </script>
 </body>
 </html>
+
