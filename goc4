@@ -1,79 +1,41 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<script type="module">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cho và Nhận Miễn Phí</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
+// Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
-    apiKey: "AIzaSyB6ykNm-E83uTF8BvK1nvn7uMXJvnBGjh0",
-    authDomain: "cho-di-va-nhan-lai-1.firebaseapp.com",
-    projectId: "cho-di-va-nhan-lai-1",
-    storageBucket: "cho-di-va-nhan-lai-1.firebasestorage.app",
-    messagingSenderId: "45632064818",
-    appId: "1:45632064818:web:9221f3769c1adfc28e5b2b",
-    measurementId: "G-VKC7C44PK9"
+    apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
+    authDomain: "imposing-elixir-420316.firebaseapp.com",
+    databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
+    projectId: "imposing-elixir-420316",
+    storageBucket: "imposing-elixir-420316.firebasestorage.app",
+    messagingSenderId: "262290303005",
+    appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
+    measurementId: "G-VYN50WTNFG"
   };
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);// Import Firebase Authentication
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-
-// Khởi tạo Firebase Auth
-const auth = getAuth();
-
-// Hàm đăng ký
-async function register(email, password) {
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        console.log('Đăng ký thành công:', userCredential.user);
-        alert('Đăng ký thành công!');
-    } catch (error) {
-        console.error('Lỗi đăng ký:', error.message);
-        alert(Lỗi: ${error.message});
-    }
-}
-
-// Hàm đăng nhập
-async function login(email, password) {
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        console.log('Đăng nhập thành công:', userCredential.user);
-        alert('Đăng nhập thành công!');
-    } catch (error) {
-        console.error('Lỗi đăng nhập:', error.message);
-        alert(Lỗi: ${error.message});
-    }
-}
-
-// Theo dõi trạng thái đăng nhập
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        console.log(Người dùng đang đăng nhập: ${user.email});
-    } else {
-        console.log('Người dùng đã đăng xuất.');
-    }
-});
-
-</script>    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cho và Nhận Miễn Phí</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        body {
+  const analytics = getAnalytics(app);
+</script> 
+        <style> 
+            body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background: linear-gradient(135deg, #8e44ad, #9b59b6);
             color: #fff;
         }
-
         header {
             background-color: #333;
             color: white;
@@ -210,18 +172,18 @@ onAuthStateChanged(auth, (user) => {
                 document.getElementById('userGreeting').style.display = 'none';
                 document.getElementById('appContent').style.display = 'none';
 
-                main.innerHTML = 
+                main.innerHTML = `
                     <div style="text-align: center; padding: 20px;">
                         <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
                         <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
                     </div>
-                ;
+                `;
             }
         }
 
         function showLogin() {
             const main = document.querySelector('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <div class="form-container">
                     <h2>Đăng nhập</h2>
                     <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
@@ -229,12 +191,12 @@ onAuthStateChanged(auth, (user) => {
                     <button onclick="login()">Đăng nhập</button>
                     <button onclick="returnToHome()">Quay lại trang chủ</button>
                 </div>
-            ;
+            `;
         }
 
         function showRegister() {
             const main = document.querySelector('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <div class="form-container">
                     <h2>Đăng ký</h2>
                     <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
@@ -242,17 +204,17 @@ onAuthStateChanged(auth, (user) => {
                     <button onclick="register()">Đăng ký</button>
                     <button onclick="returnToHome()">Quay lại trang chủ</button>
                 </div>
-            ;
+            `;
         }
 
         function returnToHome() {
             const main = document.querySelector('main');
-            main.innerHTML = 
+            main.innerHTML = `
                 <div style="text-align: center; padding: 20px;">
                     <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
                     <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
                 </div>
-            ;
+            `;
         }
 
         function register() {
@@ -298,25 +260,26 @@ onAuthStateChanged(auth, (user) => {
         function loadPosts() {
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             const postsContainer = document.getElementById('postsContainer');
+            if (!postsContainer) return;
             postsContainer.innerHTML = '';
 
             posts.forEach((post, index) => {
                 const div = document.createElement('div');
                 div.className = 'card';
                 div.style.opacity = post.completed ? '0.5' : '1';
-                div.innerHTML = 
+                div.innerHTML = `
                     <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
                     <div class="card-content">
                         <h3>${post.type}: ${post.name}</h3>
                         <p>${post.content}</p>
                         ${
                             !post.completed
-                                ? <button onclick="markAsCompleted(${index})">Đã giao dịch</button>
-                                   <button onclick="deletePost(${index})">Xóa</button>
+                                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                                   <button onclick="deletePost(${index})">Xóa</button>`
                                 : '<p><strong>Đã giao dịch</strong></p>'
                         }
                     </div>
-                ;
+                `;
                 postsContainer.appendChild(div);
             });
         }
@@ -338,7 +301,7 @@ onAuthStateChanged(auth, (user) => {
             loadPosts();
         }
 
-        document.getElementById('postForm').addEventListener('submit', function(e) {
+        document.getElementById('postForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
 
             const name = document.getElementById('name').value;
@@ -372,6 +335,9 @@ onAuthStateChanged(auth, (user) => {
         });
 
         function initMap() {
+            const mapElement = document.getElementById('map');
+            if (!mapElement) return;
+
             const map = L.map('map').setView([10.7769, 106.7009], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
@@ -387,3 +353,4 @@ onAuthStateChanged(auth, (user) => {
         };
     </script>
 </body>
+</html>
