@@ -6,7 +6,6 @@
     <title>Cho và Nhận Miễn Phí</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        /* CSS không thay đổi */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -238,7 +237,7 @@
 
         function loadPosts() {
             const postsContainer = document.getElementById('postsContainer');
-            if (!postsContainer) return; 
+            if (!postsContainer) return;
 
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
             postsContainer.innerHTML = '';
@@ -316,7 +315,7 @@
 
         function initMap() {
             const mapElement = document.getElementById('map');
-            if (!mapElement) return; 
+            if (!mapElement) return;
 
             const map = L.map('map').setView([10.7769, 106.7009], 13);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -334,3 +333,4 @@
     </script>
 </body>
 </html>
+
