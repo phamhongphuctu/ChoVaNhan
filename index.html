@@ -130,6 +130,13 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeAdminAccount();
+            checkLogin();
+            loadPosts();
+            initMap();
+        });
+
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
             if (!users['admin']) {
@@ -236,8 +243,13 @@
         }
 
         function loadPosts() {
-            const posts = JSON.parse(localStorage.getItem('posts')) || [];
             const postsContainer = document.getElementById('postsContainer');
+            if (!postsContainer) {
+                console.error('Element #postsContainer not found');
+                return;
+            }
+
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
             postsContainer.innerHTML = '';
 
             posts.forEach((post, index) => {
@@ -318,13 +330,6 @@
                 attribution: '© OpenStreetMap contributors'
             }).addTo(map);
         }
-
-        window.onload = function() {
-            initializeAdminAccount();
-            checkLogin();
-            loadPosts();
-            initMap();
-        };
     </script>
 </body>
 </html>
