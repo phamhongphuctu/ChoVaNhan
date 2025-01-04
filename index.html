@@ -22,7 +22,45 @@
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+  const analytics = getAnalytics(app);// Import Firebase Authentication
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+// Khởi tạo Firebase Auth
+const auth = getAuth();
+
+// Hàm đăng ký
+async function register(email, password) {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log('Đăng ký thành công:', userCredential.user);
+        alert('Đăng ký thành công!');
+    } catch (error) {
+        console.error('Lỗi đăng ký:', error.message);
+        alert(`Lỗi: ${error.message}`);
+    }
+}
+
+// Hàm đăng nhập
+async function login(email, password) {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        console.log('Đăng nhập thành công:', userCredential.user);
+        alert('Đăng nhập thành công!');
+    } catch (error) {
+        console.error('Lỗi đăng nhập:', error.message);
+        alert(`Lỗi: ${error.message}`);
+    }
+}
+
+// Theo dõi trạng thái đăng nhập
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log(`Người dùng đang đăng nhập: ${user.email}`);
+    } else {
+        console.log('Người dùng đã đăng xuất.');
+    }
+});
+
 </script>    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
