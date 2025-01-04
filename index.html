@@ -133,7 +133,7 @@
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
             if (!users['admin']) {
-                users['admin'] = '1';
+                users['admin'] = '1'; // Tài khoản admin với mật khẩu mặc định là '1'
                 localStorage.setItem('users', JSON.stringify(users));
             }
         }
@@ -300,21 +300,7 @@
             };
 
             if (imageFile) {
-    const reader = new FileReader();
-    reader.onload = function () {
-        const imageBase64 = reader.result;
-        if (imageBase64.startsWith('data:image')) {
-            posts.push({ name, type, content, image: imageBase64 });
-            localStorage.setItem('posts', JSON.stringify(posts));
-            alert('Bài đăng đã được lưu!');
-            loadPosts();
-        } else {
-            alert('Định dạng hình ảnh không hợp lệ!');
-        }
-    };
-    reader.readAsDataURL(imageFile);
-}
-
+                reader.readAsDataURL(imageFile);
             } else {
                 const posts = JSON.parse(localStorage.getItem('posts')) || [];
                 posts.push({ name, type, content, image: 'https://via.placeholder.com/100' });
