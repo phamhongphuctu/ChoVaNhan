@@ -40,6 +40,7 @@
         <h1>Cho và Nhận Miễn Phí</h1>
     </header>
     <main>
+        <!-- Form Đăng ký và Đăng nhập -->
         <div id="authForms">
             <div class="form-container">
                 <h2>Đăng ký</h2>
@@ -58,6 +59,8 @@
                 </form>
             </div>
         </div>
+
+        <!-- Nội dung chính sau khi đăng nhập -->
         <div id="mainContent" class="hidden">
             <p>Chào mừng, <span id="userEmail"></span>!</p>
             <button onclick="logout()">Đăng xuất</button>
@@ -80,6 +83,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth();
 
+        // Xử lý đăng ký
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('registerEmail').value;
@@ -92,6 +96,7 @@
             }
         });
 
+        // Xử lý đăng nhập
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -104,6 +109,7 @@
             }
         });
 
+        // Xử lý đăng xuất
         function logout() {
             signOut(auth).then(() => {
                 alert('Đăng xuất thành công!');
@@ -112,6 +118,7 @@
             });
         }
 
+        // Theo dõi trạng thái người dùng
         onAuthStateChanged(auth, (user) => {
             const authForms = document.getElementById('authForms');
             const mainContent = document.getElementById('mainContent');
