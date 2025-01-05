@@ -25,6 +25,12 @@
     appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
     measurementId: "G-VYN50WTNFG"
   };
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+
+const db = getDatabase();
+set(ref(db, 'test/connection'), { status: 'Connected' })
+    .then(() => console.log('Đã ghi dữ liệu vào Firebase Database!'))
+    .catch((error) => console.error('Lỗi khi ghi dữ liệu vào Firebase:', error));
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
