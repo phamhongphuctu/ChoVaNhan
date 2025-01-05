@@ -27,7 +27,18 @@
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-    console.log(app.name ? 'Firebase đã được khởi tạo thành công!' : 'Lỗi khi khởi tạo Firebase.');
+console.log(app.name ? 'Firebase đã được khởi tạo thành công!' : 'Lỗi khi khởi tạo Firebase.');
+
+const analytics = getAnalytics(app);
+
+// Đoạn mã kiểm tra kết nối Database
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+
+const db = getDatabase();
+set(ref(db, 'test/connection'), { status: 'Connected' })
+    .then(() => console.log('Đã ghi dữ liệu vào Firebase Database!'))
+    .catch((error) => console.error('Lỗi khi ghi dữ liệu vào Firebase:', error));
+
 
   const analytics = getAnalytics(app);
 </script> 
