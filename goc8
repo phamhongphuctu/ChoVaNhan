@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cho và Nhận Miễn Phí</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #9b59b6; /* Màu tím cho toàn bộ nền */
+    color: #fff; /* Màu chữ trắng để tương phản */
+}
+
+header {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column; /* Căn theo chiều dọc */
+    align-items: center; /* Căn giữa nội dung theo chiều ngang */
+    justify-content: center; /* Đảm bảo căn giữa nội dung */
+    text-align: center;
+    background-color: #9b59b6; /* Màu tím cho phần tiêu đề */
+    color: #fff; /* Màu chữ trắng */
+}
+
+.main-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.left-ad, .right-ad {
+    flex: 1;
+    background-color: #9b59b6; /* Màu tím cho quảng cáo */
+    color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+
+.content-section {
+    flex: 2;
+    background: #9b59b6; /* Màu tím cho nền bài đăng */
+    color: #fff; /* Chữ màu trắng */
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    background: #9b59b6; /* Màu tím cho nền bài đăng */
+    color: #fff; /* Chữ màu trắng */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    .card {
+    display: none; /* Ẩn các bài đăng đã giao dịch */
+}
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.card-content {
+    flex-grow: 1;
+}
+
+.card-content h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #fff; /* Chữ màu trắng */
+}
+
+.card-content p {
+    color: #fff; /* Chữ màu trắng */
+}
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #d8b9e8, #c694e6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        #map {
+            height: 400px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cho và Nhận Miễn Phí</h1>
+        <div id="userGreeting" style="display: none;">
+            <p>Chào, <span id="username"></span>!</p>
+            <button onclick="logout()">Đăng xuất</button>
+        </div>
+    </header>
+    <main>
+    <div class="main-container">
+        <div class="left-ad">
+            <!-- Quảng cáo bên trái -->
+            <p>Quảng cáo bên trái</p>
+        </div>
+        <div class="content-section">
+            <div id="appContent" style="display: none;">
+                <h2>Danh sách bài đăng</h2>
+                <div id="postsContainer"></div>
+                
+                <h2>Đăng bài mới</h2>
+                <form id="postForm">
+                    <input type="text" id="name" placeholder="Tên" required>
+                    <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
+                    <select id="type">
+                        <option value="Cho">Cho</option>
+                        <option value="Nhận">Nhận</option>
+                    </select>
+                    <input type="file" id="image" accept="image/*">
+                    <button type="submit">Đăng bài</button>
+                </form>
+            </div>
+        </div>
+        <div class="right-ad">
+            <!-- Quảng cáo bên phải -->
+            <p>Quảng cáo bên phải</p>
+        </div>
+    </div>
+</main>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function initializeAdminAccount() {
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (!users['admin']) {
+                users['admin'] = '1'; // Tài khoản admin với mật khẩu mặc định là '1'
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
+        function checkLogin() {
+            const currentUser = localStorage.getItem('currentUser');
+            const main = document.querySelector('main');
+
+            if (currentUser) {
+                document.getElementById('userGreeting').style.display = 'block';
+                document.getElementById('appContent').style.display = 'block';
+                document.getElementById('username').textContent = currentUser;
+            } else {
+                document.getElementById('userGreeting').style.display = 'none';
+                document.getElementById('appContent').style.display = 'none';
+
+                main.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function showLogin() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
+
+        function showRegister() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng ký</h2>
+                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button onclick="register()">Đăng ký</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
+
+        function returnToHome() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                    <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                </div>
+            `;
+        }
+
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (!username || !password) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            showLogin();
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] === password) {
+                localStorage.setItem('currentUser', username);
+                alert('Đăng nhập thành công!');
+                location.reload();
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            location.reload();
+        }
+
+        function loadPosts() {
+    const posts = JSON.parse(localStorage.getItem('posts')) || [];
+    const postsContainer = document.getElementById('postsContainer');
+    const currentUser = localStorage.getItem('currentUser'); // Lấy tên người dùng hiện tại
+
+    if (!postsContainer) return; // Nếu không tìm thấy container thì thoát
+    postsContainer.innerHTML = ''; // Xóa nội dung cũ trong container
+
+    posts.forEach((post, index) => {
+        // Bỏ qua bài đăng đã giao dịch
+        if (post.completed) return;
+
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+            <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
+            <div class="card-content">
+                <h3>${post.type}: ${post.name}</h3>
+                <p>${post.content}</p>
+                ${
+                    // Hiển thị nút chỉ nếu là admin hoặc là người đăng bài
+                    currentUser === 'admin' || currentUser === post.username
+                        ? `
+                        <button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                        <button onclick="deletePost(${index})">Xóa</button>
+                        `
+                        : '' // Nếu không có quyền thì ẩn các nút
+                }
+            </div>
+        `;
+        postsContainer.appendChild(div);
+    });
+}
+
+        function markAsCompleted(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            if (posts[index]) {
+                posts[index].completed = true;
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
+                loadPosts();
+            }
+        }
+
+        function deletePost(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            posts.splice(index, 1);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            loadPosts();
+        }
+
+        document.getElementById('postForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const type = document.getElementById('type').value;
+    const content = document.getElementById('content').value;
+    const imageFile = document.getElementById('image').files[0];
+    const currentUser = localStorage.getItem('currentUser'); // Lấy tên người dùng hiện tại
+
+    const reader = new FileReader();
+    reader.onload = function() {
+        const imageBase64 = reader.result;
+
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.push({ name, type, content, image: imageBase64, username: currentUser }); // Thêm username
+        localStorage.setItem('posts', JSON.stringify(posts));
+
+        alert('Bài đăng đã được lưu!');
+        loadPosts();
+    };
+
+    if (imageFile) {
+        reader.readAsDataURL(imageFile);
+    } else {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.push({ name, type, content, image: '', username: currentUser }); // Thêm username
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Bài đăng đã được lưu!');
+        loadPosts();
+    }
+
+    document.getElementById('postForm').reset();
+});
+
+        function initMap() {
+            const mapElement = document.getElementById('map');
+            if (!mapElement) return;
+
+            const map = L.map('map').setView([10.7769, 106.7009], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+
+        window.onload = function() {
+            initializeAdminAccount();
+            checkLogin();
+            loadPosts();
+            initMap();
+        };
+    </script>
+</body>
+</html>
