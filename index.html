@@ -10,6 +10,9 @@
     <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js"></script>
 </head>
 <body>
+    <h1>Cho và Nhận Miễn Phí</h1>
+    <p>Chào mừng bạn đến với hệ thống Firebase!</p>
+    
     <script>
         // Firebase configuration
         const firebaseConfig = {
@@ -24,15 +27,15 @@
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
         const analytics = firebase.analytics();
 
-        console.log(app.name ? 'Firebase đã được khởi tạo thành công!' : 'Lỗi khi khởi tạo Firebase.');
+        console.log('Firebase đã được khởi tạo thành công!');
 
-        // Kết nối tới Firebase Database
-        const db = firebase.database();
+        // Kết nối Firebase Database
+        const database = firebase.database();
 
-        db.ref('test/connection')
+        database.ref('test/connection')
             .set({ status: 'Connected' })
             .then(() => console.log('Đã ghi dữ liệu vào Firebase Database!'))
             .catch((error) => console.error('Lỗi khi ghi dữ liệu vào Firebase:', error));
@@ -40,7 +43,7 @@
 </body>
 </html>
 
-    body {
+body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
