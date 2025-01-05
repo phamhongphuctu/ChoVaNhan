@@ -11,32 +11,35 @@
 </head>
 <body>
     <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
-    authDomain: "imposing-elixir-420316.firebaseapp.com",
-    databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
-    projectId: "imposing-elixir-420316",
-    storageBucket: "imposing-elixir-420316.firebasestorage.app",
-    messagingSenderId: "262290303005",
-    appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
-    measurementId: "G-VYN50WTNFG"
-  };
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzSyDuqfhraXc8rhLNoKqc9nu1CmkQBOIjY0",
+            authDomain: "imposing-elixir-420316.firebaseapp.com",
+            databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
+            projectId: "imposing-elixir-420316",
+            storageBucket: "imposing-elixir-420316.appspot.com",
+            messagingSenderId: "262290303005",
+            appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
+            measurementId: "G-VYMS0WTNFG"
+        };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-console.log(app.name ? 'Firebase đã được khởi tạo thành công!' : 'Lỗi khi khởi tạo Firebase.');
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const analytics = firebase.analytics();
 
-const analytics = getAnalytics(app);
+        console.log(app.name ? 'Firebase đã được khởi tạo thành công!' : 'Lỗi khi khởi tạo Firebase.');
 
-// Đoạn mã kiểm tra kết nối Database
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+        // Kết nối tới Firebase Database
+        const db = firebase.database();
 
-const db = getDatabase();
-set(ref(db, 'test/connection'), { status: 'Connected' })
-    .then(() => console.log('Đã ghi dữ liệu vào Firebase Database!'))
-    .catch((error) => console.error('Lỗi khi ghi dữ liệu vào Firebase:', error));
-</script> 
-<style> 
+        db.ref('test/connection')
+            .set({ status: 'Connected' })
+            .then(() => console.log('Đã ghi dữ liệu vào Firebase Database!'))
+            .catch((error) => console.error('Lỗi khi ghi dữ liệu vào Firebase:', error));
+    </script>
+</body>
+</html>
+
     body {
             font-family: Arial, sans-serif;
             margin: 0;
