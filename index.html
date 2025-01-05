@@ -274,6 +274,8 @@ header {
         function loadPosts() {
     const posts = JSON.parse(localStorage.getItem('posts')) || [];
     const postsContainer = document.getElementById('postsContainer');
+    const currentUser = localStorage.getItem('currentUser'); // Lấy tên người dùng hiện tại
+
     if (!postsContainer) return; // Nếu không tìm thấy container thì thoát
     postsContainer.innerHTML = ''; // Xóa nội dung cũ trong container
 
@@ -288,8 +290,15 @@ header {
             <div class="card-content">
                 <h3>${post.type}: ${post.name}</h3>
                 <p>${post.content}</p>
-                <button onclick="markAsCompleted(${index})">Đã giao dịch</button>
-                <button onclick="deletePost(${index})">Xóa</button>
+                ${
+                    // Hiển thị nút chỉ nếu là admin hoặc là người đăng bài
+                    currentUser === 'admin' || currentUser === post.username
+                        ? `
+                        <button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                        <button onclick="deletePost(${index})">Xóa</button>
+                        `
+                        : '' // Nếu không có quyền thì ẩn các nút
+                }
             </div>
         `;
         postsContainer.appendChild(div);
