@@ -4,7 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
-    <style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+   <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
+    authDomain: "imposing-elixir-420316.firebaseapp.com",
+    databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
+    projectId: "imposing-elixir-420316",
+    storageBucket: "imposing-elixir-420316.firebasestorage.app",
+    messagingSenderId: "262290303005",
+    appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
+    measurementId: "G-VYN50WTNFG"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script> <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -22,25 +46,50 @@
 
         main {
             padding: 20px;
-            text-align: center;
         }
 
-        .button-group {
-            margin-top: 20px;
+        .card {
+            border: 1px solid #ddd;
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
         }
 
-        .button-group button {
-            margin: 0 10px;
+        .card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-content h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+
+        .card-content p {
+            color: #333;
+        }
+
+        button {
             padding: 10px 20px;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
         }
 
-        .button-group button:hover {
+        button:hover {
             background-color: #0056b3;
         }
 
@@ -53,76 +102,256 @@
             background: linear-gradient(145deg, #d8b9e8, #c694e6);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             color: #333;
-            text-align: left;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        #map {
+            height: 400px;
+            margin-top: 20px;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Cho và Nhận Miễn Phí</h1>
+        <div id="userGreeting" style="display: none;">
+            <p>Chào, <span id="username"></span>!</p>
+            <button onclick="logout()">Đăng xuất</button>
+        </div>
     </header>
     <main>
-        <div id="welcomeMessage">
-            <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
-            <div class="button-group">
-                <button onclick="showLogin()">Đăng nhập</button>
-                <button onclick="showRegister()">Đăng ký</button>
-                <button onclick="showAdminLogin()">Admin</button>
-            </div>
-        </div>
         <div id="appContent" style="display: none;">
-            <!-- Nội dung chính sau khi đăng nhập -->
+            <h2>Danh sách bài đăng</h2>
+            <div id="postsContainer"></div>
+            
+            <h2>Đăng bài mới</h2>
+            <form id="postForm">
+                <input type="text" id="name" placeholder="Tên" required>
+                <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
+                <select id="type">
+                    <option value="Cho">Cho</option>
+                    <option value="Nhận">Nhận</option>
+                </select>
+                <input type="file" id="image" accept="image/*">
+                <button type="submit">Đăng bài</button>
+            </form>
+
+            <h2>Bản đồ OpenStreetMap</h2>
+            <div id="map"></div>
         </div>
     </main>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+        function initializeAdminAccount() {
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (!users['admin']) {
+                users['admin'] = '1'; // Tài khoản admin với mật khẩu mặc định là '1'
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
+        function checkLogin() {
+            const currentUser = localStorage.getItem('currentUser');
+            const main = document.querySelector('main');
+
+            if (currentUser) {
+                document.getElementById('userGreeting').style.display = 'block';
+                document.getElementById('appContent').style.display = 'block';
+                document.getElementById('username').textContent = currentUser;
+            } else {
+                document.getElementById('userGreeting').style.display = 'none';
+                document.getElementById('appContent').style.display = 'none';
+
+                main.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                        <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                    </div>
+                `;
+            }
+        }
+
         function showLogin() {
-            document.querySelector('main').innerHTML = `
+            const main = document.querySelector('main');
+            main.innerHTML = `
                 <div class="form-container">
                     <h2>Đăng nhập</h2>
                     <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
                     <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
                     <button onclick="login()">Đăng nhập</button>
-                    <button onclick="returnToHome()">Quay lại</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
                 </div>
             `;
         }
 
         function showRegister() {
-            document.querySelector('main').innerHTML = `
+            const main = document.querySelector('main');
+            main.innerHTML = `
                 <div class="form-container">
                     <h2>Đăng ký</h2>
                     <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
                     <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
                     <button onclick="register()">Đăng ký</button>
-                    <button onclick="returnToHome()">Quay lại</button>
-                </div>
-            `;
-        }
-
-        function showAdminLogin() {
-            document.querySelector('main').innerHTML = `
-                <div class="form-container">
-                    <h2>Đăng nhập Admin</h2>
-                    <input type="text" id="adminUsername" placeholder="Tên người dùng" required>
-                    <input type="password" id="adminPassword" placeholder="Mật khẩu" required>
-                    <button onclick="loginAdmin()">Đăng nhập</button>
-                    <button onclick="returnToHome()">Quay lại</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
                 </div>
             `;
         }
 
         function returnToHome() {
-            location.reload();
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2>Chào mừng bạn đến với Cho và Nhận Miễn Phí!</h2>
+                    <p>Vui lòng <button onclick="showLogin()">Đăng nhập</button> hoặc <button onclick="showRegister()">Đăng ký</button> để sử dụng.</p>
+                </div>
+            `;
+        }
+
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (!username || !password) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            showLogin();
         }
 
         function login() {
-            // Xử lý đăng nhập người dùng
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] === password) {
+                localStorage.setItem('currentUser', username);
+                alert('Đăng nhập thành công!');
+                location.reload();
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
         }
 
-        function loginAdmin() {
-            // Xử lý đăng nhập admin
+        function logout() {
+            localStorage.removeItem('currentUser');
+            location.reload();
         }
+
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            const postsContainer = document.getElementById('postsContainer');
+            if (!postsContainer) return;
+            postsContainer.innerHTML = '';
+
+            posts.forEach((post, index) => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.style.opacity = post.completed ? '0.5' : '1';
+                div.innerHTML = `
+                    <img src="${post.image || 'https://via.placeholder.com/100'}" alt="Image">
+                    <div class="card-content">
+                        <h3>${post.type}: ${post.name}</h3>
+                        <p>${post.content}</p>
+                        ${
+                            !post.completed
+                                ? `<button onclick="markAsCompleted(${index})">Đã giao dịch</button>
+                                   <button onclick="deletePost(${index})">Xóa</button>`
+                                : '<p><strong>Đã giao dịch</strong></p>'
+                        }
+                    </div>
+                `;
+                postsContainer.appendChild(div);
+            });
+        }
+
+        function markAsCompleted(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            if (posts[index]) {
+                posts[index].completed = true;
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được đánh dấu là giao dịch thành công!');
+                loadPosts();
+            }
+        }
+
+        function deletePost(index) {
+            const posts = JSON.parse(localStorage.getItem('posts')) || [];
+            posts.splice(index, 1);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            loadPosts();
+        }
+
+        document.getElementById('postForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const type = document.getElementById('type').value;
+            const content = document.getElementById('content').value;
+            const imageFile = document.getElementById('image').files[0];
+
+            const reader = new FileReader();
+            reader.onload = function() {
+                const imageBase64 = reader.result;
+
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push({ name, type, content, image: imageBase64 });
+                localStorage.setItem('posts', JSON.stringify(posts));
+
+                alert('Bài đăng đã được lưu!');
+                loadPosts();
+            };
+
+            if (imageFile) {
+                reader.readAsDataURL(imageFile);
+            } else {
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push({ name, type, content, image: 'https://via.placeholder.com/100' });
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được lưu!');
+                loadPosts();
+            }
+
+            document.getElementById('postForm').reset();
+        });
+
+        function initMap() {
+            const mapElement = document.getElementById('map');
+            if (!mapElement) return;
+
+            const map = L.map('map').setView([10.7769, 106.7009], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+
+        window.onload = function() {
+            initializeAdminAccount();
+            checkLogin();
+            loadPosts();
+            initMap();
+        };
     </script>
 </body>
 </html>
