@@ -107,14 +107,10 @@
         </div>
     </header>
     <main>
-    <div class="main-container">
-        <div class="left-ad">
-            <p>Quảng cáo bên trái</p>
-        </div>
-        <div class="content">
+        <div id="appContent" style="display: none;">
             <h2>Danh sách bài đăng</h2>
             <div id="postsContainer"></div>
-
+            
             <h2>Đăng bài mới</h2>
             <form id="postForm">
                 <input type="text" id="name" placeholder="Tên" required>
@@ -130,11 +126,7 @@
             <h2>Bản đồ OpenStreetMap</h2>
             <div id="map"></div>
         </div>
-        <div class="right-ad">
-            <p>Quảng cáo bên phải</p>
-        </div>
-    </div>
-</main>
+    </main>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
