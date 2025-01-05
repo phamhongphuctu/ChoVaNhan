@@ -5,29 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script type="module">
-        // Import Firebase SDK
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
-            authDomain: "imposing-elixir-420316.firebaseapp.com",
-            databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
-            projectId: "imposing-elixir-420316",
-            storageBucket: "imposing-elixir-420316.firebasestorage.app",
-            messagingSenderId: "262290303005",
-            appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
-            measurementId: "G-VYN50WTNFG"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-
-        console.log('Firebase đã được khởi tạo thành công!');
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,9 +22,65 @@
             padding: 20px 0;
             text-align: center;
         }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cho và Nhận Miễn Phí</h1>
+    </header>
+    <p>Chào mừng bạn đến với hệ thống Firebase!</p>
+    
+    <script>
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
+    authDomain: "imposing-elixir-420316.firebaseapp.com",
+    databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
+    projectId: "imposing-elixir-420316",
+    storageBucket: "imposing-elixir-420316.appspot.com",
+    messagingSenderId: "262290303005",
+    appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
+    measurementId: "G-VYN50WTNFG"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Initialize Analytics
+  firebase.analytics();
+
+  console.log("Firebase đã được khởi tạo thành công!");
+
+  // Kết nối với Firebase Database
+  const database = firebase.database();
+  database.ref('test/connection')
+    .set({ status: 'Connected' })
+    .then(() => console.log("Đã ghi dữ liệu vào Firebase Database!"))
+    .catch(error => console.error("Lỗi khi ghi dữ liệu vào Firebase:", error));
+</script>
+
+</body>
+</html>
+
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: #fff;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
         main {
             padding: 20px;
         }
+
         .card {
             border: 1px solid #ddd;
             background: white;
@@ -55,21 +91,49 @@
             align-items: flex-start;
             gap: 15px;
         }
+
         .card img {
             width: 100px;
             height: 100px;
             object-fit: cover;
             border-radius: 5px;
         }
+
         .card-content {
             flex-grow: 1;
         }
+
         .card-content h3 {
             margin: 0;
             font-size: 1.2em;
             color: #007bff;
         }
+
         .card-content p {
+            color: #333;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #d8b9e8, #c694e6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             color: #333;
         }
 
@@ -88,7 +152,7 @@
             margin-top: 20px;
             border-radius: 10px;
         }
-    </style>
+</style>
 </head>
 <body>
     <header>
@@ -321,6 +385,7 @@
             loadPosts();
             initMap();
         };
-    </script>
+</script>
+<script type="module" src="main.js"></script>
 </body>
 </html>
