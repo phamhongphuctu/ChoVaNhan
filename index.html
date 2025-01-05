@@ -107,26 +107,36 @@
         </div>
     </header>
     <main>
-        <div id="appContent" style="display: none;">
-            <h2>Danh sách bài đăng</h2>
-            <div id="postsContainer"></div>
-            
-            <h2>Đăng bài mới</h2>
-            <form id="postForm">
-                <input type="text" id="name" placeholder="Tên" required>
-                <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
-                <select id="type">
-                    <option value="Cho">Cho</option>
-                    <option value="Nhận">Nhận</option>
-                </select>
-                <input type="file" id="image" accept="image/*">
-                <button type="submit">Đăng bài</button>
-            </form>
-
-            <h2>Bản đồ OpenStreetMap</h2>
-            <div id="map"></div>
+    <div class="main-container">
+        <div class="left-ad">
+            <!-- Quảng cáo bên trái -->
+            <p>Quảng cáo bên trái</p>
         </div>
-    </main>
+        <div class="content-section">
+            <div id="appContent" style="display: none;">
+                <h2>Danh sách bài đăng</h2>
+                <div id="postsContainer"></div>
+                
+                <h2>Đăng bài mới</h2>
+                <form id="postForm">
+                    <input type="text" id="name" placeholder="Tên" required>
+                    <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
+                    <select id="type">
+                        <option value="Cho">Cho</option>
+                        <option value="Nhận">Nhận</option>
+                    </select>
+                    <input type="file" id="image" accept="image/*">
+                    <button type="submit">Đăng bài</button>
+                </form>
+            </div>
+        </div>
+        <div class="right-ad">
+            <!-- Quảng cáo bên phải -->
+            <p>Quảng cáo bên phải</p>
+        </div>
+    </div>
+</main>
+
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
