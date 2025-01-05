@@ -31,31 +31,34 @@
     <p>Chào mừng bạn đến với hệ thống Firebase!</p>
     
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzSyDuqfhraXc8rhLNoKqc9nu1CmkQBOIjY0",
-            authDomain: "imposing-elixir-420316.firebaseapp.com",
-            databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
-            projectId: "imposing-elixir-420316",
-            storageBucket: "imposing-elixir-420316.appspot.com",
-            messagingSenderId: "262290303005",
-            appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
-            measurementId: "G-VYMS0WTNFG"
-        };
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
+    authDomain: "imposing-elixir-420316.firebaseapp.com",
+    databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
+    projectId: "imposing-elixir-420316",
+    storageBucket: "imposing-elixir-420316.appspot.com",
+    messagingSenderId: "262290303005",
+    appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
+    measurementId: "G-VYN50WTNFG"
+  };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
 
-        console.log('Firebase đã được khởi tạo thành công!');
+  // Initialize Analytics
+  firebase.analytics();
 
-        // Kết nối Firebase Database
-        const database = firebase.database();
+  console.log("Firebase đã được khởi tạo thành công!");
 
-        database.ref('test/connection')
-            .set({ status: 'Connected' })
-            .then(() => console.log('Đã ghi dữ liệu vào Firebase Database!'))
-            .catch((error) => console.error('Lỗi khi ghi dữ liệu vào Firebase:', error));
-    </script>
+  // Kết nối với Firebase Database
+  const database = firebase.database();
+  database.ref('test/connection')
+    .set({ status: 'Connected' })
+    .then(() => console.log("Đã ghi dữ liệu vào Firebase Database!"))
+    .catch(error => console.error("Lỗi khi ghi dữ liệu vào Firebase:", error));
+</script>
+
 </body>
 </html>
 
