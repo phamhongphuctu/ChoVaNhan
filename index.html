@@ -28,6 +28,7 @@
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+       console.log(app.name ? 'Firebase đã được khởi tạo thành công!' : 'Lỗi khi khởi tạo Firebase.');
   const analytics = getAnalytics(app);
 </script> <style>
         body {
