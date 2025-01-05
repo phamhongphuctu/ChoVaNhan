@@ -22,65 +22,9 @@
             padding: 20px 0;
             text-align: center;
         }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Cho và Nhận Miễn Phí</h1>
-    </header>
-    <p>Chào mừng bạn đến với hệ thống Firebase!</p>
-    
-    <script>
-  // Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
-    authDomain: "imposing-elixir-420316.firebaseapp.com",
-    databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
-    projectId: "imposing-elixir-420316",
-    storageBucket: "imposing-elixir-420316.appspot.com",
-    messagingSenderId: "262290303005",
-    appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
-    measurementId: "G-VYN50WTNFG"
-  };
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
-  // Initialize Analytics
-  firebase.analytics();
-
-  console.log("Firebase đã được khởi tạo thành công!");
-
-  // Kết nối với Firebase Database
-  const database = firebase.database();
-  database.ref('test/connection')
-    .set({ status: 'Connected' })
-    .then(() => console.log("Đã ghi dữ liệu vào Firebase Database!"))
-    .catch(error => console.error("Lỗi khi ghi dữ liệu vào Firebase:", error));
-</script>
-
-</body>
-</html>
-
-body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #8e44ad, #9b59b6);
-            color: #fff;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-
         main {
             padding: 20px;
         }
-
         .card {
             border: 1px solid #ddd;
             background: white;
@@ -91,28 +35,23 @@ body {
             align-items: flex-start;
             gap: 15px;
         }
-
         .card img {
             width: 100px;
             height: 100px;
             object-fit: cover;
             border-radius: 5px;
         }
-
         .card-content {
             flex-grow: 1;
         }
-
         .card-content h3 {
             margin: 0;
             font-size: 1.2em;
             color: #007bff;
         }
-
         .card-content p {
             color: #333;
         }
-
         button {
             padding: 10px 20px;
             background-color: #007bff;
@@ -121,70 +60,67 @@ body {
             border-radius: 5px;
             cursor: pointer;
         }
-
         button:hover {
             background-color: #0056b3;
         }
-
-        .form-container {
-            max-width: 400px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: linear-gradient(145deg, #d8b9e8, #c694e6);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            color: #333;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        input[type="file"] {
-            padding: 5px;
-        }
-
         #map {
             height: 400px;
             margin-top: 20px;
             border-radius: 10px;
         }
-</style>
+    </style>
 </head>
 <body>
     <header>
         <h1>Cho và Nhận Miễn Phí</h1>
-        <div id="userGreeting" style="display: none;">
-            <p>Chào, <span id="username"></span>!</p>
-            <button onclick="logout()">Đăng xuất</button>
-        </div>
     </header>
     <main>
-        <div id="appContent" style="display: none;">
-            <h2>Danh sách bài đăng</h2>
-            <div id="postsContainer"></div>
-            
-            <h2>Đăng bài mới</h2>
-            <form id="postForm">
-                <input type="text" id="name" placeholder="Tên" required>
-                <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
-                <select id="type">
-                    <option value="Cho">Cho</option>
-                    <option value="Nhận">Nhận</option>
-                </select>
-                <input type="file" id="image" accept="image/*">
-                <button type="submit">Đăng bài</button>
-            </form>
-
-            <h2>Bản đồ OpenStreetMap</h2>
-            <div id="map"></div>
-        </div>
+        <h2>Bản đồ OpenStreetMap</h2>
+        <div id="map"></div>
     </main>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
+            authDomain: "imposing-elixir-420316.firebaseapp.com",
+            databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
+            projectId: "imposing-elixir-420316",
+            storageBucket: "imposing-elixir-420316.appspot.com",
+            messagingSenderId: "262290303005",
+            appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
+            measurementId: "G-VYN50WTNFG"
+        };
 
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        console.log("Firebase đã được khởi tạo thành công!");
+
+        // Kết nối với Firebase Database
+        const database = firebase.database();
+        database.ref('test/connection')
+            .set({ status: 'Connected' })
+            .then(() => console.log("Đã ghi dữ liệu vào Firebase Database!"))
+            .catch(error => console.error("Lỗi khi ghi dữ liệu vào Firebase:", error));
+
+        // Initialize the map
+        function initMap() {
+            const map = L.map('map').setView([10.7769, 106.7009], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+
+        window.onload = function() {
+            initMap();
+        };
+    </script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+</html>
+
     <script>
         function initializeAdminAccount() {
             const users = JSON.parse(localStorage.getItem('users')) || {};
