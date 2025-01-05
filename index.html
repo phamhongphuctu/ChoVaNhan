@@ -5,30 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-   <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: #fff;
+        }
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
-    authDomain: "imposing-elixir-420316.firebaseapp.com",
-    databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
-    projectId: "imposing-elixir-420316",
-    storageBucket: "imposing-elixir-420316.firebasestorage.app",
-    messagingSenderId: "262290303005",
-    appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
-    measurementId: "G-VYN50WTNFG"
-  };
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script> <style>
+        main {
+            padding: 20px;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cho và Nhận Miễn Phí</h1>
+    </header>
+    <main>
+        <h2>Chào mừng bạn đến với hệ thống Firebase!</h2>
+    </main>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuqfhraXc8rhLNoKqc9nu1CmkQB9OIjY0",
+            authDomain: "imposing-elixir-420316.firebaseapp.com",
+            databaseURL: "https://imposing-elixir-420316-default-rtdb.firebaseio.com",
+            projectId: "imposing-elixir-420316",
+            storageBucket: "imposing-elixir-420316.appspot.com",
+            messagingSenderId: "262290303005",
+            appId: "1:262290303005:web:b7b94e042d2a6c46ed3ef4",
+            measurementId: "G-VYN50WTNFG"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const analytics = firebase.analytics();
+
+        console.log("Firebase đã được khởi tạo thành công!");
+
+        // Kết nối Firebase Database
+        const database = firebase.database();
+        database.ref('test/connection')
+            .set({ status: 'Connected' })
+            .then(() => console.log("Đã ghi dữ liệu vào Firebase Database!"))
+            .catch(error => console.error("Lỗi khi ghi dữ liệu vào Firebase:", error));
+    </script>
+</body>
+</html>
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
