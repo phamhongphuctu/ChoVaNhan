@@ -323,37 +323,37 @@ header {
         }
 
         document.getElementById('postForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const type = document.getElementById('type').value;
+    const content = document.getElementById('content').value;
+    const imageFile = document.getElementById('image').files[0];
+    const currentUser = localStorage.getItem('currentUser'); // Lấy tên người dùng hiện tại
 
-            const name = document.getElementById('name').value;
-            const type = document.getElementById('type').value;
-            const content = document.getElementById('content').value;
-            const imageFile = document.getElementById('image').files[0];
+    const reader = new FileReader();
+    reader.onload = function() {
+        const imageBase64 = reader.result;
 
-            const reader = new FileReader();
-            reader.onload = function() {
-                const imageBase64 = reader.result;
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.push({ name, type, content, image: imageBase64, username: currentUser }); // Thêm username
+        localStorage.setItem('posts', JSON.stringify(posts));
 
-                const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content, image: imageBase64 });
-                localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Bài đăng đã được lưu!');
+        loadPosts();
+    };
 
-                alert('Bài đăng đã được lưu!');
-                loadPosts();
-            };
+    if (imageFile) {
+        reader.readAsDataURL(imageFile);
+    } else {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
+        posts.push({ name, type, content, image: '', username: currentUser }); // Thêm username
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Bài đăng đã được lưu!');
+        loadPosts();
+    }
 
-            if (imageFile) {
-                reader.readAsDataURL(imageFile);
-            } else {
-                const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content, image: 'https://via.placeholder.com/100' });
-                localStorage.setItem('posts', JSON.stringify(posts));
-                alert('Bài đăng đã được lưu!');
-                loadPosts();
-            }
-
-            document.getElementById('postForm').reset();
-        });
+    document.getElementById('postForm').reset();
+});
 
         function initMap() {
             const mapElement = document.getElementById('map');
