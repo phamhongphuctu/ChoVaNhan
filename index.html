@@ -257,7 +257,12 @@ function submitPost() {
         loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     }
 }
-
+function resetPostForm() {
+    document.getElementById('postTitle').value = '';
+    document.getElementById('postContent').value = '';
+    document.getElementById('provinceSelect').value = '';
+    document.getElementById('postImage').value = '';
+}
 function loadCountryPosts(country) {
     const postsList = document.getElementById('postsList');
     postsList.innerHTML = ''; // Xóa danh sách cũ
