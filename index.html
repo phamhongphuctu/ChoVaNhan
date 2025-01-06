@@ -337,20 +337,27 @@ header {
             loadPosts();
         }
 
-        document.getElementById('postForm')?.addEventListener('submit', function(e) {
+        document.getElementById('postForm').addEventListener('submit', function (e) {
     e.preventDefault();
+
     const name = document.getElementById('name').value;
     const type = document.getElementById('type').value;
     const content = document.getElementById('content').value;
+    const country = document.getElementById('countrySelect').value;
+    const province = document.getElementById('provinceSelect').value;
     const imageFile = document.getElementById('image').files[0];
-    const currentUser = localStorage.getItem('currentUser'); // Lấy tên người dùng hiện tại
+
+    if (!country || !province) {
+        alert('Vui lòng chọn quốc gia và tỉnh/thành phố!');
+        return;
+    }
 
     const reader = new FileReader();
-    reader.onload = function() {
+    reader.onload = function () {
         const imageBase64 = reader.result;
 
         const posts = JSON.parse(localStorage.getItem('posts')) || [];
-        posts.push({ name, type, content, image: imageBase64, username: currentUser }); // Thêm username
+        posts.push({ name, type, content, country, province, image: imageBase64 });
         localStorage.setItem('posts', JSON.stringify(posts));
 
         alert('Bài đăng đã được lưu!');
@@ -361,7 +368,7 @@ header {
         reader.readAsDataURL(imageFile);
     } else {
         const posts = JSON.parse(localStorage.getItem('posts')) || [];
-        posts.push({ name, type, content, image: '', username: currentUser }); // Thêm username
+        posts.push({ name, type, content, country, province, image: '' });
         localStorage.setItem('posts', JSON.stringify(posts));
         alert('Bài đăng đã được lưu!');
         loadPosts();
