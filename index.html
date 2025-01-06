@@ -97,46 +97,15 @@ header {
         }
 
         .form-container {
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: linear-gradient(145deg, #d8b9e8, #c694e6);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Khoảng cách giữa các trường */
-}
-
-.form-container input,
-.form-container select,
-.form-container button {
-    width: 100%;
-    padding: 10px;
-    margin: 0; /* Xóa khoảng cách mặc định */
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-}
-
-.form-container input::placeholder {
-    color: #aaa; /* Màu placeholder */
-}
-
-.form-container button {
-    background-color: #007bff;
-    color: white;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.form-container button:hover {
-    background-color: #0056b3;
-}
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #d8b9e8, #c694e6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
 
         input, textarea, select {
             width: 100%;
@@ -227,58 +196,17 @@ header {
         }
 
         function showLogin() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="form-container">
-            <h2>Đăng nhập</h2>
-            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-
-            <!-- Mục chọn quốc gia -->
-            <select id="countrySelect" required>
-                <option value="">Chọn quốc gia</option>
-                <option value="Vietnam">Việt Nam</option>
-                <option value="USA">Hoa Kỳ</option>
-                <option value="Canada">Canada</option>
-            </select>
-
-            <!-- Mục chọn tỉnh/thành phố -->
-            <select id="provinceSelect" required>
-                <option value="">Chọn tỉnh/thành phố</option>
-            </select>
-
-            <button onclick="login()">Đăng nhập</button>
-            <button onclick="returnToHome()">Quay lại trang chủ</button>
-        </div>
-    `;
-
-    // Gọi hàm xử lý sự kiện thay đổi quốc gia
-    setupCountryChangeListener('countrySelect', 'provinceSelect');
-}
-function setupCountryChangeListener(countrySelectId, provinceSelectId) {
-    const countrySelect = document.getElementById(countrySelectId);
-    const provinceSelect = document.getElementById(provinceSelectId);
-
-    const provincesByCountry = {
-        Vietnam: ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'],
-        USA: ['New York', 'California', 'Texas'],
-        Canada: ['Ontario', 'Quebec', 'British Columbia']
-    };
-
-    countrySelect.addEventListener('change', function () {
-        const selectedCountry = this.value;
-        provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
-
-        if (provincesByCountry[selectedCountry]) {
-            provincesByCountry[selectedCountry].forEach(province => {
-                const option = document.createElement('option');
-                option.value = province;
-                option.textContent = province;
-                provinceSelect.appendChild(option);
-            });
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
         }
-    });
-}
 
         function showRegister() {
             const main = document.querySelector('main');
@@ -325,148 +253,18 @@ function setupCountryChangeListener(countrySelectId, provinceSelectId) {
         }
 
         function login() {
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-    const country = document.getElementById('countrySelect').value;
-    const province = document.getElementById('provinceSelect').value;
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
 
-    if (!country || !province) {
-        alert('Vui lòng chọn quốc gia và tỉnh/thành phố!');
-        return;
-    }
-
-    const users = JSON.parse(localStorage.getItem('users')) || {};
-    if (users[username] === password) {
-        localStorage.setItem('currentUser', username);
-        alert(`Đăng nhập thành công!\nTên: ${username}\nQuốc gia: ${country}\nTỉnh/Thành phố: ${province}`);
-
-        function renderPostsPage() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="main-container">
-            <div class="left-ad">
-                <!-- Quảng cáo bên trái -->
-                <p>Quảng cáo bên trái</p>
-            </div>
-            <div class="content-section">
-                <h2>Danh sách bài đăng</h2>
-                <div id="postsContainer"></div>
-                <h2>Đăng bài mới</h2>
-                <form id="postForm">
-                    <input type="text" id="name" placeholder="Tên bài đăng" required>
-                    <textarea id="content" rows="4" placeholder="Nội dung bài đăng" required></textarea>
-                    <select id="type">
-                        <option value="Cho">Cho</option>
-                        <option value="Nhận">Nhận</option>
-                    </select>
-                    <input type="file" id="image" accept="image/*">
-                    <button type="submit">Đăng bài</button>
-                </form>
-            </div>
-            <div class="right-ad">
-                <!-- Quảng cáo bên phải -->
-                <p>Quảng cáo bên phải</p>
-            </div>
-        </div>
-    `;
-
-    // Tải danh sách bài đăng
-    loadPosts();
-
-    // Xử lý sự kiện gửi form đăng bài
-    document.getElementById('postForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const name = document.getElementById('name').value;
-        const type = document.getElementById('type').value;
-        const content = document.getElementById('content').value;
-        const imageFile = document.getElementById('image').files[0];
-
-        const reader = new FileReader();
-        reader.onload = function () {
-            const imageBase64 = reader.result;
-            const posts = JSON.parse(localStorage.getItem('posts')) || [];
-            posts.push({ name, type, content, image: imageBase64 });
-            localStorage.setItem('posts', JSON.stringify(posts));
-            alert('Bài đăng đã được lưu!');
-            loadPosts();
-        };
-
-        if (imageFile) {
-            reader.readAsDataURL(imageFile);
-        } else {
-            const posts = JSON.parse(localStorage.getItem('posts')) || [];
-            posts.push({ name, type, content, image: '' });
-            localStorage.setItem('posts', JSON.stringify(posts));
-            alert('Bài đăng đã được lưu!');
-            loadPosts();
-        }
-
-        document.getElementById('postForm').reset();
-    });
-}
-
-                    <!-- Quảng cáo bên trái -->
-                    <p>Quảng cáo bên trái</p>
-                </div>
-                <div class="content-section">
-                    <h2>Danh sách bài đăng</h2>
-                    <div id="postsContainer"></div>
-                    <h2>Đăng bài mới</h2>
-                    <form id="postForm">
-                        <input type="text" id="name" placeholder="Tên bài đăng" required>
-                        <textarea id="content" rows="4" placeholder="Nội dung bài đăng" required></textarea>
-                        <select id="type">
-                            <option value="Cho">Cho</option>
-                            <option value="Nhận">Nhận</option>
-                        </select>
-                        <input type="file" id="image" accept="image/*">
-                        <button type="submit">Đăng bài</button>
-                    </form>
-                </div>
-                <div class="right-ad">
-                    <!-- Quảng cáo bên phải -->
-                    <p>Quảng cáo bên phải</p>
-                </div>
-            </div>
-        `;
-
-        // Tải lại danh sách bài đăng
-        loadPosts();
-
-        // Xử lý sự kiện gửi form đăng bài
-        document.getElementById('postForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const type = document.getElementById('type').value;
-            const content = document.getElementById('content').value;
-            const imageFile = document.getElementById('image').files[0];
-
-            const reader = new FileReader();
-            reader.onload = function () {
-                const imageBase64 = reader.result;
-                const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content, image: imageBase64 });
-                localStorage.setItem('posts', JSON.stringify(posts));
-                alert('Bài đăng đã được lưu!');
-                loadPosts();
-            };
-
-            if (imageFile) {
-                reader.readAsDataURL(imageFile);
+            const users = JSON.parse(localStorage.getItem('users')) || {};
+            if (users[username] === password) {
+                localStorage.setItem('currentUser', username);
+                alert('Đăng nhập thành công!');
+                location.reload();
             } else {
-                const posts = JSON.parse(localStorage.getItem('posts')) || [];
-                posts.push({ name, type, content, image: '' });
-                localStorage.setItem('posts', JSON.stringify(posts));
-                alert('Bài đăng đã được lưu!');
-                loadPosts();
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
             }
-
-            document.getElementById('postForm').reset();
-        });
-    } else {
-        alert('Tên người dùng hoặc mật khẩu không đúng!');
-    }
-}
+        }
 
         function logout() {
             localStorage.removeItem('currentUser');
