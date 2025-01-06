@@ -105,6 +105,24 @@
         <div class="posts-container" id="postsContainer" style="display: none;">
     <h2>Danh sách bài đăng</h2>
     
+    <!-- Form đăng bài mới -->
+    <div id="postForm">
+        <h2>Đăng bài mới</h2>
+        <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
+        <textarea id="postContent" placeholder="Nội dung bài đăng" required></textarea>
+        <select id="countrySelect" required>
+            <option value="">Chọn quốc gia</option>
+            <option value="Vietnam">Việt Nam</option>
+            <option value="USA">Hoa Kỳ</option>
+            <option value="Canada">Canada</option>
+        </select>
+        <select id="provinceSelect" required>
+            <option value="">Chọn tỉnh/thành phố</option>
+        </select>
+        <input type="file" id="postImage" accept="image/*">
+        <button onclick="submitPost()">Đăng bài</button>
+    </div>
+
     <!-- Chọn quốc gia để xem bài đăng -->
     <div>
         <h3>Chọn quốc gia để xem bài đăng</h3>
@@ -115,6 +133,7 @@
     
     <div id="postsList"></div>
 </div>
+
 
     </main>
 
