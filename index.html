@@ -144,16 +144,31 @@ header {
                 <div id="postsContainer"></div>
                 
                 <h2>Đăng bài mới</h2>
-                <form id="postForm">
-                    <input type="text" id="name" placeholder="Tên" required>
-                    <textarea id="content" rows="4" placeholder="Nội dung" required></textarea>
-                    <select id="type">
-                        <option value="Cho">Cho</option>
-                        <option value="Nhận">Nhận</option>
-                    </select>
-                    <input type="file" id="image" accept="image/*">
-                    <button type="submit">Đăng bài</button>
-                </form>
+<form id="postForm">
+    <input type="text" id="name" placeholder="Tên bài đăng" required>
+    <textarea id="content" rows="4" placeholder="Nội dung bài đăng" required></textarea>
+    
+    <!-- Thêm mục chọn quốc gia -->
+    <select id="countrySelect" required>
+        <option value="">Chọn quốc gia</option>
+        <option value="Vietnam">Việt Nam</option>
+        <option value="USA">Hoa Kỳ</option>
+        <option value="Canada">Canada</option>
+    </select>
+    
+    <!-- Thêm mục chọn tỉnh/thành phố -->
+    <select id="provinceSelect" required>
+        <option value="">Chọn tỉnh/thành phố</option>
+    </select>
+
+    <select id="type">
+        <option value="Cho">Cho</option>
+        <option value="Nhận">Nhận</option>
+    </select>
+    <input type="file" id="image" accept="image/*">
+    <button type="submit">Đăng bài</button>
+</form>
+
             </div>
         </div>
         <div class="right-ad">
