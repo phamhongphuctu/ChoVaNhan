@@ -1,118 +1,97 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cho và Nhận Miễn Phí</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #9b59b6;
-            color: #fff;
-            text-align: center;
-        }
-        .form-container {
-            max-width: 400px;
-            margin: 50px auto;
-            background: #fff;
-            color: #333;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .form-container input, .form-container button {
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        .form-container button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        .form-container button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <h1>Cho và Nhận Miễn Phí</h1>
-    <div id="loginContainer" class="form-container">
-        <h2>Đăng nhập</h2>
-        <input type="text" id="loginUsername" placeholder="Tên người dùng">
-        <input type="password" id="loginPassword" placeholder="Mật khẩu">
-        <button onclick="login()">Đăng nhập</button>
-        <p>Bạn chưa có tài khoản? <a href="#" onclick="showRegister()">Đăng ký</a></p>
-    </div>
+/* styles.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Màu nền */
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 
-    <div id="registerContainer" class="form-container" style="display: none;">
-        <h2>Đăng ký</h2>
-        <input type="text" id="registerUsername" placeholder="Tên người dùng">
-        <input type="password" id="registerPassword" placeholder="Mật khẩu">
-        <button onclick="register()">Đăng ký</button>
-        <p>Đã có tài khoản? <a href="#" onclick="showLogin()">Đăng nhập</a></p>
-    </div>
+.container {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
 
-    <div id="appContent" style="display: none;">
-        <h2>Chào mừng bạn!</h2>
-        <button onclick="logout()">Đăng xuất</button>
-    </div>
+header {
+    background-color: #28a745; /* Màu xanh lá */
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+}
 
-    <script>
-        const users = JSON.parse(localStorage.getItem('users')) || {};
+header h1 {
+    margin: 0;
+    font-size: 20px;
+}
 
-        function showLogin() {
-            document.getElementById('loginContainer').style.display = 'block';
-            document.getElementById('registerContainer').style.display = 'none';
-            document.getElementById('appContent').style.display = 'none';
-        }
+main {
+    padding: 20px;
+}
 
-        function showRegister() {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('registerContainer').style.display = 'block';
-            document.getElementById('appContent').style.display = 'none';
-        }
+h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
 
-        function login() {
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
+.input-group {
+    margin-bottom: 15px;
+}
 
-            if (users[username] && users[username] === password) {
-                alert('Đăng nhập thành công!');
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('appContent').style.display = 'block';
-            } else {
-                alert('Tên người dùng hoặc mật khẩu không đúng!');
-            }
-        }
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #555;
+}
 
-        function register() {
-            const username = document.getElementById('registerUsername').value;
-            const password = document.getElementById('registerPassword').value;
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
 
-            if (users[username]) {
-                alert('Tên người dùng đã tồn tại!');
-                return;
-            }
+.input-group input:focus {
+    border-color: #28a745;
+}
 
-            users[username] = password;
-            localStorage.setItem('users', JSON.stringify(users));
-            alert('Đăng ký thành công!');
-            showLogin();
-        }
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
 
-        function logout() {
-            alert('Bạn đã đăng xuất!');
-            showLogin();
-        }
+button:hover {
+    background-color: #218838;
+}
 
-        // Hiển thị form đăng nhập khi tải trang
-        showLogin();
-    </script>
-</body>
-</html>
+.register-link {
+    text-align: center;
+    font-size: 14px;
+}
 
+.register-link a {
+    color: #28a745;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
