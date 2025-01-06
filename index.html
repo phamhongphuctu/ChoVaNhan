@@ -6,23 +6,20 @@
     <title>Cho và Nhận Miễn Phí</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
+        /* CSS toàn trang */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #9b59b6; /* Màu tím cho toàn bộ nền */
-            color: #fff; /* Màu chữ trắng để tương phản */
+            background-color: #9b59b6; /* Màu tím nền */
+            color: #fff; /* Màu chữ trắng */
         }
 
         header {
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column; /* Căn theo chiều dọc */
-            align-items: center; /* Căn giữa nội dung theo chiều ngang */
-            justify-content: center; /* Đảm bảo căn giữa nội dung */
+            padding: 20px;
             text-align: center;
-            background-color: #9b59b6; /* Màu tím cho phần tiêu đề */
-            color: #fff; /* Màu chữ trắng */
+            background-color: #9b59b6;
+            color: #fff;
         }
 
         .main-container {
@@ -57,12 +54,38 @@
         button:hover {
             background-color: #007bff;
         }
+
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #d8b9e8, #c694e6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        #map {
+            height: 400px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
+    <!-- Phần tiêu đề -->
     <header>
         <h1>Cho và Nhận Miễn Phí</h1>
     </header>
+
+    <!-- Nội dung chính -->
     <div class="main-container">
         <h2>Chọn quốc gia và tỉnh/thành phố</h2>
         <select id="countrySelect">
@@ -77,6 +100,7 @@
         <button onclick="showSelection()">Xác nhận</button>
     </div>
 
+    <!-- JavaScript -->
     <script>
         function setupCountryChangeListener(countrySelectId, provinceSelectId) {
             const countrySelect = document.getElementById(countrySelectId);
@@ -88,7 +112,7 @@
                 Canada: ['Ontario', 'Quebec', 'British Columbia']
             };
 
-            countrySelect.addEventListener('change', function() {
+            countrySelect.addEventListener('change', function () {
                 const selectedCountry = countrySelect.value;
                 provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
 
@@ -114,39 +138,14 @@
             }
         }
 
-        // Gọi hàm để thiết lập sự kiện
-        setupCountryChangeListener('countrySelect', 'provinceSelect');
+        // Gọi hàm thiết lập sự kiện khi trang được tải
+        document.addEventListener('DOMContentLoaded', function () {
+            setupCountryChangeListener('countrySelect', 'provinceSelect');
+        });
     </script>
 </body>
 </html>
 
-        .form-container {
-            max-width: 400px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: linear-gradient(145deg, #d8b9e8, #c694e6);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            color: #333;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        input[type="file"] {
-            padding: 5px;
-        }
-
-        #map {
-            height: 400px;
-            margin-top: 20px;
-            border-radius: 10px;
-        }
-    </style>
 </head>
 <body>
     <header>
