@@ -189,6 +189,7 @@ function submitPost() {
     const country = document.getElementById('countrySelect').value;
     const province = document.getElementById('provinceSelect').value;
     const imageFile = document.getElementById('postImage').files[0];
+    const author = document.getElementById('username').value.trim(); // Lấy tên người đăng nhập
 
     if (!title || !content || !country || !province) {
         alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
@@ -198,7 +199,7 @@ function submitPost() {
     const reader = new FileReader();
     reader.onload = function () {
         const imageBase64 = reader.result;
-        const newPost = { title, content, country, province, image: imageBase64 };
+        const newPost = { title, content, country, province, image: imageBase64, author, status: 'Chưa giao dịch' };
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
         alert('Đăng bài thành công!');
@@ -209,7 +210,7 @@ function submitPost() {
     if (imageFile) {
         reader.readAsDataURL(imageFile); // Xử lý ảnh
     } else {
-        const newPost = { title, content, country, province, image: '' };
+        const newPost = { title, content, country, province, image: '', author, status: 'Chưa giao dịch' };
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts));
         alert('Đăng bài thành công!');
@@ -219,12 +220,13 @@ function submitPost() {
 }
 
 function loadCountryPosts(country) {
+    const username = document.getElementById('username').value.trim(); // Lấy người dùng hiện tại
     const postsList = document.getElementById('postsList');
     postsList.innerHTML = ''; // Xóa danh sách cũ
 
     const countryPosts = posts.filter(post => post.country === country); // Lọc bài đăng theo quốc gia
 
-    countryPosts.forEach(post => {
+    countryPosts.forEach((post, index) => {
         const postDiv = document.createElement('div');
         postDiv.className = 'post';
         postDiv.innerHTML = `
@@ -232,11 +234,32 @@ function loadCountryPosts(country) {
             <p>${post.content}</p>
             <p><strong>Quốc gia:</strong> ${post.country}</p>
             <p><strong>Tỉnh/Thành phố:</strong> ${post.province}</p>
+            <p><strong>Người đăng:</strong> ${post.author}</p>
+            <p><strong>Trạng thái:</strong> ${post.status}</p>
             ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
+            ${post.author === username || username === 'admin' ? `
+                <button onclick="deletePost(${index})">Xóa bài đăng</button>
+                <button onclick="markAsCompleted(${index})">Đã giao dịch xong</button>
+            ` : ''}
         `;
         postsList.appendChild(postDiv);
     });
 }
+
+function deletePost(index) {
+    posts.splice(index, 1);
+    localStorage.setItem('posts', JSON.stringify(posts));
+    alert('Xóa bài đăng thành công!');
+    loadPosts();
+}
+
+function markAsCompleted(index) {
+    posts[index].status = 'Đã giao dịch xong';
+    localStorage.setItem('posts', JSON.stringify(posts));
+    alert('Đánh dấu bài đăng đã giao dịch xong!');
+    loadPosts();
+}
+
 
 function showCountryPosts(country) {
     document.getElementById('loginForm').style.display = 'none';
