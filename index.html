@@ -310,9 +310,11 @@ function setupCountryChangeListener(countrySelectId, provinceSelectId) {
 
     // Kiểm tra thông tin đăng nhập
     if (users[username] === password) {
-        alert(`Đăng nhập thành công!\nTên: ${username}\nQuốc gia: ${country}\nTỉnh/Thành phố: ${province}`);
         localStorage.setItem('currentUser', username); // Lưu người dùng hiện tại
-        location.reload(); // Tải lại trang để hiển thị nội dung phù hợp
+        alert(`Đăng nhập thành công!\nTên: ${username}\nQuốc gia: ${country}\nTỉnh/Thành phố: ${province}`);
+
+        // Hiển thị giao diện danh mục bài đăng
+        showPostsPage();
     } else {
         alert('Tên người dùng hoặc mật khẩu không đúng!');
     }
