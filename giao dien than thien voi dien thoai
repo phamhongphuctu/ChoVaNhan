@@ -191,8 +191,8 @@ function submitPost() {
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
         alert('Đăng bài thành công!');
-        loadPosts();
         document.getElementById('postForm').reset(); // Reset form
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     };
 
     if (imageFile) {
@@ -202,16 +202,18 @@ function submitPost() {
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts));
         alert('Đăng bài thành công!');
-        loadPosts();
         document.getElementById('postForm').reset();
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     }
 }
 
-function loadPosts() {
+function loadCountryPosts(country) {
     const postsList = document.getElementById('postsList');
     postsList.innerHTML = ''; // Xóa danh sách cũ
 
-    posts.forEach(post => {
+    const countryPosts = posts.filter(post => post.country === country); // Lọc bài đăng theo quốc gia
+
+    countryPosts.forEach(post => {
         const postDiv = document.createElement('div');
         postDiv.className = 'post';
         postDiv.innerHTML = `
@@ -223,6 +225,13 @@ function loadPosts() {
         `;
         postsList.appendChild(postDiv);
     });
+}
+
+function showCountryPosts(country) {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('postForm').style.display = 'none';
+    document.getElementById('postsContainer').style.display = 'block';
+    loadCountryPosts(country); // Hiển thị bài đăng của quốc gia được chọn
 }
 
     </script>
