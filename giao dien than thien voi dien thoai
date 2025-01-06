@@ -67,14 +67,21 @@
     <button onclick="logout()" style="display: none;" id="logoutButton">Đăng xuất</button>
 </header>
 
-    <main>
-        <div class="form-container" id="loginForm">
-            <h2>Đăng nhập</h2>
-            <input type="text" id="username" placeholder="Tên người dùng" required>
-            <input type="password" id="password" placeholder="Mật khẩu" required>
-            <button onclick="login()">Đăng nhập</button>
-            <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
-        </div>
+<!-- Thêm nút chọn quốc gia tại đây -->
+<div class="form-container">
+    <h2>Chọn quốc gia để xem bài đăng</h2>
+    <button onclick="showCountryPosts('Vietnam')">Xem bài đăng Việt Nam</button>
+    <button onclick="showCountryPosts('USA')">Xem bài đăng Hoa Kỳ</button>
+    <button onclick="showCountryPosts('Canada')">Xem bài đăng Canada</button>
+</div>
+
+<div class="form-container" id="loginForm">
+    <h2>Đăng nhập</h2>
+    <input type="text" id="username" placeholder="Tên người dùng" required>
+    <input type="password" id="password" placeholder="Mật khẩu" required>
+    <button onclick="login()">Đăng nhập</button>
+    <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
+</div>
 
         <div class="form-container" id="registerForm" style="display: none;">
             <h2>Đăng ký</h2>
