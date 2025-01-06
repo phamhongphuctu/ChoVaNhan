@@ -116,6 +116,7 @@ function login() {
 
     if (users[username] === password) {
         alert('Đăng nhập thành công!');
+        document.getElementById('logoutButton').style.display = 'block';
         document.getElementById('loginForm').style.display = 'none';
         document.getElementById('postForm').style.display = 'block';
         document.getElementById('postsContainer').style.display = 'block';
