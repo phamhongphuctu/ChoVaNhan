@@ -109,10 +109,11 @@
 
     <script>
         const users = JSON.parse(localStorage.getItem('users')) || {}; // Lấy thông tin người dùng từ localStorage hoặc khởi tạo rỗng
+let posts = JSON.parse(localStorage.getItem('posts')) || []; // Lấy danh sách bài đăng từ localStorage hoặc khởi tạo rỗng
 
 function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
     if (users[username] === password) {
         alert('Đăng nhập thành công!');
@@ -127,8 +128,8 @@ function login() {
 }
 
 function register() {
-    const regUsername = document.getElementById('regUsername').value;
-    const regPassword = document.getElementById('regPassword').value;
+    const regUsername = document.getElementById('regUsername').value.trim();
+    const regPassword = document.getElementById('regPassword').value.trim();
 
     if (users[regUsername]) {
         alert('Tên người dùng đã tồn tại!');
@@ -149,75 +150,81 @@ function logout() {
     alert('Bạn đã đăng xuất thành công!');
 }
 
+document.getElementById('countrySelect').addEventListener('change', function () {
+    const country = this.value;
+    const provinceSelect = document.getElementById('provinceSelect');
 
-        document.getElementById('countrySelect').addEventListener('change', function () {
-            const country = this.value;
-            const provinceSelect = document.getElementById('provinceSelect');
+    const provincesByCountry = {
+        Vietnam: ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'],
+        USA: ['New York', 'California', 'Texas'],
+        Canada: ['Ontario', 'Quebec', 'British Columbia']
+    };
 
-            const provincesByCountry = {
-                Vietnam: ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'],
-                USA: ['New York', 'California', 'Texas'],
-                Canada: ['Ontario', 'Quebec', 'British Columbia']
-            };
+    provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
 
-            provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
-
-            if (provincesByCountry[country]) {
-                provincesByCountry[country].forEach(province => {
-                    const option = document.createElement('option');
-                    option.value = province;
-                    option.textContent = province;
-                    provinceSelect.appendChild(option);
-                });
-            }
+    if (provincesByCountry[country]) {
+        provincesByCountry[country].forEach(province => {
+            const option = document.createElement('option');
+            option.value = province;
+            option.textContent = province;
+            provinceSelect.appendChild(option);
         });
+    }
+});
 
-        function submitPost() {
-            const title = document.getElementById('postTitle').value;
-            const content = document.getElementById('postContent').value;
-            const country = document.getElementById('countrySelect').value;
-            const province = document.getElementById('provinceSelect').value;
-            const imageFile = document.getElementById('postImage').files[0];
+function submitPost() {
+    const title = document.getElementById('postTitle').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    const country = document.getElementById('countrySelect').value;
+    const province = document.getElementById('provinceSelect').value;
+    const imageFile = document.getElementById('postImage').files[0];
 
-            if (!country || !province) {
-                alert('Vui lòng chọn quốc gia và tỉnh/thành phố!');
-                return;
-            }
+    if (!title || !content || !country || !province) {
+        alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
+        return;
+    }
 
-            const reader = new FileReader();
-            reader.onload = function () {
-                const imageBase64 = reader.result;
-                posts.push({ title, content, country, province, image: imageBase64 });
-                alert('Đăng bài thành công!');
-                loadPosts();
-            };
+    const reader = new FileReader();
+    reader.onload = function () {
+        const imageBase64 = reader.result;
+        const newPost = { title, content, country, province, image: imageBase64 };
+        posts.push(newPost);
+        localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
+        alert('Đăng bài thành công!');
+        loadPosts();
+        document.getElementById('postForm').reset(); // Reset form
+    };
 
-            if (imageFile) {
-                reader.readAsDataURL(imageFile);
-            } else {
-                posts.push({ title, content, country, province, image: '' });
-                alert('Đăng bài thành công!');
-                loadPosts();
-            }
-        }
+    if (imageFile) {
+        reader.readAsDataURL(imageFile); // Xử lý ảnh
+    } else {
+        const newPost = { title, content, country, province, image: '' };
+        posts.push(newPost);
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Đăng bài thành công!');
+        loadPosts();
+        document.getElementById('postForm').reset();
+    }
+}
 
-        function loadPosts() {
-            const postsList = document.getElementById('postsList');
-            postsList.innerHTML = '';
+function loadPosts() {
+    const postsList = document.getElementById('postsList');
+    postsList.innerHTML = ''; // Xóa danh sách cũ
 
-            posts.forEach(post => {
-                const postDiv = document.createElement('div');
-                postDiv.className = 'post';
-                postDiv.innerHTML = `
-                    <h3>${post.title}</h3>
-                    <p>${post.content}</p>
-                    <p><strong>Quốc gia:</strong> ${post.country}</p>
-                    <p><strong>Tỉnh/Thành phố:</strong> ${post.province}</p>
-                    ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
-                `;
-                postsList.appendChild(postDiv);
-            });
-        }
+    posts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post';
+        postDiv.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            <p><strong>Quốc gia:</strong> ${post.country}</p>
+            <p><strong>Tỉnh/Thành phố:</strong> ${post.province}</p>
+            ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
+        `;
+        postsList.appendChild(postDiv);
+    });
+}
+
     </script>
 </body>
 </html>
