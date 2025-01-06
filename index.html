@@ -4,129 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        /* CSS toàn trang */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #9b59b6; /* Màu tím nền */
-            color: #fff; /* Màu chữ trắng */
-        }
-
-        header {
-            padding: 20px;
-            text-align: center;
             background-color: #9b59b6;
             color: #fff;
         }
 
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        header {
+            text-align: center;
             padding: 20px;
         }
 
-        select {
-            margin: 10px 0;
+        .main-container {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .left-ad, .right-ad {
+            flex: 1;
+            background-color: #7d3c98;
+            color: #fff;
+            border-radius: 10px;
             padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #fff;
-            color: #333;
-            width: 300px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .content-section {
+            flex: 3; /* Phần bài đăng chiếm nhiều không gian hơn */
+            background-color: #fff;
+            color: #000;
+            border-radius: 10px;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        .card {
+            background-color: #f5f5f5;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .card-content h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .card-content p {
+            margin: 0;
             font-size: 16px;
         }
 
         button {
-            margin-top: 20px;
-            padding: 10px 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
             border: none;
             border-radius: 5px;
-            background-color: #0056b3;
-            color: #fff;
-            font-size: 16px;
             cursor: pointer;
         }
 
         button:hover {
-            background-color: #007bff;
-        }
-
-        .form-container {
-            max-width: 400px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background: linear-gradient(145deg, #d8b9e8, #c694e6);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            color: #333;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        #map {
-            height: 400px;
-            margin-top: 20px;
-            border-radius: 10px;
+            background-color: #0056b3;
         }
     </style>
-</head>
-<body>
-   
-    <!-- JavaScript -->
-    <script>
-        function setupCountryChangeListener(countrySelectId, provinceSelectId) {
-            const countrySelect = document.getElementById(countrySelectId);
-            const provinceSelect = document.getElementById(provinceSelectId);
-
-            const provincesByCountry = {
-                Vietnam: ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'],
-                USA: ['New York', 'California', 'Texas'],
-                Canada: ['Ontario', 'Quebec', 'British Columbia']
-            };
-
-            countrySelect.addEventListener('change', function () {
-                const selectedCountry = countrySelect.value;
-                provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
-
-                if (provincesByCountry[selectedCountry]) {
-                    provincesByCountry[selectedCountry].forEach(province => {
-                        const option = document.createElement('option');
-                        option.value = province;
-                        option.textContent = province;
-                        provinceSelect.appendChild(option);
-                    });
-                }
-            });
-        }
-
-        function showSelection() {
-            const country = document.getElementById('countrySelect').value;
-            const province = document.getElementById('provinceSelect').value;
-
-            if (country && province) {
-                alert(`Bạn đã chọn: ${province}, ${country}`);
-            } else {
-                alert('Vui lòng chọn quốc gia và tỉnh/thành phố!');
-            }
-        }
-
-        // Gọi hàm thiết lập sự kiện khi trang được tải
-        document.addEventListener('DOMContentLoaded', function () {
-            setupCountryChangeListener('countrySelect', 'provinceSelect');
-        });
-    </script>
-</body>
-</html>
-
 </head>
 <body>
     <header>
@@ -137,16 +93,28 @@
         </div>
     </header>
     <main>
-    <div class="main-container">
-        <div class="left-ad">
-            <!-- Quảng cáo bên trái -->
-            <p>Quảng cáo bên trái</p>
-        </div>
-        <div class="content-section">
-            <div id="appContent" style="display: none;">
+        <div class="main-container">
+            <div class="left-ad">
+                <p>Quảng cáo bên trái</p>
+            </div>
+            <div class="content-section">
                 <h2>Danh sách bài đăng</h2>
-                <div id="postsContainer"></div>
-                
+                <div id="postsContainer">
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" alt="Image">
+                        <div class="card-content">
+                            <h3>Tên bài đăng</h3>
+                            <p>Nội dung bài đăng...</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="https://via.placeholder.com/150" alt="Image">
+                        <div class="card-content">
+                            <h3>Tên bài đăng khác</h3>
+                            <p>Nội dung khác...</p>
+                        </div>
+                    </div>
+                </div>
                 <h2>Đăng bài mới</h2>
                 <form id="postForm">
                     <input type="text" id="name" placeholder="Tên" required>
@@ -159,14 +127,13 @@
                     <button type="submit">Đăng bài</button>
                 </form>
             </div>
+            <div class="right-ad">
+                <p>Quảng cáo bên phải</p>
+            </div>
         </div>
-        <div class="right-ad">
-            <!-- Quảng cáo bên phải -->
-            <p>Quảng cáo bên phải</p>
-        </div>
-    </div>
-</main>
-
+    </main>
+</body>
+</html>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
