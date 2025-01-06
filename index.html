@@ -325,27 +325,84 @@ function setupCountryChangeListener(countrySelectId, provinceSelectId) {
         }
 
         function login() {
-    const username = document.getElementById('loginUsername').value.trim();
-    const password = document.getElementById('loginPassword').value.trim();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
     const country = document.getElementById('countrySelect').value;
     const province = document.getElementById('provinceSelect').value;
 
-    // Kiểm tra nếu các trường bị bỏ trống
-    if (!username || !password || !country || !province) {
-        alert('Vui lòng điền đầy đủ thông tin!');
+    if (!country || !province) {
+        alert('Vui lòng chọn quốc gia và tỉnh/thành phố!');
         return;
     }
 
-    // Lấy danh sách người dùng từ localStorage
     const users = JSON.parse(localStorage.getItem('users')) || {};
-
-    // Kiểm tra thông tin đăng nhập
     if (users[username] === password) {
-        localStorage.setItem('currentUser', username); // Lưu người dùng hiện tại
+        localStorage.setItem('currentUser', username);
         alert(`Đăng nhập thành công!\nTên: ${username}\nQuốc gia: ${country}\nTỉnh/Thành phố: ${province}`);
 
-        // Hiển thị giao diện danh mục bài đăng
-        showPostsPage();
+        // Hiển thị danh mục bài đăng sau khi đăng nhập
+        const main = document.querySelector('main');
+        main.innerHTML = `
+            <div class="main-container">
+                <div class="left-ad">
+                    <!-- Quảng cáo bên trái -->
+                    <p>Quảng cáo bên trái</p>
+                </div>
+                <div class="content-section">
+                    <h2>Danh sách bài đăng</h2>
+                    <div id="postsContainer"></div>
+                    <h2>Đăng bài mới</h2>
+                    <form id="postForm">
+                        <input type="text" id="name" placeholder="Tên bài đăng" required>
+                        <textarea id="content" rows="4" placeholder="Nội dung bài đăng" required></textarea>
+                        <select id="type">
+                            <option value="Cho">Cho</option>
+                            <option value="Nhận">Nhận</option>
+                        </select>
+                        <input type="file" id="image" accept="image/*">
+                        <button type="submit">Đăng bài</button>
+                    </form>
+                </div>
+                <div class="right-ad">
+                    <!-- Quảng cáo bên phải -->
+                    <p>Quảng cáo bên phải</p>
+                </div>
+            </div>
+        `;
+
+        // Tải lại danh sách bài đăng
+        loadPosts();
+
+        // Xử lý sự kiện gửi form đăng bài
+        document.getElementById('postForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const type = document.getElementById('type').value;
+            const content = document.getElementById('content').value;
+            const imageFile = document.getElementById('image').files[0];
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                const imageBase64 = reader.result;
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push({ name, type, content, image: imageBase64 });
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được lưu!');
+                loadPosts();
+            };
+
+            if (imageFile) {
+                reader.readAsDataURL(imageFile);
+            } else {
+                const posts = JSON.parse(localStorage.getItem('posts')) || [];
+                posts.push({ name, type, content, image: '' });
+                localStorage.setItem('posts', JSON.stringify(posts));
+                alert('Bài đăng đã được lưu!');
+                loadPosts();
+            }
+
+            document.getElementById('postForm').reset();
+        });
     } else {
         alert('Tên người dùng hoặc mật khẩu không đúng!');
     }
