@@ -229,6 +229,7 @@ function submitPost() {
     const country = document.getElementById('countrySelect').value;
     const province = document.getElementById('provinceSelect').value;
     const imageFile = document.getElementById('postImage').files[0];
+    const currentUser = localStorage.getItem('currentUser'); // Người dùng hiện tại
 
     if (!title || !content || !country || !province) {
         alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
@@ -238,25 +239,40 @@ function submitPost() {
     const reader = new FileReader();
     reader.onload = function () {
         const imageBase64 = reader.result;
-        const newPost = { title, content, country, province, image: imageBase64 };
+        const newPost = { 
+            title, 
+            content, 
+            country, 
+            province, 
+            image: imageBase64, 
+            username: currentUser // Lưu người đăng bài
+        };
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
         alert('Đăng bài thành công!');
-        document.getElementById('postForm').reset(); // Reset form
-        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
+        resetPostForm();
+        loadCountryPosts(country); // Tải lại bài đăng
     };
 
     if (imageFile) {
-        reader.readAsDataURL(imageFile); // Xử lý ảnh
+        reader.readAsDataURL(imageFile);
     } else {
-        const newPost = { title, content, country, province, image: '' };
+        const newPost = { 
+            title, 
+            content, 
+            country, 
+            province, 
+            image: '', 
+            username: currentUser // Lưu người đăng bài
+        };
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts));
         alert('Đăng bài thành công!');
-        document.getElementById('postForm').reset();
-        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
+        resetPostForm();
+        loadCountryPosts(country); // Tải lại bài đăng
     }
 }
+
 function resetPostForm() {
     document.getElementById('postTitle').value = '';
     document.getElementById('postContent').value = '';
