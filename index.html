@@ -142,10 +142,13 @@ function register() {
 }
 
 function logout() {
+    document.getElementById('logoutButton').style.display = 'none';
     document.getElementById('postForm').style.display = 'none';
     document.getElementById('postsContainer').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
+    alert('Bạn đã đăng xuất thành công!');
 }
+
 
         document.getElementById('countrySelect').addEventListener('change', function () {
             const country = this.value;
