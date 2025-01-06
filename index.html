@@ -198,15 +198,29 @@ header {
         function showLogin() {
             const main = document.querySelector('main');
             main.innerHTML = `
-                <div class="form-container">
-                    <h2>Đăng nhập</h2>
-                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-                    <button onclick="login()">Đăng nhập</button>
-                    <button onclick="returnToHome()">Quay lại trang chủ</button>
-                </div>
-            `;
-        }
+    <div class="form-container">
+        <h2>Đăng nhập</h2>
+        <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+        <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+
+        <!-- Thêm mục chọn quốc gia -->
+        <select id="countrySelect" required>
+            <option value="">Chọn quốc gia</option>
+            <option value="Vietnam">Việt Nam</option>
+            <option value="USA">Hoa Kỳ</option>
+            <option value="Canada">Canada</option>
+        </select>
+
+        <!-- Thêm mục chọn tỉnh/thành phố -->
+        <select id="provinceSelect" required>
+            <option value="">Chọn tỉnh/thành phố</option>
+        </select>
+
+        <button onclick="login()">Đăng nhập</button>
+        <button onclick="returnToHome()">Quay lại trang chủ</button>
+    </div>
+`;
+
 document.getElementById('countrySelect').addEventListener('change', function () {
     const country = this.value;
     const provinceSelect = document.getElementById('provinceSelect');
