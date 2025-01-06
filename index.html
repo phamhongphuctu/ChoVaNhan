@@ -3,185 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cho và Nhận Miễn Phí - Demo</title>
+    <title>Cho và Nhận Miễn Phí</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #9b59b6;
-            color: white;
-        }
-        header {
+            color: #fff;
             text-align: center;
-            padding: 20px;
-            background-color: #8e44ad;
         }
-        main {
+        .form-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: #fff;
+            color: #333;
+            border-radius: 10px;
             padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        .form-container, .posts-container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            color: black;
-            border-radius: 8px;
-        }
-        .form-container input, .form-container select, .form-container textarea {
+        .form-container input, .form-container button {
             width: 100%;
+            margin-bottom: 15px;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            font-size: 16px;
         }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #8e44ad;
-            color: white;
+        .form-container button {
+            background-color: #007bff;
+            color: #fff;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
-        button:hover {
-            background-color: #732d91;
-        }
-        .post {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-        .post img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
+        .form-container button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Cho và Nhận Miễn Phí - Demo</h1>
-    </header>
-    <main>
-        <div class="form-container" id="loginForm">
-            <h2>Đăng nhập</h2>
-            <input type="text" id="username" placeholder="Tên người dùng" required>
-            <input type="password" id="password" placeholder="Mật khẩu" required>
-            <button onclick="login()">Đăng nhập</button>
-        </div>
+    <h1>Cho và Nhận Miễn Phí</h1>
+    <div id="loginContainer" class="form-container">
+        <h2>Đăng nhập</h2>
+        <input type="text" id="loginUsername" placeholder="Tên người dùng">
+        <input type="password" id="loginPassword" placeholder="Mật khẩu">
+        <button onclick="login()">Đăng nhập</button>
+        <p>Bạn chưa có tài khoản? <a href="#" onclick="showRegister()">Đăng ký</a></p>
+    </div>
 
-        <div class="form-container" id="postForm" style="display: none;">
-            <h2>Đăng bài mới</h2>
-            <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
-            <textarea id="postContent" placeholder="Nội dung bài đăng" required></textarea>
-            <select id="countrySelect" required>
-                <option value="">Chọn quốc gia</option>
-                <option value="Vietnam">Việt Nam</option>
-                <option value="USA">Hoa Kỳ</option>
-                <option value="Canada">Canada</option>
-            </select>
-            <select id="provinceSelect" required>
-                <option value="">Chọn tỉnh/thành phố</option>
-            </select>
-            <input type="file" id="postImage" accept="image/*">
-            <button onclick="submitPost()">Đăng bài</button>
-        </div>
+    <div id="registerContainer" class="form-container" style="display: none;">
+        <h2>Đăng ký</h2>
+        <input type="text" id="registerUsername" placeholder="Tên người dùng">
+        <input type="password" id="registerPassword" placeholder="Mật khẩu">
+        <button onclick="register()">Đăng ký</button>
+        <p>Đã có tài khoản? <a href="#" onclick="showLogin()">Đăng nhập</a></p>
+    </div>
 
-        <div class="posts-container" id="postsContainer" style="display: none;">
-            <h2>Danh sách bài đăng</h2>
-            <div id="postsList"></div>
-        </div>
-    </main>
+    <div id="appContent" style="display: none;">
+        <h2>Chào mừng bạn!</h2>
+        <button onclick="logout()">Đăng xuất</button>
+    </div>
 
     <script>
-        const users = { admin: '12345' }; // Dữ liệu người dùng mẫu
-        const posts = []; // Dữ liệu bài đăng
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('appContent').style.display = 'none';
+        }
+
+        function showRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+            document.getElementById('appContent').style.display = 'none';
+        }
 
         function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
 
-            if (users[username] === password) {
+            if (users[username] && users[username] === password) {
                 alert('Đăng nhập thành công!');
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('postForm').style.display = 'block';
-                document.getElementById('postsContainer').style.display = 'block';
-                loadPosts();
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('appContent').style.display = 'block';
             } else {
                 alert('Tên người dùng hoặc mật khẩu không đúng!');
             }
         }
 
-        document.getElementById('countrySelect').addEventListener('change', function () {
-            const country = this.value;
-            const provinceSelect = document.getElementById('provinceSelect');
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
 
-            const provincesByCountry = {
-                Vietnam: ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'],
-                USA: ['New York', 'California', 'Texas'],
-                Canada: ['Ontario', 'Quebec', 'British Columbia']
-            };
-
-            provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
-
-            if (provincesByCountry[country]) {
-                provincesByCountry[country].forEach(province => {
-                    const option = document.createElement('option');
-                    option.value = province;
-                    option.textContent = province;
-                    provinceSelect.appendChild(option);
-                });
-            }
-        });
-
-        function submitPost() {
-            const title = document.getElementById('postTitle').value;
-            const content = document.getElementById('postContent').value;
-            const country = document.getElementById('countrySelect').value;
-            const province = document.getElementById('provinceSelect').value;
-            const imageFile = document.getElementById('postImage').files[0];
-
-            if (!country || !province) {
-                alert('Vui lòng chọn quốc gia và tỉnh/thành phố!');
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = function () {
-                const imageBase64 = reader.result;
-                posts.push({ title, content, country, province, image: imageBase64 });
-                alert('Đăng bài thành công!');
-                loadPosts();
-            };
-
-            if (imageFile) {
-                reader.readAsDataURL(imageFile);
-            } else {
-                posts.push({ title, content, country, province, image: '' });
-                alert('Đăng bài thành công!');
-                loadPosts();
-            }
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            showLogin();
         }
 
-        function loadPosts() {
-            const postsList = document.getElementById('postsList');
-            postsList.innerHTML = '';
-
-            posts.forEach(post => {
-                const postDiv = document.createElement('div');
-                postDiv.className = 'post';
-                postDiv.innerHTML = `
-                    <h3>${post.title}</h3>
-                    <p>${post.content}</p>
-                    <p><strong>Quốc gia:</strong> ${post.country}</p>
-                    <p><strong>Tỉnh/Thành phố:</strong> ${post.province}</p>
-                    ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
-                `;
-                postsList.appendChild(postDiv);
-            });
+        function logout() {
+            alert('Bạn đã đăng xuất!');
+            showLogin();
         }
+
+        // Hiển thị form đăng nhập khi tải trang
+        showLogin();
     </script>
 </body>
 </html>
+
