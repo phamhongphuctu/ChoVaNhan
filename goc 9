@@ -150,18 +150,22 @@ function logout() {
     alert('Bạn đã đăng xuất thành công!');
 }
 
+// Lắng nghe sự kiện thay đổi quốc gia
 document.getElementById('countrySelect').addEventListener('change', function () {
-    const country = this.value;
-    const provinceSelect = document.getElementById('provinceSelect');
+    const country = this.value; // Lấy giá trị quốc gia được chọn
+    const provinceSelect = document.getElementById('provinceSelect'); // Truy cập đến select tỉnh/thành phố
 
+    // Danh sách các tỉnh/thành phố theo từng quốc gia
     const provincesByCountry = {
         Vietnam: ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'],
         USA: ['New York', 'California', 'Texas'],
         Canada: ['Ontario', 'Quebec', 'British Columbia']
     };
 
+    // Làm rỗng danh sách tỉnh/thành phố
     provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
 
+    // Nếu quốc gia có danh sách tỉnh/thành phố, thêm các tùy chọn
     if (provincesByCountry[country]) {
         provincesByCountry[country].forEach(province => {
             const option = document.createElement('option');
