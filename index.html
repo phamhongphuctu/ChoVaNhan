@@ -4,74 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #9b59b6;
-            color: #fff;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #9b59b6; /* Màu tím cho toàn bộ nền */
+    color: #fff; /* Màu chữ trắng để tương phản */
+}
 
-        header {
-            text-align: center;
-            padding: 20px;
-        }
+header {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column; /* Căn theo chiều dọc */
+    align-items: center; /* Căn giữa nội dung theo chiều ngang */
+    justify-content: center; /* Đảm bảo căn giữa nội dung */
+    text-align: center;
+    background-color: #9b59b6; /* Màu tím cho phần tiêu đề */
+    color: #fff; /* Màu chữ trắng */
+}
 
-        .main-container {
-            display: flex;
-            padding: 20px;
-            gap: 20px;
-        }
+.main-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
 
-        .left-ad, .right-ad {
-            flex: 1;
-            background-color: #7d3c98;
-            color: #fff;
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
+.left-ad, .right-ad {
+    flex: 1;
+    background-color: #9b59b6; /* Màu tím cho quảng cáo */
+    color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
 
-        .content-section {
-            flex: 3; /* Phần bài đăng chiếm nhiều không gian hơn */
-            background-color: #fff;
-            color: #000;
-            border-radius: 10px;
-            padding: 20px;
-            overflow: auto;
-        }
+.content-section {
+    flex: 2;
+    background: #9b59b6; /* Màu tím cho nền bài đăng */
+    color: #fff; /* Chữ màu trắng */
+    border-radius: 10px;
+    padding: 20px;
+}
 
-        .card {
-            background-color: #f5f5f5;
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+.card {
+    border: 1px solid #ddd;
+    background: #9b59b6; /* Màu tím cho nền bài đăng */
+    color: #fff; /* Chữ màu trắng */
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    .card {
+    display: none; /* Ẩn các bài đăng đã giao dịch */
+}
+    align-items: flex-start;
+    gap: 15px;
+}
 
-        .card img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+.card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
 
-        .card-content h3 {
-            margin: 0 0 10px;
-            font-size: 18px;
-        }
+.card-content {
+    flex-grow: 1;
+}
 
-        .card-content p {
-            margin: 0;
-            font-size: 16px;
-        }
+.card-content h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #fff; /* Chữ màu trắng */
+}
+
+.card-content p {
+    color: #fff; /* Chữ màu trắng */
+}
 
         button {
-            padding: 10px 15px;
+            padding: 10px 20px;
             background-color: #007bff;
             color: white;
             border: none;
@@ -81,6 +94,33 @@
 
         button:hover {
             background-color: #0056b3;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: linear-gradient(145deg, #d8b9e8, #c694e6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        #map {
+            height: 400px;
+            margin-top: 20px;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -93,28 +133,16 @@
         </div>
     </header>
     <main>
-        <div class="main-container">
-            <div class="left-ad">
-                <p>Quảng cáo bên trái</p>
-            </div>
-            <div class="content-section">
+    <div class="main-container">
+        <div class="left-ad">
+            <!-- Quảng cáo bên trái -->
+            <p>Quảng cáo bên trái</p>
+        </div>
+        <div class="content-section">
+            <div id="appContent" style="display: none;">
                 <h2>Danh sách bài đăng</h2>
-                <div id="postsContainer">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/150" alt="Image">
-                        <div class="card-content">
-                            <h3>Tên bài đăng</h3>
-                            <p>Nội dung bài đăng...</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img src="https://via.placeholder.com/150" alt="Image">
-                        <div class="card-content">
-                            <h3>Tên bài đăng khác</h3>
-                            <p>Nội dung khác...</p>
-                        </div>
-                    </div>
-                </div>
+                <div id="postsContainer"></div>
+                
                 <h2>Đăng bài mới</h2>
                 <form id="postForm">
                     <input type="text" id="name" placeholder="Tên" required>
@@ -127,13 +155,14 @@
                     <button type="submit">Đăng bài</button>
                 </form>
             </div>
-            <div class="right-ad">
-                <p>Quảng cáo bên phải</p>
-            </div>
         </div>
-    </main>
-</body>
-</html>
+        <div class="right-ad">
+            <!-- Quảng cáo bên phải -->
+            <p>Quảng cáo bên phải</p>
+        </div>
+    </div>
+</main>
+
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
@@ -167,50 +196,30 @@
         }
 
         function showLogin() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="form-container">
-            <h2>Đăng nhập</h2>
-            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-            <select id="loginCountry" required>
-                <option value="">Chọn quốc gia</option>
-                <option value="Vietnam">Việt Nam</option>
-                <option value="USA">Hoa Kỳ</option>
-                <option value="Canada">Canada</option>
-            </select>
-            <select id="loginProvince" required>
-                <option value="">Chọn tỉnh/thành phố</option>
-            </select>
-            <button onclick="login()">Đăng nhập</button>
-            <button onclick="returnToHome()">Quay lại trang chủ</button>
-        </div>
-    `;
-    setupCountryChangeListener('loginCountry', 'loginProvince');
-}
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng nhập</h2>
+                    <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+                    <button onclick="login()">Đăng nhập</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
 
-function showRegister() {
-    const main = document.querySelector('main');
-    main.innerHTML = `
-        <div class="form-container">
-            <h2>Đăng ký</h2>
-            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-            <select id="registerCountry" required>
-                <option value="">Chọn quốc gia</option>
-                <option value="Vietnam">Việt Nam</option>
-                <option value="USA">Hoa Kỳ</option>
-                <option value="Canada">Canada</option>
-            </select>
-            <select id="registerProvince" required>
-                <option value="">Chọn tỉnh/thành phố</option>
-            </select>
-            <button onclick="register()">Đăng ký</button>
-            <button onclick="returnToHome()">Quay lại trang chủ</button>
-        </div>
-    `;
-    setupCountryChangeListener('registerCountry', 'registerProvince');
-}
+        function showRegister() {
+            const main = document.querySelector('main');
+            main.innerHTML = `
+                <div class="form-container">
+                    <h2>Đăng ký</h2>
+                    <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+                    <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+                    <button onclick="register()">Đăng ký</button>
+                    <button onclick="returnToHome()">Quay lại trang chủ</button>
+                </div>
+            `;
+        }
 
         function returnToHome() {
             const main = document.querySelector('main');
