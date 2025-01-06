@@ -294,17 +294,28 @@ function setupCountryChangeListener(countrySelectId, provinceSelectId) {
         }
 
         function login() {
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
     const country = document.getElementById('countrySelect').value;
     const province = document.getElementById('provinceSelect').value;
 
+    // Kiểm tra nếu các trường bị bỏ trống
     if (!username || !password || !country || !province) {
         alert('Vui lòng điền đầy đủ thông tin!');
         return;
     }
 
-    alert(`Đăng nhập thành công!\nTên: ${username}\nQuốc gia: ${country}\nTỉnh/Thành phố: ${province}`);
+    // Lấy danh sách người dùng từ localStorage
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+
+    // Kiểm tra thông tin đăng nhập
+    if (users[username] === password) {
+        alert(`Đăng nhập thành công!\nTên: ${username}\nQuốc gia: ${country}\nTỉnh/Thành phố: ${province}`);
+        localStorage.setItem('currentUser', username); // Lưu người dùng hiện tại
+        location.reload(); // Tải lại trang để hiển thị nội dung phù hợp
+    } else {
+        alert('Tên người dùng hoặc mật khẩu không đúng!');
+    }
 }
 
         function logout() {
