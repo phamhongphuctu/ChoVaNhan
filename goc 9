@@ -67,14 +67,15 @@
     <button onclick="logout()" style="display: none;" id="logoutButton">Đăng xuất</button>
 </header>
 
-    <main>
-        <div class="form-container" id="loginForm">
-            <h2>Đăng nhập</h2>
-            <input type="text" id="username" placeholder="Tên người dùng" required>
-            <input type="password" id="password" placeholder="Mật khẩu" required>
-            <button onclick="login()">Đăng nhập</button>
-            <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
-        </div>
+<!-- Thêm nút chọn quốc gia tại đây -->
+
+<div class="form-container" id="loginForm">
+    <h2>Đăng nhập</h2>
+    <input type="text" id="username" placeholder="Tên người dùng" required>
+    <input type="password" id="password" placeholder="Mật khẩu" required>
+    <button onclick="login()">Đăng nhập</button>
+    <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
+</div>
 
         <div class="form-container" id="registerForm" style="display: none;">
             <h2>Đăng ký</h2>
@@ -102,9 +103,19 @@
         </div>
 
         <div class="posts-container" id="postsContainer" style="display: none;">
-            <h2>Danh sách bài đăng</h2>
-            <div id="postsList"></div>
-        </div>
+    <h2>Danh sách bài đăng</h2>
+    
+    <!-- Chọn quốc gia để xem bài đăng -->
+    <div>
+        <h3>Chọn quốc gia để xem bài đăng</h3>
+        <button onclick="showCountryPosts('Vietnam')">Xem bài đăng Việt Nam</button>
+        <button onclick="showCountryPosts('USA')">Xem bài đăng Hoa Kỳ</button>
+        <button onclick="showCountryPosts('Canada')">Xem bài đăng Canada</button>
+    </div>
+    
+    <div id="postsList"></div>
+</div>
+
     </main>
 
     <script>
@@ -150,22 +161,18 @@ function logout() {
     alert('Bạn đã đăng xuất thành công!');
 }
 
-// Lắng nghe sự kiện thay đổi quốc gia
 document.getElementById('countrySelect').addEventListener('change', function () {
-    const country = this.value; // Lấy giá trị quốc gia được chọn
-    const provinceSelect = document.getElementById('provinceSelect'); // Truy cập đến select tỉnh/thành phố
+    const country = this.value;
+    const provinceSelect = document.getElementById('provinceSelect');
 
-    // Danh sách các tỉnh/thành phố theo từng quốc gia
     const provincesByCountry = {
         Vietnam: ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'],
         USA: ['New York', 'California', 'Texas'],
         Canada: ['Ontario', 'Quebec', 'British Columbia']
     };
 
-    // Làm rỗng danh sách tỉnh/thành phố
     provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
 
-    // Nếu quốc gia có danh sách tỉnh/thành phố, thêm các tùy chọn
     if (provincesByCountry[country]) {
         provincesByCountry[country].forEach(province => {
             const option = document.createElement('option');
@@ -195,8 +202,8 @@ function submitPost() {
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
         alert('Đăng bài thành công!');
-        loadPosts();
         document.getElementById('postForm').reset(); // Reset form
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     };
 
     if (imageFile) {
@@ -206,16 +213,18 @@ function submitPost() {
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts));
         alert('Đăng bài thành công!');
-        loadPosts();
         document.getElementById('postForm').reset();
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     }
 }
 
-function loadPosts() {
+function loadCountryPosts(country) {
     const postsList = document.getElementById('postsList');
     postsList.innerHTML = ''; // Xóa danh sách cũ
 
-    posts.forEach(post => {
+    const countryPosts = posts.filter(post => post.country === country); // Lọc bài đăng theo quốc gia
+
+    countryPosts.forEach(post => {
         const postDiv = document.createElement('div');
         postDiv.className = 'post';
         postDiv.innerHTML = `
@@ -227,6 +236,13 @@ function loadPosts() {
         `;
         postsList.appendChild(postDiv);
     });
+}
+
+function showCountryPosts(country) {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('postForm').style.display = 'none';
+    document.getElementById('postsContainer').style.display = 'block';
+    loadCountryPosts(country); // Hiển thị bài đăng của quốc gia được chọn
 }
 
     </script>
