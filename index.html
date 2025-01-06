@@ -283,10 +283,15 @@ function loadCountryPosts(country) {
             ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
             ${
                 (post.username === currentUser || isAdmin) // Người đăng hoặc admin được phép xóa
-                    ? `<button onclick="deletePost(${index}, '${country}')">Xóa bài đăng</button>`
-                    : ''
-            }
-        `;
+                    function deletePost(index, country) {
+    if (confirm('Bạn có chắc chắn muốn xóa bài đăng này?')) {
+        posts.splice(index, 1); // Xóa bài đăng khỏi danh sách
+        localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật lại localStorage
+        alert('Bài đăng đã được xóa!');
+        loadCountryPosts(country); // Tải lại danh sách bài đăng
+    }
+}
+
         postsList.appendChild(postDiv);
     });
 }
