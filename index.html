@@ -267,9 +267,12 @@ function loadCountryPosts(country) {
     const postsList = document.getElementById('postsList');
     postsList.innerHTML = ''; // Xóa danh sách cũ
 
+    const currentUser = localStorage.getItem('currentUser'); // Người dùng hiện tại
+    const isAdmin = currentUser === 'admin'; // Kiểm tra nếu là admin
+
     const countryPosts = posts.filter(post => post.country === country); // Lọc bài đăng theo quốc gia
 
-    countryPosts.forEach(post => {
+    countryPosts.forEach((post, index) => {
         const postDiv = document.createElement('div');
         postDiv.className = 'post';
         postDiv.innerHTML = `
@@ -278,6 +281,11 @@ function loadCountryPosts(country) {
             <p><strong>Quốc gia:</strong> ${post.country}</p>
             <p><strong>Tỉnh/Thành phố:</strong> ${post.province}</p>
             ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
+            ${
+                (post.username === currentUser || isAdmin) // Người đăng hoặc admin được phép xóa
+                    ? `<button onclick="deletePost(${index}, '${country}')">Xóa bài đăng</button>`
+                    : ''
+            }
         `;
         postsList.appendChild(postDiv);
     });
