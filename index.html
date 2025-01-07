@@ -10,56 +10,24 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #9b59b6; /* Nền tím */
+            background-color: #9b59b6; /* Màu nền tím */
             color: white;
         }
 
-        /* Header */
         header {
-            background-color: #8e44ad; /* Màu tím đậm */
+            background-color: #8e44ad; /* Header màu tím đậm */
             color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            flex-wrap: wrap;
-        }
-
-        .header-title {
+            text-align: center;
+            padding: 15px;
             font-size: 1.5em;
-            flex: 1;
-            text-align: left;
         }
 
-        .header-auth {
-            display: flex;
-            gap: 10px;
-            flex: 1;
-            justify-content: flex-end;
-        }
-
-        .header-auth button {
-            background-color: #732d91;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            transition: background-color 0.3s;
-        }
-
-        .header-auth button:hover {
-            background-color: #5a266e;
-        }
-
-        /* Navigation */
         nav {
-            background-color: #732d91; /* Thanh điều hướng */
+            background-color: #732d91; /* Navigation màu tím đậm hơn */
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             padding: 10px 0;
-            flex-wrap: wrap;
         }
 
         nav a {
@@ -72,67 +40,205 @@
         }
 
         nav a:hover {
-            background-color: #5a266e; /* Hover màu tím đậm */
+            background-color: #5a266e; /* Hover tím đậm hơn */
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .sports, .casino {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #8e44ad; /* Màu nền tím cho các thẻ */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .card img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .card p {
+            font-size: 0.9em;
+            color: #e1ccec; /* Chữ màu tím nhạt */
+        }
+
+        button {
+            background-color: #732d91; /* Nút tím đậm */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #5a266e;
+        }
+
+        footer {
+            background-color: #732d91; /* Footer màu tím đậm */
+            text-align: center;
+            color: white;
+            padding: 15px;
+            margin-top: 30px;
         }
 
         /* Responsive cho thiết bị di động */
         @media (max-width: 768px) {
-            .header-title {
-                font-size: 1.2em;
+            nav {
+                flex-direction: column;
+            }
+
+            nav a {
+                margin: 5px 0;
+                width: 90%;
                 text-align: center;
-                flex: 100%;
-                margin-bottom: 10px;
             }
 
-            .header-auth {
-                justify-content: center;
-                flex-wrap: wrap;
+            .card img {
+                width: 80px;
+                height: 80px;
             }
 
-            .header-auth button {
-                width: 45%; /* Chia đều cho các nút trên màn hình nhỏ */
-                margin-bottom: 5px;
+            .card h3 {
+                font-size: 1em;
+            }
+
+            .card p {
+                font-size: 0.8em;
+            }
+
+            button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-title">Pibet</div>
-        <div class="header-auth">
-            <button onclick="showLogin()">Đăng nhập</button>
-            <button onclick="showRegister()">Đăng ký</button>
-        </div>
+        Welcome to Pibet
     </header>
-
     <nav>
-        <a href="#sports">Cá cược thể thao</a>
-        <a href="#casino">Sòng bạc</a>
-        <a href="#contact">Liên hệ</a>
+        <a href="#sports">Sports Betting</a>
+        <a href="#casino">Casino Games</a>
+        <a href="#contact">Contact Us</a>
     </nav>
 
-    <main>
-        <div class="main-container">
-            <h1>Chào mừng đến với Pibet!</h1>
-            <p>Bạn có thể bắt đầu đặt cược thể thao hoặc tham gia các trò chơi sòng bạc ngay hôm nay.</p>
-        </div>
-    </main>
+    <div class="main-container">
+        <!-- Sports Section -->
+        <section id="sports">
+            <h2 class="section-title">Sports Betting</h2>
+            <div class="sports">
+                <div class="card">
+                    <img src="https://via.placeholder.com/100" alt="Soccer">
+                    <h3>Soccer</h3>
+                    <p>Bet on your favorite teams and leagues worldwide!</p>
+                    <button onclick="placeBet('Soccer')">Place Bet</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/100" alt="Basketball">
+                    <h3>Basketball</h3>
+                    <p>NBA, EuroLeague, and more exciting games to bet on.</p>
+                    <button onclick="placeBet('Basketball')">Place Bet</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/100" alt="Tennis">
+                    <h3>Tennis</h3>
+                    <p>Grand Slams, ATP, and WTA tours await your predictions.</p>
+                    <button onclick="placeBet('Tennis')">Place Bet</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Casino Section -->
+        <section id="casino">
+            <h2 class="section-title">Casino Games</h2>
+            <div class="casino">
+                <div class="card">
+                    <img src="https://via.placeholder.com/100" alt="Blackjack">
+                    <h3>Blackjack</h3>
+                    <p>Enjoy classic blackjack games with great odds.</p>
+                    <button onclick="playGame('Blackjack')">Play Now</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/100" alt="Roulette">
+                    <h3>Roulette</h3>
+                    <p>Spin the wheel and test your luck in this iconic game.</p>
+                    <button onclick="playGame('Roulette')">Play Now</button>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/100" alt="Slots">
+                    <h3>Slots</h3>
+                    <p>Exciting slot games with high payouts and jackpots!</p>
+                    <button onclick="playGame('Slots')">Play Now</button>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <footer>
         © 2025 Pibet. All rights reserved.
     </footer>
 
     <script>
-        function showLogin() {
-            alert('Hiển thị giao diện đăng nhập.');
-            // Thay thế bằng modal hoặc chuyển hướng đến trang đăng nhập thực tế
+        // Fake functions for demo purposes
+        function placeBet(game) {
+            alert(`You have placed a bet on ${game}.`);
         }
 
-        function showRegister() {
-            alert('Hiển thị giao diện đăng ký.');
-            // Thay thế bằng modal hoặc chuyển hướng đến trang đăng ký thực tế
+        function playGame(game) {
+            alert(`You have started playing ${game}.`);
         }
     </script>
 </body>
 </html>
-
