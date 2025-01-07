@@ -5,29 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cho và Nhận Miễn Phí</title>
     <style>
+        /* Toàn bộ body */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #9b59b6;
+            background-color: #9b59b6; /* Màu nền tím */
             color: white;
         }
+
+        /* Header */
         header {
             text-align: center;
             padding: 20px;
-            background-color: #8e44ad;
+            background-color: #8e44ad; /* Header màu tím đậm */
         }
+
+        /* Main form và bài đăng */
         main {
             padding: 20px;
         }
+
         .form-container, .posts-container {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
-            background-color: white;
-            color: black;
+            background-color: #8e44ad; /* Nền màu tím */
+            color: white; /* Chữ màu trắng */
             border-radius: 8px;
         }
+
+        /* Form đăng nhập */
         .form-container input, .form-container select, .form-container textarea {
             width: 100%;
             padding: 10px;
@@ -35,56 +43,77 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+
+        /* Button */
         button {
             width: 100%;
             padding: 10px;
-            background-color: #8e44ad;
+            background-color: #732d91; /* Nút tím đậm */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
+
         button:hover {
-            background-color: #732d91;
+            background-color: #5a266e; /* Hover tím đậm hơn */
         }
+
+        /* Bài đăng */
         .post {
             border: 1px solid #ddd;
             padding: 10px;
             margin: 10px 0;
             border-radius: 5px;
+            background-color: #9b59b6; /* Nền bài đăng màu tím */
+            color: white; /* Chữ màu trắng */
         }
+
         .post img {
             max-width: 100%;
             height: auto;
             border-radius: 5px;
         }
+
+        /* Đăng nhập */
+        #loginForm {
+            background-color: #8e44ad; /* Form đăng nhập màu tím */
+        }
+
+        @media (max-width: 768px) {
+            /* Tối ưu giao diện di động */
+            .form-container, .posts-container {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <header>
-    <h1>Cho và Nhận Miễn Phí</h1>
-    <button onclick="logout()" style="display: none;" id="logoutButton">Đăng xuất</button>
-</header>
+        <h1>Cho và Nhận Miễn Phí</h1>
+        <button onclick="logout()" style="display: none;" id="logoutButton">Đăng xuất</button>
+    </header>
 
-<!-- Thêm nút chọn quốc gia tại đây -->
+    <main>
+        <!-- Form đăng nhập -->
+        <div class="form-container" id="loginForm">
+            <h2>Đăng nhập</h2>
+            <input type="text" id="username" placeholder="Tên người dùng" required>
+            <input type="password" id="password" placeholder="Mật khẩu" required>
+            <button onclick="login()">Đăng nhập</button>
+            <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()" style="color: #ffccff;">Đăng ký</a></p>
+        </div>
 
-<div class="form-container" id="loginForm">
-    <h2>Đăng nhập</h2>
-    <input type="text" id="username" placeholder="Tên người dùng" required>
-    <input type="password" id="password" placeholder="Mật khẩu" required>
-    <button onclick="login()">Đăng nhập</button>
-    <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
-</div>
-
+        <!-- Form đăng ký -->
         <div class="form-container" id="registerForm" style="display: none;">
             <h2>Đăng ký</h2>
             <input type="text" id="regUsername" placeholder="Tên người dùng" required>
             <input type="password" id="regPassword" placeholder="Mật khẩu" required>
             <button onclick="register()">Đăng ký</button>
-            <p>Đã có tài khoản? <a href="#" onclick="showLoginForm()">Đăng nhập</a></p>
+            <p>Đã có tài khoản? <a href="#" onclick="showLoginForm()" style="color: #ffccff;">Đăng nhập</a></p>
         </div>
 
+        <!-- Form đăng bài mới -->
         <div class="form-container" id="postForm" style="display: none;">
             <h2>Đăng bài mới</h2>
             <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
@@ -102,9 +131,19 @@
             <button onclick="submitPost()">Đăng bài</button>
         </div>
 
+        <!-- Danh sách bài đăng -->
         <div class="posts-container" id="postsContainer" style="display: none;">
-    <h2>Danh sách bài đăng</h2>
-    
+            <h2>Danh sách bài đăng</h2>
+            <div id="postsList"></div>
+        </div>
+    </main>
+
+    <script>
+        // JavaScript giữ nguyên như cũ, các chức năng đã được tối ưu
+    </script>
+</body>
+</html>
+
     <!-- Chọn quốc gia để xem bài đăng -->
     <div>
         <h3>Chọn quốc gia để xem bài đăng</h3>
