@@ -105,16 +105,8 @@
         <div class="posts-container" id="postsContainer" style="display: none;">
     <h2>Danh sách bài đăng</h2>
     
-    <!-- Chọn quốc gia để xem bài đăng -->
-    <div>
-        <h3>Chọn quốc gia để xem bài đăng</h3>
-        <button onclick="showCountryPosts('Vietnam')">Xem bài đăng Việt Nam</button>
-        <button onclick="showCountryPosts('USA')">Xem bài đăng Hoa Kỳ</button>
-        <button onclick="showCountryPosts('Canada')">Xem bài đăng Canada</button>
-    </div>
-    
     <!-- Form đăng bài mới -->
-    <div id="postForm" style="display: none;">
+    <div id="postForm">
         <h2>Đăng bài mới</h2>
         <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
         <textarea id="postContent" placeholder="Nội dung bài đăng" required></textarea>
@@ -129,6 +121,14 @@
         </select>
         <input type="file" id="postImage" accept="image/*">
         <button onclick="submitPost()">Đăng bài</button>
+    </div>
+
+    <!-- Chọn quốc gia để xem bài đăng -->
+    <div>
+        <h3>Chọn quốc gia để xem bài đăng</h3>
+        <button onclick="showCountryPosts('Vietnam')">Xem bài đăng Việt Nam</button>
+        <button onclick="showCountryPosts('USA')">Xem bài đăng Hoa Kỳ</button>
+        <button onclick="showCountryPosts('Canada')">Xem bài đăng Canada</button>
     </div>
     
     <div id="postsList"></div>
@@ -146,7 +146,6 @@ function login() {
     const password = document.getElementById('password').value.trim();
 
     if (users[username] === password) {
-        localStorage.setItem('currentUser', username); // Lưu người dùng hiện tại
         alert('Đăng nhập thành công!');
         document.getElementById('logoutButton').style.display = 'block';
         document.getElementById('loginForm').style.display = 'none';
@@ -195,14 +194,12 @@ function showRegisterForm() {
 }
 
 function logout() {
-    localStorage.removeItem('currentUser'); // Xóa thông tin người dùng hiện tại
     document.getElementById('logoutButton').style.display = 'none';
     document.getElementById('postForm').style.display = 'none';
     document.getElementById('postsContainer').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
     alert('Bạn đã đăng xuất thành công!');
 }
-
 
 document.getElementById('countrySelect').addEventListener('change', function () {
     const country = this.value;
@@ -232,7 +229,6 @@ function submitPost() {
     const country = document.getElementById('countrySelect').value;
     const province = document.getElementById('provinceSelect').value;
     const imageFile = document.getElementById('postImage').files[0];
-    const currentUser = localStorage.getItem('currentUser'); // Người dùng hiện tại
 
     if (!title || !content || !country || !province) {
         alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
@@ -242,56 +238,33 @@ function submitPost() {
     const reader = new FileReader();
     reader.onload = function () {
         const imageBase64 = reader.result;
-        const newPost = { 
-            title, 
-            content, 
-            country, 
-            province, 
-            image: imageBase64, 
-            username: currentUser // Lưu người đăng bài
-        };
+        const newPost = { title, content, country, province, image: imageBase64 };
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
         alert('Đăng bài thành công!');
-        resetPostForm();
-        loadCountryPosts(country); // Tải lại bài đăng
+        document.getElementById('postForm').reset(); // Reset form
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     };
 
     if (imageFile) {
-        reader.readAsDataURL(imageFile);
+        reader.readAsDataURL(imageFile); // Xử lý ảnh
     } else {
-        const newPost = { 
-            title, 
-            content, 
-            country, 
-            province, 
-            image: '', 
-            username: currentUser // Lưu người đăng bài
-        };
+        const newPost = { title, content, country, province, image: '' };
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts));
         alert('Đăng bài thành công!');
-        resetPostForm();
-        loadCountryPosts(country); // Tải lại bài đăng
+        document.getElementById('postForm').reset();
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     }
 }
 
-function resetPostForm() {
-    document.getElementById('postTitle').value = '';
-    document.getElementById('postContent').value = '';
-    document.getElementById('provinceSelect').value = '';
-    document.getElementById('postImage').value = '';
-}
 function loadCountryPosts(country) {
     const postsList = document.getElementById('postsList');
     postsList.innerHTML = ''; // Xóa danh sách cũ
 
-    const currentUser = localStorage.getItem('currentUser'); // Người dùng hiện tại
-    const isAdmin = currentUser === 'admin'; // Kiểm tra nếu là admin
-
     const countryPosts = posts.filter(post => post.country === country); // Lọc bài đăng theo quốc gia
 
-    countryPosts.forEach((post, index) => {
+    countryPosts.forEach(post => {
         const postDiv = document.createElement('div');
         postDiv.className = 'post';
         postDiv.innerHTML = `
@@ -300,17 +273,7 @@ function loadCountryPosts(country) {
             <p><strong>Quốc gia:</strong> ${post.country}</p>
             <p><strong>Tỉnh/Thành phố:</strong> ${post.province}</p>
             ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
-            ${
-                (post.username === currentUser || isAdmin) // Người đăng hoặc admin được phép xóa
-                    function deletePost(index, country) {
-    if (confirm('Bạn có chắc chắn muốn xóa bài đăng này?')) {
-        posts.splice(index, 1); // Xóa bài đăng khỏi danh sách
-        localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật lại localStorage
-        alert('Bài đăng đã được xóa!');
-        loadCountryPosts(country); // Tải lại danh sách bài đăng
-    }
-}
-
+        `;
         postsList.appendChild(postDiv);
     });
 }
@@ -320,16 +283,58 @@ function showCountryPosts(country) {
     document.getElementById('registerForm').style.display = 'none';
     document.getElementById('postsContainer').style.display = 'block';
 
-    // Hiển thị form đăng bài mới và đặt quốc gia
+    // Hiển thị form đăng bài mới
     const postForm = document.getElementById('postForm');
     postForm.style.display = 'block';
 
+    // Thiết lập giá trị quốc gia tự động trong form đăng bài
     const countrySelect = document.getElementById('countrySelect');
-    countrySelect.value = country; // Tự động chọn quốc gia
+    countrySelect.value = country;
 
-    loadCountryPosts(country); // Hiển thị bài đăng của quốc gia tương ứng
+    // Tải danh sách bài đăng của quốc gia được chọn
+    loadCountryPosts(country);
 }
 
+function submitPost() {
+    const title = document.getElementById('postTitle').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    const country = document.getElementById('countrySelect').value;
+    const province = document.getElementById('provinceSelect').value;
+    const imageFile = document.getElementById('postImage').files[0];
+
+    if (!title || !content || !country || !province) {
+        alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function () {
+        const imageBase64 = reader.result;
+        const newPost = { title, content, country, province, image: imageBase64 };
+        posts.push(newPost);
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Đăng bài thành công!');
+        document.getElementById('postTitle').value = '';
+        document.getElementById('postContent').value = '';
+        document.getElementById('provinceSelect').value = '';
+        document.getElementById('postImage').value = '';
+        loadCountryPosts(country); // Tải lại bài đăng của quốc gia
+    };
+
+    if (imageFile) {
+        reader.readAsDataURL(imageFile);
+    } else {
+        const newPost = { title, content, country, province, image: '' };
+        posts.push(newPost);
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Đăng bài thành công!');
+        document.getElementById('postTitle').value = '';
+        document.getElementById('postContent').value = '';
+        document.getElementById('provinceSelect').value = '';
+        document.getElementById('postImage').value = '';
+        loadCountryPosts(country);
+    }
+}
 
     </script>
 </body>
