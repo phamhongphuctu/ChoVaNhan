@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BETPI - Trang chủ</title>
+    <title>BETPI</title>
     <style>
         /* Tổng thể */
         body {
@@ -67,21 +67,17 @@
             background-color: #e6b800;
         }
 
-        p {
-            text-align: center;
-            font-size: 0.9em;
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
-        p a {
-            color: #ffcc00;
-            text-decoration: none;
+        .menu-container button {
+            width: 80%;
         }
 
-        p a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
         footer {
             background-color: #8e44ad;
             color: white;
@@ -95,7 +91,7 @@
 </head>
 <body>
     <header>
-        <h1>BETPI - Trang chủ</h1>
+        <h1>BETPI</h1>
     </header>
 
     <main>
@@ -116,6 +112,16 @@
             <button type="submit">Đăng ký</button>
             <p>Đã có tài khoản? <a href="#" onclick="showLoginForm()">Đăng nhập</a></p>
         </form>
+
+        <!-- Trang chính -->
+        <div id="mainContent" style="display: none;">
+            <h1>Chào mừng đến với BETPI!</h1>
+            <div class="menu-container">
+                <button onclick="redirectTo('sports')">Cá cược thể thao</button>
+                <button onclick="redirectTo('casino')">Casino</button>
+                <button onclick="redirectTo('contact')">Liên hệ</button>
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -124,43 +130,70 @@
 
     <script>
         const users = JSON.parse(localStorage.getItem('users')) || {}; // Lưu trữ người dùng
+        let currentUser = null; // Biến lưu trạng thái người dùng hiện tại
 
+        // Hiển thị form Đăng nhập
         function showLoginForm() {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
         }
 
+        // Hiển thị form Đăng ký
         function showRegisterForm() {
             document.getElementById('registerForm').style.display = 'block';
             document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
         }
 
-        function login(event) {
-            event.preventDefault(); // Ngăn form reload
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-
-            if (users[username] && users[username] === password) {
-                alert(`Đăng nhập thành công! Chào mừng, ${username}`);
-                // Điều hướng tới khu vực game
-                window.location.href = "#";
-            } else {
-                alert('Tên người dùng hoặc mật khẩu không đúng!');
-            }
-        }
-
+        // Đăng ký tài khoản
         function register(event) {
             event.preventDefault(); // Ngăn form reload
             const username = document.getElementById('registerUsername').value.trim();
             const password = document.getElementById('registerPassword').value.trim();
 
+            if (!username || !password) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
             if (users[username]) {
                 alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users)); // Lưu thông tin vào localStorage
+            alert('Đăng ký thành công!');
+            showLoginForm();
+        }
+
+        // Đăng nhập tài khoản
+        function login(event) {
+            event.preventDefault(); // Ngăn form reload
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (users[username] === password) {
+                alert(`Chào mừng ${username}!`);
+                currentUser = username;
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
             } else {
-                users[username] = password;
-                localStorage.setItem('users', JSON.stringify(users));
-                alert('Đăng ký thành công!');
-                showLoginForm();
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
+
+        // Điều hướng tới các khu vực khác
+        function redirectTo(section) {
+            alert(`Đang điều hướng tới khu vực ${section}.`);
+            // Ví dụ: Dùng window.location.href để chuyển hướng tới trang cụ thể
+            if (section === 'sports') {
+                window.location.href = 'sports.html';
+            } else if (section === 'casino') {
+                window.location.href = 'casino.html';
+            } else if (section === 'contact') {
+                window.location.href = 'contact.html';
             }
         }
     </script>
