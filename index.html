@@ -115,27 +115,24 @@
 
         <!-- Form đăng bài mới -->
         <div class="form-container" id="postForm" style="display: none;">
-            <h2>Đăng bài mới</h2>
-            <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
-            <textarea id="postContent" placeholder="Nội dung bài đăng" required></textarea>
-            <select id="countrySelect" required>
-                <option value="">Chọn quốc gia</option>
-                <option value="Vietnam">Việt Nam</option>
-                <option value="USA">Hoa Kỳ</option>
-                <option value="Canada">Canada</option>
-            </select>
-            <select id="provinceSelect" required>
-                <option value="">Chọn tỉnh/thành phố</option>
-            </select>
-            <input type="file" id="postImage" accept="image/*">
-            <button onclick="submitPost()">Đăng bài</button>
-        </div>
+    <h2>Đăng bài mới</h2>
+    <form onsubmit="submitPost(event)">
+        <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
+        <textarea id="postContent" placeholder="Nội dung bài đăng" required></textarea>
+        <select id="countrySelect" required>
+            <option value="">Chọn quốc gia</option>
+            <option value="Vietnam">Việt Nam</option>
+            <option value="USA">Hoa Kỳ</option>
+            <option value="Canada">Canada</option>
+        </select>
+        <select id="provinceSelect" required>
+            <option value="">Chọn tỉnh/thành phố</option>
+        </select>
+        <input type="file" id="postImage" accept="image/*">
+        <button type="submit">Đăng bài</button>
+    </form>
+</div>
 
-        <!-- Danh sách bài đăng -->
-        <div class="posts-container" id="postsContainer" style="display: none;">
-            <h2>Danh sách bài đăng</h2>
-            <div id="postsList"></div>
-        </div>
     </main>
 
     <script>
