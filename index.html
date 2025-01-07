@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #9b59b6; /* Màu nền tím */
+            background-color: #9b59b6;
             color: white;
         }
 
@@ -18,184 +18,191 @@
         header {
             background-color: #8e44ad;
             color: white;
+            padding: 15px 0;
             text-align: center;
-            padding: 20px;
+            font-size: 1.5rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
 
-        /* Main container */
-        main {
-            max-width: 400px;
-            margin: 50px auto;
+        nav {
+            margin-top: 50px;
             background-color: #732d91;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 1.8em;
-            margin-bottom: 20px;
-        }
-
-        /* Form styles */
-        form {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            padding: 10px 0;
         }
 
-        input {
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 10px 20px;
             border-radius: 5px;
-        }
-
-        button {
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #ffcc00;
-            color: #732d91;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
             transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #e6b800;
+        nav a:hover {
+            background-color: #5a266e;
         }
 
-        .menu-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
+        /* Main Section */
+        main {
+            margin-top: 120px;
+            text-align: center;
         }
 
-        .menu-container button {
-            width: 80%;
+        .banner {
+            background-color: #8e44ad;
+            padding: 50px 20px;
+            border-radius: 10px;
+            margin: 0 auto 30px auto;
+            max-width: 800px;
+        }
+
+        .banner h1 {
+            margin-bottom: 10px;
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #732d91;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+            font-size: 1.2rem;
         }
 
         footer {
             background-color: #8e44ad;
-            color: white;
             text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            color: white;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .banner h1 {
+                font-size: 1.5rem;
+            }
+
+            .banner p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+
+    <!-- Header -->
     <header>
-        <h1>BETPI</h1>
+        BETPI - Trải nghiệm cá cược đỉnh cao
     </header>
 
+    <!-- Navigation -->
+    <nav>
+        <a href="#sports" onclick="navigateTo('sports')">Cá cược thể thao</a>
+        <a href="#casino" onclick="navigateTo('casino')">Casino</a>
+        <a href="#contact" onclick="navigateTo('contact')">Liên hệ</a>
+    </nav>
+
+    <!-- Main Content -->
     <main>
-        <!-- Đăng nhập -->
-        <form id="loginForm" onsubmit="login(event)">
-            <h1>Đăng nhập</h1>
-            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-            <button type="submit">Đăng nhập</button>
-            <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
-        </form>
-
-        <!-- Đăng ký -->
-        <form id="registerForm" style="display: none;" onsubmit="register(event)">
-            <h1>Đăng ký</h1>
-            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-            <button type="submit">Đăng ký</button>
-            <p>Đã có tài khoản? <a href="#" onclick="showLoginForm()">Đăng nhập</a></p>
-        </form>
-
-        <!-- Trang chính -->
-        <div id="mainContent" style="display: none;">
+        <div class="banner">
             <h1>Chào mừng đến với BETPI!</h1>
-            <div class="menu-container">
-                <button onclick="redirectTo('sports')">Cá cược thể thao</button>
-                <button onclick="redirectTo('casino')">Casino</button>
-                <button onclick="redirectTo('contact')">Liên hệ</button>
+            <p>Tham gia cá cược thể thao và casino trực tuyến cùng chúng tôi.</p>
+        </div>
+
+        <div id="sports" class="grid-container" style="display: none;">
+            <div class="card">
+                <img src="https://via.placeholder.com/300x150" alt="Bóng đá">
+                <h3>Bóng đá</h3>
+                <p>Đặt cược vào các giải đấu hàng đầu thế giới.</p>
             </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x150" alt="Bóng rổ">
+                <h3>Bóng rổ</h3>
+                <p>Tham gia các trận đấu NBA, EuroLeague và nhiều hơn nữa.</p>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x150" alt="Tennis">
+                <h3>Tennis</h3>
+                <p>Đặt cược vào các giải Grand Slam, ATP và WTA.</p>
+            </div>
+        </div>
+
+        <div id="casino" class="grid-container" style="display: none;">
+            <div class="card">
+                <img src="https://via.placeholder.com/300x150" alt="Blackjack">
+                <h3>Blackjack</h3>
+                <p>Trò chơi bài phổ biến với cơ hội chiến thắng lớn.</p>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x150" alt="Roulette">
+                <h3>Roulette</h3>
+                <p>Vòng quay may mắn đang chờ bạn thử vận may.</p>
+            </div>
+            <div class="card">
+                <img src="https://via.placeholder.com/300x150" alt="Slots">
+                <h3>Slots</h3>
+                <p>Hàng trăm trò chơi slots hấp dẫn và có giải jackpot.</p>
+            </div>
+        </div>
+
+        <div id="contact" style="display: none; text-align: center;">
+            <h2>Liên hệ</h2>
+            <p>Email: support@betpi.com</p>
+            <p>Hotline: 1800-1234</p>
         </div>
     </main>
 
+    <!-- Footer -->
     <footer>
         © 2025 BETPI. All rights reserved.
     </footer>
 
     <script>
-        const users = JSON.parse(localStorage.getItem('users')) || {}; // Lưu trữ người dùng
-        let currentUser = null; // Biến lưu trạng thái người dùng hiện tại
+        function navigateTo(section) {
+            // Ẩn tất cả các phần
+            document.getElementById('sports').style.display = 'none';
+            document.getElementById('casino').style.display = 'none';
+            document.getElementById('contact').style.display = 'none';
 
-        // Hiển thị form Đăng nhập
-        function showLoginForm() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'none';
-        }
-
-        // Hiển thị form Đăng ký
-        function showRegisterForm() {
-            document.getElementById('registerForm').style.display = 'block';
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'none';
-        }
-
-        // Đăng ký tài khoản
-        function register(event) {
-            event.preventDefault(); // Ngăn form reload
-            const username = document.getElementById('registerUsername').value.trim();
-            const password = document.getElementById('registerPassword').value.trim();
-
-            if (!username || !password) {
-                alert('Vui lòng nhập đầy đủ thông tin!');
-                return;
-            }
-
-            if (users[username]) {
-                alert('Tên người dùng đã tồn tại!');
-                return;
-            }
-
-            users[username] = password;
-            localStorage.setItem('users', JSON.stringify(users)); // Lưu thông tin vào localStorage
-            alert('Đăng ký thành công!');
-            showLoginForm();
-        }
-
-        // Đăng nhập tài khoản
-        function login(event) {
-            event.preventDefault(); // Ngăn form reload
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-
-            if (users[username] === password) {
-                alert(`Chào mừng ${username}!`);
-                currentUser = username;
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
-            } else {
-                alert('Tên người dùng hoặc mật khẩu không đúng!');
-            }
-        }
-
-        // Điều hướng tới các khu vực khác
-        function redirectTo(section) {
-            alert(`Đang điều hướng tới khu vực ${section}.`);
-            // Ví dụ: Dùng window.location.href để chuyển hướng tới trang cụ thể
-            if (section === 'sports') {
-                window.location.href = 'sports.html';
-            } else if (section === 'casino') {
-                window.location.href = 'casino.html';
-            } else if (section === 'contact') {
-                window.location.href = 'contact.html';
-            }
+            // Hiển thị phần được chọn
+            document.getElementById(section).style.display = 'grid';
         }
     </script>
 </body>
 </html>
+
