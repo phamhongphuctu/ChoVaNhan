@@ -10,25 +10,70 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #9b59b6;
+            background-color: #9b59b6; /* Màu nền tím */
             color: white;
         }
 
-        /* Header */
         header {
             background-color: #8e44ad;
             color: white;
             padding: 15px 0;
             text-align: center;
             font-size: 1.5rem;
-            position: fixed;
+        }
+
+        /* Form đăng nhập & đăng ký */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .auth-form {
+            background-color: #8e44ad;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 400px;
             width: 100%;
-            top: 0;
-            z-index: 1000;
+        }
+
+        .auth-form h2 {
+            margin-bottom: 15px;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .auth-form button {
+            background-color: #732d91;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .auth-form button:hover {
+            background-color: #5a266e;
+        }
+
+        /* Giao diện chính */
+        .main-container {
+            display: none;
+            text-align: center;
+            margin-top: 120px;
         }
 
         nav {
-            margin-top: 50px;
             background-color: #732d91;
             display: flex;
             justify-content: center;
@@ -46,12 +91,6 @@
 
         nav a:hover {
             background-color: #5a266e;
-        }
-
-        /* Main Section */
-        main {
-            margin-top: 120px;
-            text-align: center;
         }
 
         .banner {
@@ -82,12 +121,6 @@
             padding: 20px;
             border-radius: 10px;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .card img {
@@ -95,111 +128,120 @@
             height: 150px;
             object-fit: cover;
             border-radius: 5px;
-            margin-bottom: 10px;
         }
 
         .card h3 {
             margin: 10px 0;
-            font-size: 1.2rem;
-        }
-
-        footer {
-            background-color: #8e44ad;
-            text-align: center;
-            color: white;
-            padding: 20px 0;
-            margin-top: 30px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .banner h1 {
-                font-size: 1.5rem;
-            }
-
-            .banner p {
-                font-size: 1rem;
-            }
         }
     </style>
 </head>
 <body>
-
     <!-- Header -->
-    <header>
-        BETPI - Trải nghiệm cá cược đỉnh cao
-    </header>
+    <header>BETPI</header>
 
-    <!-- Navigation -->
-    <nav>
-        <a href="#sports" onclick="navigateTo('sports')">Cá cược thể thao</a>
-        <a href="#casino" onclick="navigateTo('casino')">Casino</a>
-        <a href="#contact" onclick="navigateTo('contact')">Liên hệ</a>
-    </nav>
+    <!-- Đăng nhập / Đăng ký -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-form" id="loginForm">
+            <h2>Đăng nhập</h2>
+            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+            <button onclick="login()">Đăng nhập</button>
+            <p>Bạn chưa có tài khoản? <a href="#" onclick="showRegisterForm()" style="color: #ffccff;">Đăng ký</a></p>
+        </div>
 
-    <!-- Main Content -->
-    <main>
+        <div class="auth-form" id="registerForm" style="display: none;">
+            <h2>Đăng ký</h2>
+            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+            <button onclick="register()">Đăng ký</button>
+            <p>Bạn đã có tài khoản? <a href="#" onclick="showLoginForm()" style="color: #ffccff;">Đăng nhập</a></p>
+        </div>
+    </div>
+
+    <!-- Trang chính -->
+    <div class="main-container" id="mainContainer">
+        <nav>
+            <a href="#sports" onclick="navigateTo('sports')">Cá cược thể thao</a>
+            <a href="#casino" onclick="navigateTo('casino')">Casino</a>
+            <a href="#contact" onclick="navigateTo('contact')">Liên hệ</a>
+        </nav>
         <div class="banner">
             <h1>Chào mừng đến với BETPI!</h1>
             <p>Tham gia cá cược thể thao và casino trực tuyến cùng chúng tôi.</p>
         </div>
-
         <div id="sports" class="grid-container" style="display: none;">
             <div class="card">
                 <img src="https://via.placeholder.com/300x150" alt="Bóng đá">
                 <h3>Bóng đá</h3>
                 <p>Đặt cược vào các giải đấu hàng đầu thế giới.</p>
             </div>
-            <div class="card">
-                <img src="https://via.placeholder.com/300x150" alt="Bóng rổ">
-                <h3>Bóng rổ</h3>
-                <p>Tham gia các trận đấu NBA, EuroLeague và nhiều hơn nữa.</p>
-            </div>
-            <div class="card">
-                <img src="https://via.placeholder.com/300x150" alt="Tennis">
-                <h3>Tennis</h3>
-                <p>Đặt cược vào các giải Grand Slam, ATP và WTA.</p>
-            </div>
         </div>
-
         <div id="casino" class="grid-container" style="display: none;">
             <div class="card">
                 <img src="https://via.placeholder.com/300x150" alt="Blackjack">
                 <h3>Blackjack</h3>
                 <p>Trò chơi bài phổ biến với cơ hội chiến thắng lớn.</p>
             </div>
-            <div class="card">
-                <img src="https://via.placeholder.com/300x150" alt="Roulette">
-                <h3>Roulette</h3>
-                <p>Vòng quay may mắn đang chờ bạn thử vận may.</p>
-            </div>
-            <div class="card">
-                <img src="https://via.placeholder.com/300x150" alt="Slots">
-                <h3>Slots</h3>
-                <p>Hàng trăm trò chơi slots hấp dẫn và có giải jackpot.</p>
-            </div>
         </div>
-
-        <div id="contact" style="display: none; text-align: center;">
+        <div id="contact" style="display: none;">
             <h2>Liên hệ</h2>
             <p>Email: support@betpi.com</p>
             <p>Hotline: 1800-1234</p>
         </div>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        © 2025 BETPI. All rights reserved.
-    </footer>
+    </div>
 
     <script>
+        const users = JSON.parse(localStorage.getItem('users')) || {};
+        let currentUser = null;
+
+        function showRegisterForm() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        function showLoginForm() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        function register() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+
+            if (!username || !password) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Đăng ký thành công!');
+            showLoginForm();
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (users[username] === password) {
+                currentUser = username;
+                document.getElementById('authContainer').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'block';
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
+
         function navigateTo(section) {
-            // Ẩn tất cả các phần
             document.getElementById('sports').style.display = 'none';
             document.getElementById('casino').style.display = 'none';
             document.getElementById('contact').style.display = 'none';
 
-            // Hiển thị phần được chọn
             document.getElementById(section).style.display = 'grid';
         }
     </script>
