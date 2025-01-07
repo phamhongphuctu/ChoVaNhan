@@ -17,17 +17,42 @@
         header {
             background-color: #8e44ad; /* Header màu tím đậm */
             color: white;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 15px;
+            flex-wrap: wrap;
+        }
+
+        .header-title {
             font-size: 1.5em;
         }
 
-        nav {
-            background-color: #732d91; /* Navigation màu tím đậm hơn */
+        .header-auth {
             display: flex;
-            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-auth button {
+            background-color: #732d91; /* Màu nút tím đậm */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header-auth button:hover {
+            background-color: #5a266e;
+        }
+
+        nav {
+            background-color: #732d91; /* Thanh điều hướng */
+            display: flex;
             justify-content: center;
             padding: 10px 0;
+            flex-wrap: wrap;
         }
 
         nav a {
@@ -47,66 +72,38 @@
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-        }
-
-        .section-title {
-            font-size: 1.8em;
-            margin-bottom: 15px;
-            color: white;
             text-align: center;
         }
 
-        .sports, .casino {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background-color: #8e44ad; /* Màu nền tím cho các thẻ */
-            border-radius: 10px;
+        /* Form đăng nhập / đăng ký */
+        .auth-form {
+            display: none;
+            background-color: #8e44ad; /* Form màu tím */
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 400px;
         }
 
-        .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        .card img {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 15px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .card h3 {
-            font-size: 1.2em;
+        .auth-form input {
+            width: 100%;
+            padding: 10px;
             margin-bottom: 10px;
-            color: white;
+            border: none;
+            border-radius: 5px;
         }
 
-        .card p {
-            font-size: 0.9em;
-            color: #e1ccec; /* Chữ màu tím nhạt */
-        }
-
-        button {
-            background-color: #732d91; /* Nút tím đậm */
+        .auth-form button {
+            width: 100%;
+            background-color: #732d91;
             color: white;
             border: none;
-            padding: 10px 20px;
-            margin-top: 10px;
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
 
-        button:hover {
+        .auth-form button:hover {
             background-color: #5a266e;
         }
 
@@ -117,127 +114,103 @@
             padding: 15px;
             margin-top: 30px;
         }
-
-        /* Responsive cho thiết bị di động */
-        @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-            }
-
-            nav a {
-                margin: 5px 0;
-                width: 90%;
-                text-align: center;
-            }
-
-            .card img {
-                width: 80px;
-                height: 80px;
-            }
-
-            .card h3 {
-                font-size: 1em;
-            }
-
-            .card p {
-                font-size: 0.8em;
-            }
-
-            button {
-                padding: 8px 15px;
-                font-size: 0.9em;
-            }
-
-            .section-title {
-                font-size: 1.5em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main-container {
-                padding: 10px;
-            }
-
-            .card {
-                padding: 15px;
-            }
-        }
     </style>
 </head>
 <body>
     <header>
-        Welcome to Pibet
+        <div class="header-title">Pibet</div>
+        <div class="header-auth">
+            <button onclick="showLoginForm()">Đăng nhập</button>
+            <button onclick="showRegisterForm()">Đăng ký</button>
+        </div>
     </header>
+
     <nav>
-        <a href="#sports">Sports Betting</a>
-        <a href="#casino">Casino Games</a>
-        <a href="#contact">Contact Us</a>
+        <a href="#sports">Cá cược thể thao</a>
+        <a href="#casino">Sòng bạc</a>
+        <a href="#contact">Liên hệ</a>
     </nav>
 
-    <div class="main-container">
-        <!-- Sports Section -->
-        <section id="sports">
-            <h2 class="section-title">Sports Betting</h2>
-            <div class="sports">
-                <div class="card">
-                    <img src="https://via.placeholder.com/100" alt="Soccer">
-                    <h3>Soccer</h3>
-                    <p>Bet on your favorite teams and leagues worldwide!</p>
-                    <button onclick="placeBet('Soccer')">Place Bet</button>
-                </div>
-                <div class="card">
-                    <img src="https://via.placeholder.com/100" alt="Basketball">
-                    <h3>Basketball</h3>
-                    <p>NBA, EuroLeague, and more exciting games to bet on.</p>
-                    <button onclick="placeBet('Basketball')">Place Bet</button>
-                </div>
-                <div class="card">
-                    <img src="https://via.placeholder.com/100" alt="Tennis">
-                    <h3>Tennis</h3>
-                    <p>Grand Slams, ATP, and WTA tours await your predictions.</p>
-                    <button onclick="placeBet('Tennis')">Place Bet</button>
-                </div>
-            </div>
-        </section>
+    <main>
+        <!-- Form Đăng nhập -->
+        <div id="loginForm" class="auth-form">
+            <h2>Đăng nhập</h2>
+            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+            <button onclick="login()">Đăng nhập</button>
+        </div>
 
-        <!-- Casino Section -->
-        <section id="casino">
-            <h2 class="section-title">Casino Games</h2>
-            <div class="casino">
-                <div class="card">
-                    <img src="https://via.placeholder.com/100" alt="Blackjack">
-                    <h3>Blackjack</h3>
-                    <p>Enjoy classic blackjack games with great odds.</p>
-                    <button onclick="playGame('Blackjack')">Play Now</button>
-                </div>
-                <div class="card">
-                    <img src="https://via.placeholder.com/100" alt="Roulette">
-                    <h3>Roulette</h3>
-                    <p>Spin the wheel and test your luck in this iconic game.</p>
-                    <button onclick="playGame('Roulette')">Play Now</button>
-                </div>
-                <div class="card">
-                    <img src="https://via.placeholder.com/100" alt="Slots">
-                    <h3>Slots</h3>
-                    <p>Exciting slot games with high payouts and jackpots!</p>
-                    <button onclick="playGame('Slots')">Play Now</button>
-                </div>
-            </div>
-        </section>
-    </div>
+        <!-- Form Đăng ký -->
+        <div id="registerForm" class="auth-form">
+            <h2>Đăng ký</h2>
+            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+            <button onclick="register()">Đăng ký</button>
+        </div>
+
+        <!-- Trang chính -->
+        <div class="main-container" id="mainContent">
+            <h1>Chào mừng đến với Pibet!</h1>
+            <p>Bạn có thể đặt cược thể thao hoặc tham gia trò chơi sòng bạc ngay hôm nay.</p>
+        </div>
+    </main>
 
     <footer>
         © 2025 Pibet. All rights reserved.
     </footer>
 
     <script>
-        // Fake functions for demo purposes
-        function placeBet(game) {
-            alert(`You have placed a bet on ${game}.`);
+        const users = JSON.parse(localStorage.getItem('users')) || {}; // Lưu danh sách người dùng
+        let currentUser = null; // Biến lưu trạng thái người dùng hiện tại
+
+        // Hiển thị form Đăng nhập
+        function showLoginForm() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
         }
 
-        function playGame(game) {
-            alert(`You have started playing ${game}.`);
+        // Hiển thị form Đăng ký
+        function showRegisterForm() {
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+        }
+
+        // Đăng ký tài khoản
+        function register() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+
+            if (!username || !password) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users)); // Lưu thông tin vào localStorage
+            alert('Đăng ký thành công!');
+            showLoginForm();
+        }
+
+        // Đăng nhập tài khoản
+        function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (users[username] === password) {
+                alert(`Chào mừng ${username}!`);
+                currentUser = username;
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
         }
     </script>
 </body>
