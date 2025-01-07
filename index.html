@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BETPI - Cá cược thể thao và sòng bạc</title>
+    <title>BETPI - Cá cược thể thao & Sòng bạc</title>
     <style>
         /* Tổng thể */
         * {
@@ -83,36 +83,27 @@
             text-align: center;
         }
 
-        footer {
-            background-color: #1e1e1e;
-            text-align: center;
-            color: #aaa;
-            padding: 15px 0;
-            margin-top: 30px;
-        }
-
-        /* Form styles */
-        .form-container {
+        .section {
             display: none;
+        }
+
+        .game-card {
             background-color: #1e1e1e;
-            padding: 20px;
             border-radius: 10px;
+            padding: 20px;
             margin: 20px auto;
-            max-width: 400px;
+            max-width: 300px;
+            text-align: center;
         }
 
-        .form-container input {
+        .game-card img {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #333;
-            border-radius: 5px;
-            background-color: #121212;
-            color: white;
+            height: auto;
+            border-radius: 10px;
         }
 
-        .form-container button {
-            width: 100%;
+        .game-card button {
+            margin-top: 10px;
             background-color: #ffcc00;
             color: #121212;
             border: none;
@@ -121,8 +112,16 @@
             cursor: pointer;
         }
 
-        .form-container button:hover {
+        .game-card button:hover {
             background-color: #d4a700;
+        }
+
+        footer {
+            background-color: #1e1e1e;
+            text-align: center;
+            color: #aaa;
+            padding: 15px 0;
+            margin-top: 30px;
         }
     </style>
 </head>
@@ -136,29 +135,55 @@
     </header>
 
     <nav id="navBar" style="display: none;">
-        <a href="#sports" onclick="navigateTo('sports')">Cá cược thể thao</a>
-        <a href="#casino" onclick="navigateTo('casino')">Sòng bạc</a>
-        <a href="#contact" onclick="navigateTo('contact')">Liên hệ</a>
+        <a href="#" onclick="showSection('sports')">Cá cược thể thao</a>
+        <a href="#" onclick="showSection('casino')">Sòng bạc</a>
+        <a href="#contact" onclick="showSection('contact')">Liên hệ</a>
     </nav>
 
-    <main id="mainContent">
-        <h1>Chào mừng đến với BETPI!</h1>
-        <p>Bạn có thể đặt cược thể thao hoặc tham gia trò chơi sòng bạc ngay hôm nay.</p>
+    <main>
+        <!-- Trang chính -->
+        <div id="mainContent">
+            <h1>Chào mừng đến với BETPI!</h1>
+            <p>Bạn có thể đặt cược thể thao hoặc tham gia trò chơi sòng bạc ngay hôm nay.</p>
+        </div>
+
+        <!-- Cá cược thể thao -->
+        <div id="sports" class="section">
+            <h2>Các môn thể thao</h2>
+            <div class="game-card">
+                <img src="https://via.placeholder.com/300x150" alt="Soccer">
+                <h3>Bóng đá</h3>
+                <button onclick="alert('Bắt đầu đặt cược bóng đá!')">Đặt cược</button>
+            </div>
+            <div class="game-card">
+                <img src="https://via.placeholder.com/300x150" alt="Basketball">
+                <h3>Bóng rổ</h3>
+                <button onclick="alert('Bắt đầu đặt cược bóng rổ!')">Đặt cược</button>
+            </div>
+        </div>
+
+        <!-- Sòng bạc -->
+        <div id="casino" class="section">
+            <h2>Sòng bạc</h2>
+            <div class="game-card">
+                <img src="https://via.placeholder.com/300x150" alt="Live Casino">
+                <h3>Live Casino</h3>
+                <button onclick="alert('Bắt đầu chơi Live Casino!')">Chơi ngay</button>
+            </div>
+            <div class="game-card">
+                <img src="https://via.placeholder.com/300x150" alt="Slots">
+                <h3>Slots</h3>
+                <button onclick="alert('Bắt đầu chơi Slots!')">Chơi ngay</button>
+            </div>
+        </div>
+
+        <!-- Liên hệ -->
+        <div id="contact" class="section">
+            <h2>Liên hệ</h2>
+            <p>Email: support@betpi.com</p>
+            <p>Hotline: 1800-123-456</p>
+        </div>
     </main>
-
-    <div class="form-container" id="loginForm">
-        <h2>Đăng nhập</h2>
-        <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
-        <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
-        <button onclick="login()">Đăng nhập</button>
-    </div>
-
-    <div class="form-container" id="registerForm">
-        <h2>Đăng ký</h2>
-        <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
-        <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
-        <button onclick="register()">Đăng ký</button>
-    </div>
 
     <footer>
         © 2025 BETPI. All rights reserved.
@@ -169,54 +194,19 @@
         let currentUser = null;
 
         function showLogin() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'none';
+            alert('Chức năng đăng nhập sẽ được thực hiện.');
         }
 
         function showRegister() {
-            document.getElementById('registerForm').style.display = 'block';
-            document.getElementById('loginForm').style.display = 'none';
+            alert('Chức năng đăng ký sẽ được thực hiện.');
+        }
+
+        function showSection(sectionId) {
             document.getElementById('mainContent').style.display = 'none';
-        }
-
-        function login() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
-
-            if (users[username] === password) {
-                alert(`Chào mừng ${username}!`);
-                currentUser = username;
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
-                document.getElementById('navBar').style.display = 'flex';
-            } else {
-                alert('Tên người dùng hoặc mật khẩu không đúng!');
-            }
-        }
-
-        function register() {
-            const username = document.getElementById('registerUsername').value.trim();
-            const password = document.getElementById('registerPassword').value.trim();
-
-            if (!username || !password) {
-                alert('Vui lòng nhập đầy đủ thông tin!');
-                return;
-            }
-
-            if (users[username]) {
-                alert('Tên người dùng đã tồn tại!');
-                return;
-            }
-
-            users[username] = password;
-            localStorage.setItem('users', JSON.stringify(users));
-            alert('Đăng ký thành công!');
-            showLogin();
-        }
-
-        function navigateTo(section) {
-            alert(`Bạn đang chuyển đến ${section === 'sports' ? 'Cá cược thể thao' : section === 'casino' ? 'Sòng bạc' : 'Liên hệ'}.`);
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
         }
     </script>
 </body>
