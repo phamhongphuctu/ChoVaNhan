@@ -63,35 +63,39 @@
 <body>
     <header>
         <header>
-    <h1>Cho và Nhận Miễn Phí</h1>
-    <button onclick="logout()" style="display: none;" id="logoutButton">Đăng xuất</button>
+    <h1 style="text-align: center; font-size: 2em; margin-bottom: 10px;">Cho và Nhận Miễn Phí</h1>
+    <button 
+        onclick="logout()" 
+        style="display: none; background-color: #8e44ad; color: white; padding: 10px; border: none; border-radius: 5px; font-size: 1em; cursor: pointer;" 
+        id="logoutButton">
+        Đăng xuất
+    </button>
 </header>
 
-<!-- Thêm nút chọn quốc gia tại đây -->
-
 <div class="form-container" id="loginForm">
-    <h2>Đăng nhập</h2>
+    <h2 style="text-align: center; font-size: 1.5em;">Đăng nhập</h2>
     <input type="text" id="username" placeholder="Tên người dùng" required>
     <input type="password" id="password" placeholder="Mật khẩu" required>
-    <button onclick="login()">Đăng nhập</button>
-    <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
+    <button onclick="login()" style="padding: 12px; font-size: 1em;">Đăng nhập</button>
+    <p style="text-align: center;">Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
 </div>
 
-        <div class="form-container" id="registerForm" style="display: none;">
-            <h2>Đăng ký</h2>
-            <input type="text" id="regUsername" placeholder="Tên người dùng" required>
-            <input type="password" id="regPassword" placeholder="Mật khẩu" required>
-            <button onclick="register()">Đăng ký</button>
-            <p>Đã có tài khoản? <a href="#" onclick="showLoginForm()">Đăng nhập</a></p>
-        </div>
-        <div class="posts-container" id="postsContainer" style="display: none;">
-    <h2>Danh sách bài đăng</h2>
-    
+<div class="form-container" id="registerForm" style="display: none;">
+    <h2 style="text-align: center; font-size: 1.5em;">Đăng ký</h2>
+    <input type="text" id="regUsername" placeholder="Tên người dùng" required>
+    <input type="password" id="regPassword" placeholder="Mật khẩu" required>
+    <button onclick="register()" style="padding: 12px; font-size: 1em;">Đăng ký</button>
+    <p style="text-align: center;">Đã có tài khoản? <a href="#" onclick="showLoginForm()">Đăng nhập</a></p>
+</div>
+
+<div class="posts-container" id="postsContainer" style="display: none;">
+    <h2 style="text-align: center; font-size: 1.5em; margin-bottom: 20px;">Danh sách bài đăng</h2>
+
     <!-- Form đăng bài mới -->
-    <div id="postForm">
-        <h2>Đăng bài mới</h2>
+    <div id="postForm" style="margin-bottom: 20px;">
+        <h2 style="text-align: center; font-size: 1.5em;">Đăng bài mới</h2>
         <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
-        <textarea id="postContent" placeholder="Nội dung bài đăng" required></textarea>
+        <textarea id="postContent" placeholder="Nội dung bài đăng" rows="5" required></textarea>
         <select id="countrySelect" required>
             <option value="">Chọn quốc gia</option>
             <option value="Vietnam">Việt Nam</option>
@@ -102,22 +106,18 @@
             <option value="">Chọn tỉnh/thành phố</option>
         </select>
         <input type="file" id="postImage" accept="image/*">
-        <button onclick="submitPost()">Đăng bài</button>
+        <button onclick="submitPost()" style="padding: 12px; font-size: 1em;">Đăng bài</button>
     </div>
 
     <!-- Chọn quốc gia để xem bài đăng -->
     <div>
-        <h3>Chọn quốc gia để xem bài đăng</h3>
-        <button onclick="showCountryPosts('Vietnam')">Xem bài đăng Việt Nam</button>
-        <button onclick="showCountryPosts('USA')">Xem bài đăng Hoa Kỳ</button>
-        <button onclick="showCountryPosts('Canada')">Xem bài đăng Canada</button>
+        <h3 style="text-align: center; margin-bottom: 10px;">Chọn quốc gia để xem bài đăng</h3>
+        <button onclick="showCountryPosts('Vietnam')" style="margin-bottom: 10px; padding: 10px; width: 100%; font-size: 1em;">Xem bài đăng Việt Nam</button>
+        <button onclick="showCountryPosts('USA')" style="margin-bottom: 10px; padding: 10px; width: 100%; font-size: 1em;">Xem bài đăng Hoa Kỳ</button>
+        <button onclick="showCountryPosts('Canada')" style="padding: 10px; width: 100%; font-size: 1em;">Xem bài đăng Canada</button>
     </div>
-    
-    <div id="postsList"></div>
-</div>
 
-
-    </main>
+   
 
     <script>
         const users = JSON.parse(localStorage.getItem('users')) || {}; // Lấy thông tin người dùng từ localStorage hoặc khởi tạo rỗng
