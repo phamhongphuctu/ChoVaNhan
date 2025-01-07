@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pibet</title>
+    <style>
+        /* Tổng thể */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #9b59b6; /* Màu nền tím */
+            color: white;
+        }
+
+        header {
+            background-color: #8e44ad; /* Header màu tím đậm */
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            flex-wrap: wrap;
+        }
+
+        .header-title {
+            font-size: 1.5em;
+        }
+
+        .header-auth {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-auth button {
+            background-color: #732d91; /* Màu nút tím đậm */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header-auth button:hover {
+            background-color: #5a266e;
+        }
+
+        nav {
+            background-color: #732d91; /* Thanh điều hướng */
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 5px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #5a266e; /* Hover tím đậm hơn */
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Form đăng nhập / đăng ký */
+        .auth-form {
+            display: none;
+            background-color: #8e44ad; /* Form màu tím */
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 400px;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .auth-form button {
+            width: 100%;
+            background-color: #732d91;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .auth-form button:hover {
+            background-color: #5a266e;
+        }
+
+        footer {
+            background-color: #732d91; /* Footer màu tím đậm */
+            text-align: center;
+            color: white;
+            padding: 15px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-title">Pibet</div>
+        <div class="header-auth">
+            <button onclick="showLoginForm()">Đăng nhập</button>
+            <button onclick="showRegisterForm()">Đăng ký</button>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#sports">Cá cược thể thao</a>
+        <a href="#casino">Sòng bạc</a>
+        <a href="#contact">Liên hệ</a>
+    </nav>
+
+    <main>
+        <!-- Form Đăng nhập -->
+        <div id="loginForm" class="auth-form">
+            <h2>Đăng nhập</h2>
+            <input type="text" id="loginUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" required>
+            <button onclick="login()">Đăng nhập</button>
+        </div>
+
+        <!-- Form Đăng ký -->
+        <div id="registerForm" class="auth-form">
+            <h2>Đăng ký</h2>
+            <input type="text" id="registerUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="registerPassword" placeholder="Mật khẩu" required>
+            <button onclick="register()">Đăng ký</button>
+        </div>
+
+        <!-- Trang chính -->
+        <div class="main-container" id="mainContent">
+            <h1>Chào mừng đến với Pibet!</h1>
+            <p>Bạn có thể đặt cược thể thao hoặc tham gia trò chơi sòng bạc ngay hôm nay.</p>
+        </div>
+    </main>
+
+    <footer>
+        © 2025 Pibet. All rights reserved.
+    </footer>
+
+    <script>
+        const users = JSON.parse(localStorage.getItem('users')) || {}; // Lưu danh sách người dùng
+        let currentUser = null; // Biến lưu trạng thái người dùng hiện tại
+
+        // Hiển thị form Đăng nhập
+        function showLoginForm() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+        }
+
+        // Hiển thị form Đăng ký
+        function showRegisterForm() {
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+        }
+
+        // Đăng ký tài khoản
+        function register() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+
+            if (!username || !password) {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+                return;
+            }
+
+            if (users[username]) {
+                alert('Tên người dùng đã tồn tại!');
+                return;
+            }
+
+            users[username] = password;
+            localStorage.setItem('users', JSON.stringify(users)); // Lưu thông tin vào localStorage
+            alert('Đăng ký thành công!');
+            showLoginForm();
+        }
+
+        // Đăng nhập tài khoản
+        function login() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (users[username] === password) {
+                alert(`Chào mừng ${username}!`);
+                currentUser = username;
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            } else {
+                alert('Tên người dùng hoặc mật khẩu không đúng!');
+            }
+        }
+    </script>
+</body>
+</html>
