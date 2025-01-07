@@ -3,142 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pibet</title>
+    <title>BetPhoenix - Cá cược thể thao và sòng bạc</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Reset CSS */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #9b59b6;
+            box-sizing: border-box;
+        }
+
+        /* Tổng thể */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0d0d0d;
             color: white;
-            scroll-behavior: smooth; /* Cuộn mượt */
         }
 
         header {
-            background-color: #8e44ad;
-            color: white;
+            background-color: #1a1a1a;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            flex-wrap: wrap;
         }
 
-        .header-title {
+        .logo {
             font-size: 1.5em;
-        }
-
-        .header-auth {
-            display: flex;
-            gap: 10px;
-        }
-
-        .header-auth button {
-            background-color: #732d91;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .header-auth button:hover {
-            background-color: #5a266e;
+            font-weight: bold;
+            color: #ffcc00;
         }
 
         nav {
-            background-color: #732d91;
             display: flex;
-            justify-content: center;
-            padding: 10px 0;
-            flex-wrap: wrap;
+            gap: 15px;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            margin: 5px;
-            padding: 8px 15px;
+            font-size: 1em;
+            padding: 5px 10px;
             border-radius: 5px;
             transition: background-color 0.3s;
         }
 
         nav a:hover {
-            background-color: #5a266e;
+            background-color: #ffcc00;
+            color: black;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .auth-buttons button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .auth-buttons .login {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .auth-buttons .register {
+            background-color: #ffcc00;
+            color: black;
+        }
+
+        .auth-buttons button:hover {
+            opacity: 0.8;
+        }
+
+        /* Banner chính */
+        .banner {
+            background: url('https://via.placeholder.com/1920x500') no-repeat center center/cover;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .banner h1 {
+            font-size: 2.5em;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .banner p {
+            font-size: 1.2em;
+            margin-top: 10px;
         }
 
         .main-container {
-            max-width: 1200px;
-            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #ffcc00;
+        }
+
+        /* Lưới các danh mục */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(255, 204, 0, 0.5);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .category-card h3 {
+            font-size: 1.2em;
+            margin: 15px 0;
+        }
+
+        .category-card p {
+            font-size: 0.9em;
+            color: #cccccc;
+        }
+
+        .category-card button {
+            background-color: #ffcc00;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .category-card button:hover {
+            background-color: #e6b800;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
             padding: 20px;
             text-align: center;
+            color: #cccccc;
         }
 
-        section {
-            padding: 50px 20px;
-            background-color: #8e44ad;
-            margin: 10px auto;
-            border-radius: 10px;
+        footer a {
+            color: #ffcc00;
+            text-decoration: none;
         }
 
-        footer {
-            background-color: #732d91;
-            text-align: center;
-            color: white;
-            padding: 15px;
-            margin-top: 30px;
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .banner h1 {
+                font-size: 2em;
+            }
+
+            .banner p {
+                font-size: 1em;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-title">Pibet</div>
-        <div class="header-auth">
-            <button onclick="showLoginForm()">Đăng nhập</button>
-            <button onclick="showRegisterForm()">Đăng ký</button>
+        <div class="logo">BetPhoenix</div>
+        <nav>
+            <a href="#sports">Thể Thao</a>
+            <a href="#casino">Sòng Bạc</a>
+            <a href="#promotions">Khuyến Mãi</a>
+            <a href="#contact">Liên Hệ</a>
+        </nav>
+        <div class="auth-buttons">
+            <button class="login" onclick="showLogin()">Đăng Nhập</button>
+            <button class="register" onclick="showRegister()">Đăng Ký</button>
         </div>
     </header>
 
-    <nav>
-        <a href="#sports">Cá cược thể thao</a>
-        <a href="#casino">Sòng bạc</a>
-        <a href="#contact">Liên hệ</a>
-    </nav>
+    <div class="banner">
+        <div>
+            <h1>Chào mừng đến với BetPhoenix</h1>
+            <p>Cá cược thể thao và sòng bạc trực tuyến hàng đầu</p>
+        </div>
+    </div>
 
-    <main>
-        <!-- Phần Cá cược thể thao -->
-        <section id="sports">
-            <h1>Cá cược thể thao</h1>
-            <p>Đặt cược vào các trận đấu bóng đá, bóng rổ và nhiều môn thể thao khác.</p>
-        </section>
-
-        <!-- Phần Sòng bạc -->
-        <section id="casino">
-            <h1>Sòng bạc</h1>
-            <p>Tham gia các trò chơi như Blackjack, Roulette và Slots.</p>
-        </section>
-
-        <!-- Phần Liên hệ -->
-        <section id="contact">
-            <h1>Liên hệ</h1>
-            <p>Email: support@pibet.com | Hotline: 1800-123-456</p>
-        </section>
-    </main>
+    <div class="main-container">
+        <h2 class="section-title">Danh Mục</h2>
+        <div class="categories">
+            <div class="category-card">
+                <img src="https://via.placeholder.com/300x150" alt="Thể Thao">
+                <h3>Thể Thao</h3>
+                <p>Đặt cược vào các trận đấu yêu thích của bạn</p>
+                <button onclick="navigateTo('sports')">Khám Phá</button>
+            </div>
+            <div class="category-card">
+                <img src="https://via.placeholder.com/300x150" alt="Sòng Bạc">
+                <h3>Sòng Bạc</h3>
+                <p>Trải nghiệm các trò chơi sòng bạc đỉnh cao</p>
+                <button onclick="navigateTo('casino')">Khám Phá</button>
+            </div>
+            <div class="category-card">
+                <img src="https://via.placeholder.com/300x150" alt="Khuyến Mãi">
+                <h3>Khuyến Mãi</h3>
+                <p>Nhận ngay các ưu đãi hấp dẫn</p>
+                <button onclick="navigateTo('promotions')">Khám Phá</button>
+            </div>
+        </div>
+    </div>
 
     <footer>
-        © 2025 Pibet. All rights reserved.
+        © 2025 BetPhoenix. All rights reserved. | <a href="#contact">Liên hệ</a>
     </footer>
 
     <script>
-        const users = JSON.parse(localStorage.getItem('users')) || {}; // Danh sách người dùng
-        let currentUser = null; // Biến lưu trạng thái người dùng hiện tại
+        // Hàm điều hướng
+        function navigateTo(section) {
+            alert(`Điều hướng đến phần ${section}`);
+        }
 
-        function showLoginForm() {
+        // Hiển thị đăng nhập
+        function showLogin() {
             alert('Hiển thị giao diện đăng nhập.');
         }
 
-        function showRegisterForm() {
+        // Hiển thị đăng ký
+        function showRegister() {
             alert('Hiển thị giao diện đăng ký.');
         }
     </script>
