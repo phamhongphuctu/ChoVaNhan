@@ -113,6 +113,10 @@
             <div id="postsList"></div>
         </div>
     </main>
+<div id="postDetails" style="display: none;">
+    <button onclick="showPostList()">Trở về danh sách bài đăng</button>
+    <div id="postContent"></div>
+</div>
 
     <script>
         const users = JSON.parse(localStorage.getItem('users')) || {}; // Lấy thông tin người dùng từ localStorage hoặc khởi tạo rỗng
