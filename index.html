@@ -1,101 +1,246 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Web Project</title>
+    <title>Cho và Nhận Miễn Phí</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color: #9b59b6;
+            color: white;
         }
-
         header {
-            background: #333;
-            color: #fff;
-            padding: 10px 20px;
             text-align: center;
+            padding: 20px;
+            background-color: #8e44ad;
         }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            background: #555;
-            padding: 10px;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 15px;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
         main {
             padding: 20px;
         }
-
-        footer {
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: #fff;
-            margin: 20px 0;
+        .form-container, .posts-container {
+            max-width: 600px;
+            margin: 20px auto;
             padding: 20px;
+            background-color: white;
+            color: black;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input, .form-container select, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #732d91;
+        }
+        .post {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .post img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to Your Website</h1>
-    </header>
+        <header>
+    <h1>Cho và Nhận Miễn Phí</h1>
+    <button onclick="logout()" style="display: none;" id="logoutButton">Đăng xuất</button>
+</header>
 
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Contact</a>
-    </nav>
+<!-- Thêm nút chọn quốc gia tại đây -->
+<div class="form-container">
+    <h2>Chọn quốc gia để xem bài đăng</h2>
+    <button onclick="showCountryPosts('Vietnam')">Xem bài đăng Việt Nam</button>
+    <button onclick="showCountryPosts('USA')">Xem bài đăng Hoa Kỳ</button>
+    <button onclick="showCountryPosts('Canada')">Xem bài đăng Canada</button>
+</div>
 
-    <main class="container">
-        <section class="card">
-            <h2>About Us</h2>
-            <p>This is a basic web page template to get you started. Customize it to fit your needs!</p>
-        </section>
+<div class="form-container" id="loginForm">
+    <h2>Đăng nhập</h2>
+    <input type="text" id="username" placeholder="Tên người dùng" required>
+    <input type="password" id="password" placeholder="Mật khẩu" required>
+    <button onclick="login()">Đăng nhập</button>
+    <p>Chưa có tài khoản? <a href="#" onclick="showRegisterForm()">Đăng ký</a></p>
+</div>
 
-        <section class="card">
-            <h2>Services</h2>
-            <p>We offer a variety of services to cater to your requirements. Feel free to reach out for more information!</p>
-        </section>
+        <div class="form-container" id="registerForm" style="display: none;">
+            <h2>Đăng ký</h2>
+            <input type="text" id="regUsername" placeholder="Tên người dùng" required>
+            <input type="password" id="regPassword" placeholder="Mật khẩu" required>
+            <button onclick="register()">Đăng ký</button>
+            <p>Đã có tài khoản? <a href="#" onclick="showLoginForm()">Đăng nhập</a></p>
+        </div>
 
-        <section class="card">
-            <h2>Contact Us</h2>
-            <p>Email: info@example.com</p>
-            <p>Phone: +123-456-7890</p>
-        </section>
+        <div class="form-container" id="postForm" style="display: none;">
+            <h2>Đăng bài mới</h2>
+            <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
+            <textarea id="postContent" placeholder="Nội dung bài đăng" required></textarea>
+            <select id="countrySelect" required>
+                <option value="">Chọn quốc gia</option>
+                <option value="Vietnam">Việt Nam</option>
+                <option value="USA">Hoa Kỳ</option>
+                <option value="Canada">Canada</option>
+            </select>
+            <select id="provinceSelect" required>
+                <option value="">Chọn tỉnh/thành phố</option>
+            </select>
+            <input type="file" id="postImage" accept="image/*">
+            <button onclick="submitPost()">Đăng bài</button>
+        </div>
+
+        <div class="posts-container" id="postsContainer" style="display: none;">
+            <h2>Danh sách bài đăng</h2>
+            <div id="postsList"></div>
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Your Website Name. All Rights Reserved.</p>
-    </footer>
+    <script>
+        const users = JSON.parse(localStorage.getItem('users')) || {}; // Lấy thông tin người dùng từ localStorage hoặc khởi tạo rỗng
+let posts = JSON.parse(localStorage.getItem('posts')) || []; // Lấy danh sách bài đăng từ localStorage hoặc khởi tạo rỗng
+
+function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (users[username] === password) {
+        alert('Đăng nhập thành công!');
+        document.getElementById('logoutButton').style.display = 'block';
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('postForm').style.display = 'block';
+        document.getElementById('postsContainer').style.display = 'block';
+        loadPosts();
+    } else {
+        alert('Tên người dùng hoặc mật khẩu không đúng!');
+    }
+}
+
+function register() {
+    const regUsername = document.getElementById('regUsername').value.trim();
+    const regPassword = document.getElementById('regPassword').value.trim();
+
+    if (users[regUsername]) {
+        alert('Tên người dùng đã tồn tại!');
+        return;
+    }
+
+    users[regUsername] = regPassword;
+    localStorage.setItem('users', JSON.stringify(users)); // Lưu thông tin người dùng vào localStorage
+    alert('Đăng ký thành công!');
+    showLoginForm();
+}
+
+function logout() {
+    document.getElementById('logoutButton').style.display = 'none';
+    document.getElementById('postForm').style.display = 'none';
+    document.getElementById('postsContainer').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+    alert('Bạn đã đăng xuất thành công!');
+}
+
+document.getElementById('countrySelect').addEventListener('change', function () {
+    const country = this.value;
+    const provinceSelect = document.getElementById('provinceSelect');
+
+    const provincesByCountry = {
+        Vietnam: ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng'],
+        USA: ['New York', 'California', 'Texas'],
+        Canada: ['Ontario', 'Quebec', 'British Columbia']
+    };
+
+    provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
+
+    if (provincesByCountry[country]) {
+        provincesByCountry[country].forEach(province => {
+            const option = document.createElement('option');
+            option.value = province;
+            option.textContent = province;
+            provinceSelect.appendChild(option);
+        });
+    }
+});
+
+function submitPost() {
+    const title = document.getElementById('postTitle').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    const country = document.getElementById('countrySelect').value;
+    const province = document.getElementById('provinceSelect').value;
+    const imageFile = document.getElementById('postImage').files[0];
+
+    if (!title || !content || !country || !province) {
+        alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function () {
+        const imageBase64 = reader.result;
+        const newPost = { title, content, country, province, image: imageBase64 };
+        posts.push(newPost);
+        localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
+        alert('Đăng bài thành công!');
+        document.getElementById('postForm').reset(); // Reset form
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
+    };
+
+    if (imageFile) {
+        reader.readAsDataURL(imageFile); // Xử lý ảnh
+    } else {
+        const newPost = { title, content, country, province, image: '' };
+        posts.push(newPost);
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Đăng bài thành công!');
+        document.getElementById('postForm').reset();
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
+    }
+}
+
+function loadCountryPosts(country) {
+    const postsList = document.getElementById('postsList');
+    postsList.innerHTML = ''; // Xóa danh sách cũ
+
+    const countryPosts = posts.filter(post => post.country === country); // Lọc bài đăng theo quốc gia
+
+    countryPosts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post';
+        postDiv.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            <p><strong>Quốc gia:</strong> ${post.country}</p>
+            <p><strong>Tỉnh/Thành phố:</strong> ${post.province}</p>
+            ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
+        `;
+        postsList.appendChild(postDiv);
+    });
+}
+
+function showCountryPosts(country) {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('postForm').style.display = 'none';
+    document.getElementById('postsContainer').style.display = 'block';
+    loadCountryPosts(country); // Hiển thị bài đăng của quốc gia được chọn
+}
+
+    </script>
 </body>
 </html>
