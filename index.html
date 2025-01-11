@@ -160,6 +160,10 @@ function logout() {
     document.getElementById('loginForm').style.display = 'block';
     alert('Bạn đã đăng xuất thành công!');
 }
+function showPostList() {
+    document.getElementById('postsContainer').style.display = 'block'; // Hiển thị danh sách bài đăng
+    document.getElementById('postDetails').style.display = 'none'; // Ẩn chi tiết bài đăng
+}
 
 document.getElementById('countrySelect').addEventListener('change', function () {
     const country = this.value;
