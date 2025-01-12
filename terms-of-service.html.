@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service</title>
+</head>
+<body>
+  <h1>Terms of Service</h1>
+  <p>Welcome to our app. By using this app, you agree to the following terms and conditions.</p>
+  <h2>Usage Rules</h2>
+  <p>Explain what users can and cannot do while using your app.</p>
+  <h2>Limitation of Liability</h2>
+  <p>Include a disclaimer about your liability for potential issues.</p>
+  <h2>Contact</h2>
+  <p>If you have any questions about these terms, please contact us at [Your Email Address].</p>
+</body>
+</html>
