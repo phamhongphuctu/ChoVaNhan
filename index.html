@@ -269,7 +269,7 @@ function loadCountryPosts(country) {
 
     const countryPosts = posts.filter(post => post.country === country); // Lọc bài đăng theo quốc gia
 
-    countryPosts.forEach(post => {
+    countryPosts.forEach((post, index) => {
         const postDiv = document.createElement('div');
         postDiv.className = 'post';
         postDiv.innerHTML = `
@@ -278,26 +278,66 @@ function loadCountryPosts(country) {
             <p><strong>Quốc gia:</strong> ${post.country}</p>
             <p><strong>Tỉnh/Thành phố:</strong> ${post.province}</p>
             ${post.image ? `<img src="${post.image}" alt="Hình ảnh bài đăng">` : ''}
+            <button onclick="markPostAsCompleted(${index})">Đánh dấu đã hoàn thành</button>
+            <button onclick="deletePost(${index})">Xóa bài đăng</button>
         `;
         postsList.appendChild(postDiv);
     });
 }
 
-function showCountryPosts(country) {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('postsContainer').style.display = 'block';
+function submitPost() {
+    const title = document.getElementById('postTitle').value.trim();
+    const content = document.getElementById('postContent').value.trim();
+    const country = document.getElementById('countrySelect').value;
+    const province = document.getElementById('provinceSelect').value;
+    const imageFile = document.getElementById('postImage').files[0];
 
-    // Hiển thị form đăng bài mới và đặt quốc gia
-    const postForm = document.getElementById('postForm');
-    postForm.style.display = 'block';
+    if (!title || !content || !country || !province) {
+        alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
+        return;
+    }
 
-    const countrySelect = document.getElementById('countrySelect');
-    countrySelect.value = country; // Tự động chọn quốc gia
+    const reader = new FileReader();
+    reader.onload = function () {
+        const imageBase64 = reader.result;
+        const newPost = { title, content, country, province, image: imageBase64, completed: false };
+        posts.push(newPost);
+        localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
+        alert('Đăng bài thành công!');
+        resetPostForm();
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
+    };
 
-    loadCountryPosts(country); // Hiển thị bài đăng của quốc gia tương ứng
+    if (imageFile) {
+        reader.readAsDataURL(imageFile); // Xử lý ảnh
+    } else {
+        const newPost = { title, content, country, province, image: '', completed: false };
+        posts.push(newPost);
+        localStorage.setItem('posts', JSON.stringify(posts));
+        alert('Đăng bài thành công!');
+        resetPostForm();
+        loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
+    }
 }
 
+function deletePost(index) {
+    const confirmDelete = confirm('Bạn có chắc chắn muốn xóa bài đăng này không?');
+    if (confirmDelete) {
+        posts.splice(index, 1); // Xóa bài đăng khỏi mảng
+        localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật localStorage
+        alert('Đã xóa bài đăng thành công!');
+        const country = document.getElementById('countrySelect').value;
+        loadCountryPosts(country); // Tải lại bài đăng
+    }
+}
+
+function markPostAsCompleted(index) {
+    posts[index].completed = true; // Đánh dấu bài đăng là đã hoàn thành
+    localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật localStorage
+    alert('Bài đăng đã được đánh dấu hoàn thành!');
+    const country = document.getElementById('countrySelect').value;
+    loadCountryPosts(country); // Tải lại bài đăng
+}
 
     </script>
 </body>
