@@ -147,6 +147,7 @@ function login() {
 
     if (users[username] === password) {
         alert('Đăng nhập thành công!');
+        localStorage.setItem('currentUser', username); // Lưu tên người dùng hiện tại
         document.getElementById('logoutButton').style.display = 'block';
         document.getElementById('loginForm').style.display = 'none';
         document.getElementById('postForm').style.display = 'block';
@@ -156,7 +157,6 @@ function login() {
         alert('Tên người dùng hoặc mật khẩu không đúng!');
     }
 }
-
 function register() {
     const regUsername = document.getElementById('regUsername').value.trim();
     const regPassword = document.getElementById('regPassword').value.trim();
