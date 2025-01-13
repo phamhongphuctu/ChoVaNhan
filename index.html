@@ -342,6 +342,25 @@ function submitPost() {
         loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     }
 }
+function deletePost(index) {
+    const currentUser = localStorage.getItem('currentUser'); // Lấy tên người dùng hiện tại
+    const post = posts[index];
+
+    // Kiểm tra quyền
+    if (currentUser !== post.author && currentUser !== 'admin') {
+        alert('Bạn không có quyền xóa bài đăng này!');
+        return;
+    }
+
+    const confirmDelete = confirm('Bạn có chắc chắn muốn xóa bài đăng này không?');
+    if (confirmDelete) {
+        posts.splice(index, 1); // Xóa bài đăng khỏi mảng
+        localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật localStorage
+        alert('Đã xóa bài đăng thành công!');
+        const country = document.getElementById('countrySelect').value;
+        loadCountryPosts(country); // Tải lại bài đăng
+    }
+}
 
     </script>
 </body>
