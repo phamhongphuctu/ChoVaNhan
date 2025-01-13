@@ -68,6 +68,12 @@
 </header>
 
 <!-- Thêm nút chọn quốc gia tại đây -->
+<div class="form-container">
+    <h2>Chọn quốc gia để xem bài đăng</h2>
+    <button onclick="showCountryPosts('Vietnam')">Xem bài đăng Việt Nam</button>
+    <button onclick="showCountryPosts('USA')">Xem bài đăng Hoa Kỳ</button>
+    <button onclick="showCountryPosts('Canada')">Xem bài đăng Canada</button>
+</div>
 
 <div class="form-container" id="loginForm">
     <h2>Đăng nhập</h2>
@@ -103,39 +109,14 @@
         </div>
 
         <div class="posts-container" id="postsContainer" style="display: none;">
-    <h2>Danh sách bài đăng</h2>
-    
-    <!-- Form đăng bài mới -->
-    <div id="postForm">
-        <h2>Đăng bài mới</h2>
-        <input type="text" id="postTitle" placeholder="Tiêu đề bài đăng" required>
-        <textarea id="postContent" placeholder="Nội dung bài đăng" required></textarea>
-        <select id="countrySelect" required>
-            <option value="">Chọn quốc gia</option>
-            <option value="Vietnam">Việt Nam</option>
-            <option value="USA">Hoa Kỳ</option>
-            <option value="Canada">Canada</option>
-        </select>
-        <select id="provinceSelect" required>
-            <option value="">Chọn tỉnh/thành phố</option>
-        </select>
-        <input type="file" id="postImage" accept="image/*">
-        <button onclick="submitPost()">Đăng bài</button>
-    </div>
-
-    <!-- Chọn quốc gia để xem bài đăng -->
-    <div>
-        <h3>Chọn quốc gia để xem bài đăng</h3>
-        <button onclick="showCountryPosts('Vietnam')">Xem bài đăng Việt Nam</button>
-        <button onclick="showCountryPosts('USA')">Xem bài đăng Hoa Kỳ</button>
-        <button onclick="showCountryPosts('Canada')">Xem bài đăng Canada</button>
-    </div>
-    
-    <div id="postsList"></div>
-</div>
-
-
+            <h2>Danh sách bài đăng</h2>
+            <div id="postsList"></div>
+        </div>
     </main>
+<div id="postDetails" style="display: none;">
+    <button onclick="showPostList()">Trở về danh sách bài đăng</button>
+    <div id="postContent"></div>
+</div>
 
     <script>
         const users = JSON.parse(localStorage.getItem('users')) || {}; // Lấy thông tin người dùng từ localStorage hoặc khởi tạo rỗng
@@ -161,36 +142,15 @@ function register() {
     const regUsername = document.getElementById('regUsername').value.trim();
     const regPassword = document.getElementById('regPassword').value.trim();
 
-    // Kiểm tra tên người dùng và mật khẩu có hợp lệ không
-    if (!regUsername || !regPassword) {
-        alert('Vui lòng nhập tên người dùng và mật khẩu!');
-        return;
-    }
-
-    // Kiểm tra nếu tên người dùng đã tồn tại
     if (users[regUsername]) {
         alert('Tên người dùng đã tồn tại!');
         return;
     }
 
-    // Thêm người dùng mới vào danh sách
     users[regUsername] = regPassword;
-    localStorage.setItem('users', JSON.stringify(users)); // Lưu thông tin vào localStorage
-
-    alert('Đăng ký thành công! Hãy đăng nhập.');
-    
-    // Hiển thị form đăng nhập sau khi đăng ký
+    localStorage.setItem('users', JSON.stringify(users)); // Lưu thông tin người dùng vào localStorage
+    alert('Đăng ký thành công!');
     showLoginForm();
-}
-
-function showLoginForm() {
-    document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'block';
-}
-
-function showRegisterForm() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
 }
 
 function logout() {
@@ -199,6 +159,10 @@ function logout() {
     document.getElementById('postsContainer').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
     alert('Bạn đã đăng xuất thành công!');
+}
+function showPostList() {
+    document.getElementById('postsContainer').style.display = 'block'; // Hiển thị danh sách bài đăng
+    document.getElementById('postDetails').style.display = 'none'; // Ẩn chi tiết bài đăng
 }
 
 document.getElementById('countrySelect').addEventListener('change', function () {
@@ -280,60 +244,9 @@ function loadCountryPosts(country) {
 
 function showCountryPosts(country) {
     document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('postForm').style.display = 'none';
     document.getElementById('postsContainer').style.display = 'block';
-
-    // Hiển thị form đăng bài mới
-    const postForm = document.getElementById('postForm');
-    postForm.style.display = 'block';
-
-    // Thiết lập giá trị quốc gia tự động trong form đăng bài
-    const countrySelect = document.getElementById('countrySelect');
-    countrySelect.value = country;
-
-    // Tải danh sách bài đăng của quốc gia được chọn
-    loadCountryPosts(country);
-}
-
-function submitPost() {
-    const title = document.getElementById('postTitle').value.trim();
-    const content = document.getElementById('postContent').value.trim();
-    const country = document.getElementById('countrySelect').value;
-    const province = document.getElementById('provinceSelect').value;
-    const imageFile = document.getElementById('postImage').files[0];
-
-    if (!title || !content || !country || !province) {
-        alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
-        return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function () {
-        const imageBase64 = reader.result;
-        const newPost = { title, content, country, province, image: imageBase64 };
-        posts.push(newPost);
-        localStorage.setItem('posts', JSON.stringify(posts));
-        alert('Đăng bài thành công!');
-        document.getElementById('postTitle').value = '';
-        document.getElementById('postContent').value = '';
-        document.getElementById('provinceSelect').value = '';
-        document.getElementById('postImage').value = '';
-        loadCountryPosts(country); // Tải lại bài đăng của quốc gia
-    };
-
-    if (imageFile) {
-        reader.readAsDataURL(imageFile);
-    } else {
-        const newPost = { title, content, country, province, image: '' };
-        posts.push(newPost);
-        localStorage.setItem('posts', JSON.stringify(posts));
-        alert('Đăng bài thành công!');
-        document.getElementById('postTitle').value = '';
-        document.getElementById('postContent').value = '';
-        document.getElementById('provinceSelect').value = '';
-        document.getElementById('postImage').value = '';
-        loadCountryPosts(country);
-    }
+    loadCountryPosts(country); // Hiển thị bài đăng của quốc gia được chọn
 }
 
     </script>
