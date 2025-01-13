@@ -291,6 +291,12 @@ function submitPost() {
     const country = document.getElementById('countrySelect').value;
     const province = document.getElementById('provinceSelect').value;
     const imageFile = document.getElementById('postImage').files[0];
+    const currentUser = localStorage.getItem('currentUser'); // Lấy tên người dùng hiện tại
+
+    if (!currentUser) {
+        alert('Bạn cần đăng nhập để đăng bài!');
+        return;
+    }
 
     if (!title || !content || !country || !province) {
         alert('Vui lòng điền đầy đủ thông tin và chọn quốc gia, tỉnh/thành phố!');
@@ -300,7 +306,15 @@ function submitPost() {
     const reader = new FileReader();
     reader.onload = function () {
         const imageBase64 = reader.result;
-        const newPost = { title, content, country, province, image: imageBase64, completed: false };
+        const newPost = { 
+            title, 
+            content, 
+            country, 
+            province, 
+            image: imageBase64, 
+            author: currentUser, // Lưu tên người dùng đã đăng bài
+            completed: false 
+        };
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts)); // Lưu bài đăng vào localStorage
         alert('Đăng bài thành công!');
@@ -311,32 +325,21 @@ function submitPost() {
     if (imageFile) {
         reader.readAsDataURL(imageFile); // Xử lý ảnh
     } else {
-        const newPost = { title, content, country, province, image: '', completed: false };
+        const newPost = { 
+            title, 
+            content, 
+            country, 
+            province, 
+            image: '', 
+            author: currentUser, // Lưu tên người dùng đã đăng bài
+            completed: false 
+        };
         posts.push(newPost);
         localStorage.setItem('posts', JSON.stringify(posts));
         alert('Đăng bài thành công!');
         resetPostForm();
         loadCountryPosts(country); // Tải lại bài đăng cho quốc gia tương ứng
     }
-}
-
-function deletePost(index) {
-    const confirmDelete = confirm('Bạn có chắc chắn muốn xóa bài đăng này không?');
-    if (confirmDelete) {
-        posts.splice(index, 1); // Xóa bài đăng khỏi mảng
-        localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật localStorage
-        alert('Đã xóa bài đăng thành công!');
-        const country = document.getElementById('countrySelect').value;
-        loadCountryPosts(country); // Tải lại bài đăng
-    }
-}
-
-function markPostAsCompleted(index) {
-    posts[index].completed = true; // Đánh dấu bài đăng là đã hoàn thành
-    localStorage.setItem('posts', JSON.stringify(posts)); // Cập nhật localStorage
-    alert('Bài đăng đã được đánh dấu hoàn thành!');
-    const country = document.getElementById('countrySelect').value;
-    loadCountryPosts(country); // Tải lại bài đăng
 }
 
     </script>
